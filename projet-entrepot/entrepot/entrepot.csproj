@@ -58,6 +58,9 @@
     <Compile Include="entrepot_form.Designer.cs">
       <DependentUpon>entrepot_form.cs</DependentUpon>
     </Compile>
+    <Compile Include="GenericNode.cs" />
+    <Compile Include="Graph.cs" />
+    <Compile Include="NodeEntrepot.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="selection_form.cs">
