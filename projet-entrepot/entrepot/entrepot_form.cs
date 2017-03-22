@@ -14,7 +14,7 @@ namespace entrepot
     {
         // Tableaux d’images et d’entiers représentant l’entrepôt
         PictureBox[,] entrepot_image = new PictureBox[25, 25];
-        int[,] entrepot = new int[25, 25];
+        public int[,] entrepot = new int[25, 25];
 
         // Tableaux pour afficher les numéros de lignes et colonnes
         Label[] lignes = new Label[25];
@@ -145,7 +145,25 @@ namespace entrepot
                 fs.Close();
 
                 // Chariots = obstacle
-                entrepot[chariots_x[i], chariots_y[i]] = -1;
+                entrepot[chariots_x[i], chariots_y[i]] = -2;
+            }
+        }
+
+        private void selection_button_Click(object sender, EventArgs e)
+        {
+            selection_form selection = new selection_form(entrepot);
+
+            if (selection.ShowDialog() == DialogResult.OK)
+            {
+                // Récupération Point Départ
+                int depart_x = selection.chariot_x;
+                int depart_y = selection.chariot_y;
+
+                // Récupération Point Arrivée
+                int arrivee_x = selection.chariot_x_final;
+                int arrivee_y = selection.chariot_y_final;
+
+
             }
         }
     }
