@@ -33,9 +33,9 @@
             // 
             // chariots_button
             // 
-            this.chariots_button.Location = new System.Drawing.Point(571, 35);
+            this.chariots_button.Location = new System.Drawing.Point(524, 242);
             this.chariots_button.Name = "chariots_button";
-            this.chariots_button.Size = new System.Drawing.Size(98, 61);
+            this.chariots_button.Size = new System.Drawing.Size(90, 40);
             this.chariots_button.TabIndex = 0;
             this.chariots_button.Text = "Cliquez ici !";
             this.chariots_button.UseVisualStyleBackColor = true;
@@ -45,18 +45,18 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(694, 507);
+            this.ClientSize = new System.Drawing.Size(618, 524);
             this.Controls.Add(this.chariots_button);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
             this.Name = "entrepot_form";
-            this.Text = "entrepot_form";
+            this.Text = "Entrepôt";
             this.Load += new System.EventHandler(this.entrepot_form_Load);
             this.ResumeLayout(false);
-
         }
 
         #endregion
 
         private System.Windows.Forms.Button chariots_button;
-
     }
 }

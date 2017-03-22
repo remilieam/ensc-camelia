@@ -36,25 +36,25 @@
             // 
             // nbc_label
             // 
-            this.nbc_label.AutoSize = true;
-            this.nbc_label.Location = new System.Drawing.Point(39, 40);
+            this.nbc_label.Location = new System.Drawing.Point(10, 10);
             this.nbc_label.Name = "nbc_label";
-            this.nbc_label.Size = new System.Drawing.Size(192, 13);
+            this.nbc_label.Size = new System.Drawing.Size(280, 20);
             this.nbc_label.TabIndex = 0;
-            this.nbc_label.Text = "Combien de chariot(s) souhaitez-vous ?";
+            this.nbc_label.Text = "Combien de chariot(s) souhaitez-vous ajouter ?";
+            this.nbc_label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // nbc_textbox
             // 
-            this.nbc_textbox.Location = new System.Drawing.Point(42, 72);
+            this.nbc_textbox.Location = new System.Drawing.Point(250, 10);
             this.nbc_textbox.Name = "nbc_textbox";
-            this.nbc_textbox.Size = new System.Drawing.Size(100, 20);
+            this.nbc_textbox.Size = new System.Drawing.Size(40, 20);
             this.nbc_textbox.TabIndex = 1;
             // 
             // nbc_button
             // 
-            this.nbc_button.Location = new System.Drawing.Point(142, 129);
+            this.nbc_button.Location = new System.Drawing.Point(110, 40);
             this.nbc_button.Name = "nbc_button";
-            this.nbc_button.Size = new System.Drawing.Size(75, 23);
+            this.nbc_button.Size = new System.Drawing.Size(80, 30);
             this.nbc_button.TabIndex = 2;
             this.nbc_button.Text = "Valider";
             this.nbc_button.UseVisualStyleBackColor = true;
@@ -62,29 +62,31 @@
             // 
             // chariots_button
             // 
-            this.chariots_button.Location = new System.Drawing.Point(295, 40);
+            this.chariots_button.Location = new System.Drawing.Point(110, 10);
             this.chariots_button.Name = "chariots_button";
-            this.chariots_button.Size = new System.Drawing.Size(75, 23);
+            this.chariots_button.Size = new System.Drawing.Size(80, 30);
             this.chariots_button.TabIndex = 3;
             this.chariots_button.Text = "Valider";
             this.chariots_button.UseVisualStyleBackColor = true;
+            this.chariots_button.Visible = false;
             this.chariots_button.Click += new System.EventHandler(this.chariots_button_Click);
             // 
             // chariots_form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(438, 362);
+            this.ClientSize = new System.Drawing.Size(300, 80);
             this.Controls.Add(this.chariots_button);
             this.Controls.Add(this.nbc_button);
             this.Controls.Add(this.nbc_textbox);
             this.Controls.Add(this.nbc_label);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
             this.Name = "chariots_form";
-            this.Text = "chariots_form";
-            this.Load += new System.EventHandler(this.chariots_form_Load);
+            this.Text = "Ajout des chariots";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.chariots_form_FormClosed);
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion
