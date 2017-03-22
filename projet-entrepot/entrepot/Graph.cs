@@ -70,7 +70,7 @@ namespace entrepot
         /// <param name="xFinal">Ligne du nœud d’arrivée</param>
         /// <param name="yFinal">Colonne du nœud d’arrivée</param>
         /// <returns>Liste des nœuds pour aller du départ à l’arrivée</returns>
-        public List<GenericNode> RechercherSolutionAEtoile(GenericNode noeudInitial, int xFinal, int yFinal)
+        public List<GenericNode> RechercherSolutionAEtoile(GenericNode noeudInitial)
         {
             noeudsOuverts = new List<GenericNode>();
             noeudsFermes = new List<GenericNode>();
@@ -85,7 +85,7 @@ namespace entrepot
             while (noeudsOuverts.Count != 0 && noeud.VerifierFin() == false)
             {
                 // Le meilleur nœud des ouverts est supposé placé
-                //  en tête de liste des fermés
+                // en tête de liste des fermés
                 noeudsOuverts.Remove(noeud);
                 noeudsFermes.Add(noeud);
 
@@ -117,7 +117,7 @@ namespace entrepot
 
                 while (noeud != noeudInitial)
                 {
-                    noeud = noeud.Parent;
+                    noeud = noeud.Parent();
                     _LN.Insert(0, noeud);  // On insère en position 1
                 }
             }
@@ -160,9 +160,9 @@ namespace entrepot
                             // HCost pas recalculé car toujours bon
                             noeudTrouve.CalculerCoutTotal(); // somme de GCost et HCost
 
-                            // Mise à jour de la famille ...
+                            // Mise à jour de la famille...
                             noeudTrouve.SupprimerLiensParent();
-                            noeudTrouve.Parent = N;
+                            noeudTrouve.Parent(N);
 
                             // Mise à jour des ouverts
                             noeudsOuverts.Remove(noeudTrouve);
@@ -178,7 +178,7 @@ namespace entrepot
                         // et l’insérer dans la liste des ouverts
                         noeudEvalue.GCout = N.GCout + N.ObtenirCout(noeudEvalue);
                         noeudEvalue.CalculerHCout();
-                        noeudEvalue.Parent = N;
+                        noeudEvalue.Parent(N);
                         noeudEvalue.CalculerCoutTotal(); // somme de GCost et HCost
                         this.InsererNoeudDansOuverts(noeudEvalue);
                     }

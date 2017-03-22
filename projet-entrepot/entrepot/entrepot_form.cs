@@ -163,7 +163,29 @@ namespace entrepot
                 int arrivee_x = selection.chariot_x_final;
                 int arrivee_y = selection.chariot_y_final;
 
+                // Calcul du plus court chemin
+                Graph g = new Graph();
+                NodeEntrepot noeudInitial = new NodeEntrepot(depart_x, depart_y, arrivee_x, arrivee_y, entrepot);
+                List<GenericNode> chemin = g.RechercherSolutionAEtoile(noeudInitial);
 
+                // Cas de la case de départ
+                FileStream fs = new FileStream("../../depart.png", FileMode.Open);
+                entrepot_image[chemin[0].Nom[0], chemin[0].Nom[1]].Image = Image.FromStream(fs);
+                fs.Close();
+
+                // Cas de la case d’arrivée
+                fs = new FileStream("../../arrivee.png", FileMode.Open);
+                entrepot_image[chemin[chemin.Count - 1].Nom[0], chemin[chemin.Count - 1].Nom[1]].Image = Image.FromStream(fs);
+                fs.Close();
+
+                // Cas du milieu
+                for (int i = 1; i < chemin.Count-1; i++)
+                {
+                    // Modification du carré
+                    fs = new FileStream("../../chemin.png", FileMode.Open);
+                    entrepot_image[chemin[i].Nom[0], chemin[i].Nom[1]].Image = Image.FromStream(fs);
+                    fs.Close();
+                }
             }
         }
     }

@@ -24,6 +24,11 @@ namespace entrepot
             enfants = new List<GenericNode>();
         }
 
+        public int[] Nom
+        {
+            get { return nom; }
+        }
+
         public double GCout
         {
             get { return gCout; }
@@ -47,10 +52,15 @@ namespace entrepot
             get { return enfants; }
         }
 
-        public GenericNode Parent
+        public GenericNode Parent()
         {
-            get { return parent; }
-            set { parent = value; value.enfants.Add(this); }
+            return parent;
+        }
+
+        public void Parent(GenericNode valeur)
+        {
+            parent = valeur;
+            valeur.enfants.Add(this);
         }
 
         public void SupprimerLiensParent()
