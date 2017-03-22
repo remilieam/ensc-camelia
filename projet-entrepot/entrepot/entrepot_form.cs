@@ -37,8 +37,8 @@ namespace entrepot
         /// </summary>
         private void entrepot_form_Load(object sender, EventArgs e)
         {
-            genererEntrepot();
-            ajouterChariots();
+            generer_entrepot();
+            ajouter_chariots();
         }
 
         /// <summary>
@@ -57,14 +57,14 @@ namespace entrepot
                 chariots_y.AddRange(chariots.chariots_y);
 
                 // Ajout des chariots
-                ajouterChariots();
+                ajouter_chariots();
             }
         }
 
         /// <summary>
         /// Permet de générer un entrepôt sans chariot
         /// </summary>
-        private void genererEntrepot()
+        private void generer_entrepot()
         {
             // Création, positionnement et affichage des lignes et des colonnes
             for (int i = 0; i < 25; i++)
@@ -135,7 +135,7 @@ namespace entrepot
         /// <summary>
         /// Permet d’ajouter des chariots dans l’entrepôt
         /// </summary>
-        private void ajouterChariots()
+        private void ajouter_chariots()
         {
             for (int i = 0; i < chariots_x.Count; i++)
             {

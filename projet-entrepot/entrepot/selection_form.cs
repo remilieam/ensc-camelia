@@ -69,7 +69,7 @@ namespace entrepot
                     throw new Exception("Veuillez entrer de nouvelles coordonnées pour l’objet.");
                 }
 
-                List<int> destination = trouverDestination(objet_x, objet_y, objet_k);
+                List<int> destination = trouver_destination(objet_x, objet_y, objet_k);
                 chariot_x_final = destination[0];
                 chariot_y_final = destination[1];
 
@@ -90,7 +90,7 @@ namespace entrepot
         /// <param name="y">Numéro de colonne de l’objet</param>
         /// <param name="k">Orientation de l’objet</param>
         /// <returns></returns>
-        private List<int> trouverDestination(int x, int y, string k)
+        private List<int> trouver_destination(int x, int y, string k)
         {
             List<int> arrivee = new List<int>();
 

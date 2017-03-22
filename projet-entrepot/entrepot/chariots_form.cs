@@ -119,7 +119,7 @@ namespace entrepot
 
                     try
                     {
-                        if (!verifierChariot(chariots_x[i], chariots_y[i]))
+                        if (!verifier_chariot(chariots_x[i], chariots_y[i]))
                         {
                             string message = "Les coordonnées que vous avez données pour ";
                             message += "le chariot " + (i + 1) + " ne sont pas possibles : ";
@@ -150,7 +150,7 @@ namespace entrepot
         /// <param name="x">Numéro de ligne</param>
         /// <param name="y">Numéro de colonne</param>
         /// <returns></returns>
-        private bool verifierChariot(int x, int y)
+        private bool verifier_chariot(int x, int y)
         {
             // Si les coordonnées du chariot corresponde à une étagère
             if (x % 2 == 0 && x != 0 && x != 24 &&
