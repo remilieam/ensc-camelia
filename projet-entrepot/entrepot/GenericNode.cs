@@ -5,88 +5,72 @@ using System.Text;
 
 namespace entrepot
 {
-    // classe abstraite, il est donc impératif de créer une classe qui en hérite
-    // pour résoudre un problème particulier en y ajoutant des infos liées au contexte du problème
+    /// <summary>
+    /// Classe abstraite, il est donc impératif de créer une classe qui en hérite
+    /// pour résoudre un problème particulier en y ajoutant des infos liées au contexte du problème
+    /// </summary>
     abstract public class GenericNode
     {
-        protected int[] Name;                 // DOIT ETRE UNIQUE POUR CHAQUE genericnode !!
-        protected double GCost;               // coût du chemin du noeud initial jusqu'à ce noeud
-        protected double HCost;               // estimation heuristique du coût pour atteindre le noeud final
-        protected double TotalCost;           // coût total (g+h)
-        protected GenericNode ParentNode;     // noeud parent
-        protected List<GenericNode> Enfants;  // noeuds enfants
+        protected int[] nom;                 // Nom du nœud
+        protected double gCout;              // Coût du chemin du nœud initial jusqu’à ce nœud
+        protected double hCout;              // Estimation heuristique du coût pour atteindre le nœud final
+        protected double totalCout;          // Coût total (g + h)
+        protected GenericNode parent;        // Nœud Parent
+        protected List<GenericNode> enfants; // Nœuds Enfants
 
         public GenericNode()
         {
-            ParentNode = null;
-            Enfants = new List<GenericNode>();
+            parent = null;
+            enfants = new List<GenericNode>();
         }
 
-
-        public double GetGCost()
+        public double GCout
         {
-            return GCost;
+            get { return gCout; }
+            set { gCout = value; }
         }
 
-        public void SetGCost(double g)
+        public double HCout
         {
-            GCost = g;
+            get { return hCout; }
+            set { hCout = value; }
         }
 
-        public double Estimation()
+        public double TotalCout
         {
-            return HCost;
+            get { return totalCout; }
+            set { totalCout = value; }
         }
 
-        public void SetEstimation(double h)
+        public List<GenericNode> Enfants
         {
-            HCost = h;
+            get { return enfants; }
         }
 
-
-        public double Cout_Total
+        public GenericNode Parent
         {
-            get { return TotalCost; }
-            set { TotalCost = value; }
+            get { return parent; }
+            set { parent = value; value.enfants.Add(this); }
         }
 
-        public List<GenericNode> GetEnfants()
+        public void SupprimerLiensParent()
         {
-            return Enfants;
+            if (parent == null) return;
+            parent.enfants.Remove(this);
+            parent = null;
         }
 
-        public GenericNode GetNoeud_Parent()
+        public void CalculerCoutTotal()
         {
-            return ParentNode;
+            totalCout = gCout + hCout;
         }
 
-        public void SetNoeud_Parent(GenericNode g)
-        {
-            ParentNode = g;
-            g.Enfants.Add(this);
-        }
-
-        public void Supprime_Liens_Parent()
-        {
-            if (ParentNode == null) return;
-            ParentNode.Enfants.Remove(this);
-            ParentNode = null;
-        }
-
-        public void calculCoutTotal()
-        {
-            TotalCost = GCost + HCost;
-        }
-
-  
-
-        // Méthodes abstrates, donc à surcharger obligatoirement avec override dans une classe fille
-        public abstract bool IsEqual(GenericNode N2);
-        public abstract double GetArcCost(GenericNode N2);
-        public abstract bool EndState();
-        public abstract List<GenericNode> GetListSucc();
-        public abstract void CalculeHCost();
-        // On peut aussi penser à surcharger ToString() pour afficher correctement un état
-        // c'est utile pour l'affichage du treenode
+        // Méthodes abstrates, donc à surcharger obligatoirement avec override
+        // dans une classe fille
+        public abstract bool EstEgal(GenericNode noeudEvalue);
+        public abstract double ObtenirCout(GenericNode noeudEvalue);
+        public abstract bool VerifierFin();
+        public abstract List<GenericNode> ObtenirSuccesseurs();
+        public abstract void CalculerHCout();
     }
 }

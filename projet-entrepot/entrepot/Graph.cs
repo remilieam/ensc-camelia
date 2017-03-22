@@ -8,198 +8,261 @@ namespace entrepot
 {
     class Graph
     {
-        public List<GenericNode> L_Ouverts;
-        public List<GenericNode> L_Fermes;
+        public List<GenericNode> noeudsOuverts;
+        public List<GenericNode> noeudsFermes;
 
-        public int CountInOpenList()
+        /// <summary>
+        /// Permet de compter le nombre de nœuds ouverts
+        /// </summary>
+        /// <returns>Le nombre de nœuds ouverts</returns>
+        public int compterOuverts()
         {
-            return L_Ouverts.Count;
-        }
-        public int CountInClosedList()
-        {
-            return L_Fermes.Count;
+            return noeudsOuverts.Count;
         }
 
-        private GenericNode ChercheNodeDansFermes(GenericNode N2)
+        /// <summary>
+        /// Permet de compter le nombre de nœuds fermés
+        /// </summary>
+        /// <returns>Le nombre de nœuds fermés</returns>
+        public int compterFermes()
+        {
+            return noeudsFermes.Count;
+        }
+
+        /// <summary>
+        /// Permet de savoir si un nœud est parmi les nœuds fermés
+        /// </summary>
+        /// <param name="noeudEvalue">Nœud à rechercher parmi les nœuds fermés</param>
+        /// <returns>Nœud s’il est dans les nœuds fermés</returns>
+        private GenericNode ChercherNoeudDansFermes(GenericNode noeudEvalue)
         {
             int i = 0;
-
-            while (i < L_Fermes.Count)
+            while (i < noeudsFermes.Count)
             {
-                if (L_Fermes[i].IsEqual (N2))
-                    return L_Fermes[i];
+                if (noeudsFermes[i].EstEgal(noeudEvalue))
+                    return noeudsFermes[i];
                 i++;
             }
             return null;
         }
 
-        private GenericNode ChercheNodeDansOuverts(GenericNode N2)
+        /// <summary>
+        /// Permet de savoir si un nœud est parmi les nœuds ouverts
+        /// </summary>
+        /// <param name="noeudEvalue">Nœud à rechercher parmi les nœuds ouverts</param>
+        /// <returns>Nœud s’il est dans les nœuds ouverts</returns>
+        private GenericNode ChercherNoeudDansOuverts(GenericNode noeudEvalue)
         {
             int i = 0;
-
-            while (i < L_Ouverts.Count)
+            while (i < noeudsOuverts.Count)
             {
-                if (L_Ouverts[i].IsEqual(N2))
-                    return L_Ouverts[i];
+                if (noeudsOuverts[i].EstEgal(noeudEvalue))
+                    return noeudsOuverts[i];
                 i++;
             }
             return null;
         }
 
-        public List<GenericNode> RechercheSolutionAEtoile(GenericNode N0)
+        /// <summary>
+        /// Permet de rechercher le plus court chemin
+        /// </summary>
+        /// <param name="noeudInitial">Nœud de départ</param>
+        /// <param name="xFinal">Ligne du nœud d’arrivée</param>
+        /// <param name="yFinal">Colonne du nœud d’arrivée</param>
+        /// <returns>Liste des nœuds pour aller du départ à l’arrivée</returns>
+        public List<GenericNode> RechercherSolutionAEtoile(GenericNode noeudInitial, int xFinal, int yFinal)
         {
-            L_Ouverts = new List<GenericNode>();
-            L_Fermes = new List<GenericNode>();
-            // Le noeud passé en paramètre est supposé être le noeud initial
-            GenericNode N = N0;
-            L_Ouverts.Add(N0);
+            noeudsOuverts = new List<GenericNode>();
+            noeudsFermes = new List<GenericNode>();
 
-            // tant que le noeud n'est pas terminal et que ouverts n'est pas vide
-            while (L_Ouverts.Count != 0 && N.EndState() == false)
+            GenericNode noeud = noeudInitial;
+
+            // On ajoute le nœud de départ aux ouverts
+            noeudsOuverts.Add(noeudInitial);
+
+            // Tant que le nœud n’est pas terminal
+            // et que la liste des ouverts n’est pas vide
+            while (noeudsOuverts.Count != 0 && noeud.VerifierFin() == false)
             {
-                // Le meilleur noeud des ouverts est supposé placé en tête de liste
-                // On le place dans les fermés
-                L_Ouverts.Remove(N);
-                L_Fermes.Add(N);
+                // Le meilleur nœud des ouverts est supposé placé
+                //  en tête de liste des fermés
+                noeudsOuverts.Remove(noeud);
+                noeudsFermes.Add(noeud);
 
-                // Il faut trouver les noeuds successeurs de N
-                this.MAJSuccesseurs(N);
-                // Inutile de retrier car les insertions ont été faites en respectant l'ordre
+                // Il faut trouver les nœuds successeurs de N
+                this.MettreAJourSuccesseurs(noeud);
+                // Inutile de retrier car les insertions ont été faites en respectant l’ordre
 
-                // On prend le meilleur, donc celui en position 0, pour continuer à explorer les états
-                // A condition qu'il existe bien sûr
-                if (L_Ouverts.Count > 0)
+                // On prend le meilleur, donc celui en position 0, pour continuer
+                // à explorer les états, à condition qu’il existe bien sûr
+                if (noeudsOuverts.Count > 0)
                 {
-                    N = L_Ouverts[0];
+                    noeud = noeudsOuverts[0];
                 }
+
                 else
                 {
-                    N = null;
+                    noeud = null;
                 }
             }
 
             // A* terminé
-            // On retourne le chemin qui va du noeud initial au noeud final sous forme de liste
-            // Le chemin est retrouvé en partant du noeud final et en accédant aux parents de manière
-            // itérative jusqu'à ce qu'on tombe sur le noeud initial
+            // On retourne le chemin qui va du nœud initial au nœud final sous forme de liste
+            // Le chemin est retrouvé en partant du nœud final et en accédant aux parents de manière
+            // itérative jusqu’à ce qu’on tombe sur le nœud initial
             List<GenericNode> _LN = new List<GenericNode>();
-            if (N != null)
+            if (noeud != null)
             {
-                _LN.Add(N);
+                _LN.Add(noeud);
 
-                while (N != N0)
+                while (noeud != noeudInitial)
                 {
-                    N = N.GetNoeud_Parent();
-                    _LN.Insert(0, N);  // On insère en position 1
+                    noeud = noeud.Parent;
+                    _LN.Insert(0, noeud);  // On insère en position 1
                 }
             }
+
             return _LN;
         }
 
-        private void MAJSuccesseurs(GenericNode N)
+        /// <summary>
+        /// Permet de trouver les successeurs du dernier nœud fermé
+        /// </summary>
+        /// <param name="N">Nœud dont on cherche les successeurs</param>
+        private void MettreAJourSuccesseurs(GenericNode N)
         {
-            // On fait appel à GetListSucc, méthode abstraite qu'on doit réécrire pour chaque
-            // problème. Elle doit retourner la liste complète des noeuds successeurs de N.
-            List<GenericNode> listsucc = N.GetListSucc();
-            foreach (GenericNode N2 in listsucc)
+            // On fait appel à GetListSucc, méthode abstraite qu’on doit réécrire pour chaque
+            // problème. Elle doit retourner la liste complète des nœuds successeurs de N.
+            List<GenericNode> listSucc = N.ObtenirSuccesseurs();
+
+            // Pour chaque nœud de la liste des successeurs
+            foreach (GenericNode noeudEvalue in listSucc)
             {
-                // N2 est-il une copie d'un nœud déjà vu et placé dans la liste des fermés ?
-                GenericNode N2bis = ChercheNodeDansFermes(N2);
-                if (N2bis == null)
+                // On vérifie s’il n’est pas une copie d’un nœud déjà vu
+                // et placé dans la liste des fermés
+                GenericNode noeudTrouve = ChercherNoeudDansFermes(noeudEvalue);
+
+                if (noeudTrouve == null)
                 {
-                    // Rien dans les fermés. Est-il dans les ouverts ?
-                    N2bis = ChercheNodeDansOuverts(N2);
-                    if (N2bis != null)
+                    // Si ce n’est pas le cas, on vérifie également s’il n’est pas
+                    // une copie d’un nœud déjà vu et placé dans la liste des fermés
+                    noeudTrouve = ChercherNoeudDansOuverts(noeudEvalue);
+
+                    if (noeudTrouve != null)
                     {
-                        // Il existe, donc on l'a déjà vu, N2 n'est qu'une copie de N2Bis
+                        // Il existe, donc on l’a déjà vu.
                         // Le nouveau chemin passant par N est-il meilleur ?
-                        if (N.GetGCost() + N.GetArcCost(N2) < N2bis.GetGCost())
+                        if (N.GCout + N.ObtenirCout(noeudEvalue) < noeudTrouve.GCout)
                         {
-                            // Mise à jour de N2bis
-                            N2bis.SetGCost(N.GetGCost() + N.GetArcCost(N2));
+                            // Mise à jour du nœud trouvé
+                            noeudTrouve.GCout = N.GCout + N.ObtenirCout(noeudEvalue);
+
                             // HCost pas recalculé car toujours bon
-                            N2bis.calculCoutTotal(); // somme de GCost et HCost
-                            // Mise à jour de la famille ....
-                            N2bis.Supprime_Liens_Parent ();
-                            N2bis.SetNoeud_Parent(N);
+                            noeudTrouve.CalculerCoutTotal(); // somme de GCost et HCost
+
+                            // Mise à jour de la famille ...
+                            noeudTrouve.SupprimerLiensParent();
+                            noeudTrouve.Parent = N;
+
                             // Mise à jour des ouverts
-                            L_Ouverts.Remove(N2bis);
-                            this.InsertNewNodeInOpenList(N2bis);
+                            noeudsOuverts.Remove(noeudTrouve);
+                            this.InsererNoeudDansOuverts(noeudTrouve);
                         }
+
                         // else on ne fait rien, car le nouveau chemin est moins bon
                     }
+
                     else
                     {
-                        // N2 est nouveau, MAJ et insertion dans les ouverts
-                        N2.SetGCost(N.GetGCost() + N.GetArcCost(N2));
-                        N2.CalculeHCost();
-                        N2.SetNoeud_Parent(N);
-                        N2.calculCoutTotal(); // somme de GCost et HCost
-                        this.InsertNewNodeInOpenList(N2);
+                        // Le nœud est nouveau. Il faut donc le mettre à jour
+                        // et l’insérer dans la liste des ouverts
+                        noeudEvalue.GCout = N.GCout + N.ObtenirCout(noeudEvalue);
+                        noeudEvalue.CalculerHCout();
+                        noeudEvalue.Parent = N;
+                        noeudEvalue.CalculerCoutTotal(); // somme de GCost et HCost
+                        this.InsererNoeudDansOuverts(noeudEvalue);
                     }
                 }
+
                 // else il est dans les fermés donc on ne fait rien,
-                // car on a déjà trouvé le plus court chemin pour aller en N2
+                // car on a déjà trouvé le plus court chemin pour aller vers le nœud évalué
             }
         }
 
-        public void InsertNewNodeInOpenList(GenericNode NewNode)
+        public void InsererNoeudDansOuverts(GenericNode nouveauNoeud)
         {
-            // Insertion pour respecter l'ordre du cout total le plus petit au plus grand
-            if (this.L_Ouverts.Count == 0)
-            { L_Ouverts.Add(NewNode); }
+            // Insertion pour respecter l’ordre du coût total le plus petit au plus grand
+            if (this.noeudsOuverts.Count == 0)
+            {
+                noeudsOuverts.Add(nouveauNoeud);
+            }
+
             else
             {
-                GenericNode N = L_Ouverts[0];
+                GenericNode N = noeudsOuverts[0];
                 bool trouve = false;
                 int i = 0;
                 do
-                    if (NewNode.Cout_Total < N.Cout_Total)
+                {
+                    if (nouveauNoeud.TotalCout < N.TotalCout)
                     {
-                        L_Ouverts.Insert(i, NewNode);
+                        noeudsOuverts.Insert(i, nouveauNoeud);
                         trouve = true;
                     }
                     else
                     {
                         i++;
-                        if (L_Ouverts.Count == i)
+                        if (noeudsOuverts.Count == i)
                         {
                             N = null;
-                            L_Ouverts.Insert(i, NewNode);
+                            noeudsOuverts.Insert(i, nouveauNoeud);
                         }
                         else
-                        { N = L_Ouverts[i]; }
+                        {
+                            N = noeudsOuverts[i];
+                        }
                     }
+                }
                 while ((N != null) && (trouve == false));
             }
         }
 
-        // Si on veut afficher l'arbre de recherche, il suffit de passer un treeview en paramètres
-        // Celui-ci est mis à jour avec les noeuds de la liste des fermés, on ne tient pas compte des ouverts
-        public void GetSearchTree( TreeView TV )
+
+        /// <summary>
+        /// Permet d’afficher l’arbre de recherche grâce à un TreeView.
+        /// Celui-ci est mis à jour avec les nœuds de la liste des fermés,
+        /// on ne tient pas compte des ouverts
+        /// </summary>
+        /// <param name="TV">TreeView</param>
+        public void AvoirArbreRecherche(TreeView TV)
         {
-            if (L_Fermes == null) return;
-            if (L_Fermes.Count == 0) return;
-            
+            if (noeudsFermes == null) return;
+            if (noeudsFermes.Count == 0) return;
+
             // On suppose le TreeView préexistant
             TV.Nodes.Clear();
 
-            TreeNode TN = new TreeNode ( L_Fermes[0].ToString() );
+            TreeNode TN = new TreeNode(noeudsFermes[0].ToString());
             TV.Nodes.Add(TN);
 
-            AjouteBranche ( L_Fermes[0], TN );
+            AjouterBranche(noeudsFermes[0], TN);
         }
 
-        // AjouteBranche est exclusivement appelée par GetSearchTree; les noeuds sont ajoutés de manière récursive
-        private void AjouteBranche( GenericNode GN, TreeNode TN)
+        /// <summary>
+        /// Permet d’ajouter une branche à l’arbre de recherche.
+        /// AjouterBranche est exclusivement appelée par AvoirArbreRecherche.
+        /// Les nœuds sont ajoutés de manière récursive
+        /// </summary>
+        /// <param name="GN"></param>
+        /// <param name="TN"></param>
+        private void AjouterBranche(GenericNode GN, TreeNode TN)
         {
-            foreach (GenericNode GNfils in GN.GetEnfants())
+            foreach (GenericNode GNfils in GN.Enfants)
             {
                 TreeNode TNfils = new TreeNode(GNfils.ToString());
                 TN.Nodes.Add(TNfils);
-                if (GNfils.GetEnfants().Count > 0) AjouteBranche(GNfils, TNfils); 
+                if (GNfils.Enfants.Count > 0) { AjouterBranche(GNfils, TNfils); }
             }
         }
-  
     }
 }
