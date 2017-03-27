@@ -15,6 +15,7 @@ namespace entrepot
         public int chariot_y;
         public int chariot_x_final;
         public int chariot_y_final;
+        public int chariot_k_final;
         int objet_x;
         int objet_y;
         string objet_k;
@@ -70,8 +71,9 @@ namespace entrepot
                 }
 
                 List<int> destination = trouver_destination(objet_x, objet_y, objet_k);
-                chariot_x_final = destination[0];
-                chariot_y_final = destination[1];
+                chariot_k_final = destination[0];
+                chariot_x_final = destination[1];
+                chariot_y_final = destination[2];
 
                 this.DialogResult = DialogResult.OK;
             }
@@ -96,11 +98,13 @@ namespace entrepot
 
             if (k == "Nord")
             {
+                arrivee.Add(2);
                 arrivee.Add(x - 1);
             }
 
             else if (k == "Sud")
             {
+                arrivee.Add(0);
                 arrivee.Add(x + 1);
             }
 
