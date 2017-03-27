@@ -74,6 +74,7 @@ namespace entrepot
 
         public override void CalculerHCout()
         {
+            this.HCout = Math.Sqrt((NodeEntrepot.yFinal - this.nom[1]) ^ 2 + (NodeEntrepot.xFinal - this.nom[0]) ^ 2);
         }
 
         public override string ToString()
