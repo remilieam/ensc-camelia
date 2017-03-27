@@ -21,8 +21,8 @@ namespace entrepot
         Label[] colonnes = new Label[25];
 
         // Listes pour les chariots (3 chariots sont prédéfinis par défaut)
-        List<int> chariots_x = new List<int> { 0, 13, 24 };
-        List<int> chariots_y = new List<int> { 0, 12, 24 };
+        List<int> chariots_x = new List<int> { 0, 13, 24, 5, 16, 13, 23, 14, 18, 6, 17, 15, 23, 8, 5 };
+        List<int> chariots_y = new List<int> { 0, 12, 24, 7, 12, 3, 0, 13, 23, 1, 19, 7, 23, 24, 20 };
 
         /// <summary>
         /// Permet de créer le formulaire initial

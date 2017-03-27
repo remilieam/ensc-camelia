@@ -63,6 +63,7 @@
             this.chariot_x_textbox.Name = "chariot_x_textbox";
             this.chariot_x_textbox.Size = new System.Drawing.Size(40, 20);
             this.chariot_x_textbox.TabIndex = 2;
+            this.chariot_x_textbox.Text = "18";
             // 
             // chariot_y_textbox
             // 
@@ -70,6 +71,7 @@
             this.chariot_y_textbox.Name = "chariot_y_textbox";
             this.chariot_y_textbox.Size = new System.Drawing.Size(40, 20);
             this.chariot_y_textbox.TabIndex = 3;
+            this.chariot_y_textbox.Text = "20";
             // 
             // objet_x_textbox
             // 
@@ -77,6 +79,7 @@
             this.objet_x_textbox.Name = "objet_x_textbox";
             this.objet_x_textbox.Size = new System.Drawing.Size(40, 20);
             this.objet_x_textbox.TabIndex = 4;
+            this.objet_x_textbox.Text = "15";
             // 
             // objet_y_textbox
             // 
@@ -84,6 +87,7 @@
             this.objet_y_textbox.Name = "objet_y_textbox";
             this.objet_y_textbox.Size = new System.Drawing.Size(40, 20);
             this.objet_y_textbox.TabIndex = 5;
+            this.objet_y_textbox.Text = "6";
             // 
             // objet_z_textbox
             // 
@@ -91,6 +95,7 @@
             this.objet_z_textbox.Name = "objet_z_textbox";
             this.objet_z_textbox.Size = new System.Drawing.Size(40, 20);
             this.objet_z_textbox.TabIndex = 7;
+            this.objet_z_textbox.Text = "5";
             // 
             // valider_button
             // 
