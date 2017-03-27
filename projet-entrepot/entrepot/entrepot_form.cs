@@ -23,6 +23,8 @@ namespace entrepot
         // Listes pour les chariots (3 chariots sont prédéfinis par défaut)
         List<int> chariots_x = new List<int> { 0, 13, 24, 5, 16, 13, 23, 14, 18, 6, 17, 15, 23, 8, 5 };
         List<int> chariots_y = new List<int> { 0, 12, 24, 7, 12, 3, 0, 13, 23, 1, 19, 7, 23, 24, 20 };
+        // Nord : 0, Est :1, Sud : 2, Ouest : 3
+        List<int> chariots_k = new List<int> { 0, 2, 1, 2, 3, 1, 0, 0, 2, 1, 2, 3, 1, 0, 3 };
 
         /// <summary>
         /// Permet de créer le formulaire initial
@@ -179,7 +181,7 @@ namespace entrepot
                 fs.Close();
 
                 // Cas du milieu
-                for (int i = 1; i < chemin.Count-1; i++)
+                for (int i = 1; i < chemin.Count - 1; i++)
                 {
                     // Modification du carré
                     fs = new FileStream("../../chemin.png", FileMode.Open);
@@ -187,6 +189,82 @@ namespace entrepot
                     fs.Close();
                 }
             }
+        }
+
+        private void selection_temps_button_Click(object sender, EventArgs e)
+        {
+            selection_form selection = new selection_form(entrepot);
+
+            if (selection.ShowDialog() == DialogResult.OK)
+            {
+                // Récupération Point Départ
+                int depart_x = selection.chariot_x;
+                int depart_y = selection.chariot_y;
+                int depart_k = this.recupererOrientation(depart_x,depart_y);
+
+                // Récupération Point Intermédiaire
+                int arrivee_x = selection.chariot_x_final;
+                int arrivee_y = selection.chariot_y_final;
+                int arrivee_k = selection.chariot_k_final;
+
+                // Calcul du premier plus court chemin en temps jusqu’à l'objet
+                Graph g = new Graph();
+                NodeEntrepotTemps noeudInitial = new NodeEntrepotTemps(depart_x, depart_y, depart_k, arrivee_x, arrivee_y, entrepot);
+                List<GenericNode> chemin = g.RechercherSolutionAEtoile(noeudInitial);
+
+                // Calcul du retour jusqu’à la colonne 1
+                Graph g2 = new Graph();
+                NodeEntrepotLivraison noeudInitial2 = new NodeEntrepotLivraison(arrivee_x, arrivee_y, arrivee_k, entrepot);
+                List<GenericNode> chemin2 = g2.RechercherSolutionAEtoile(noeudInitial2);
+
+                // Cas de la case de départ
+                FileStream fs = new FileStream("../../depart.png", FileMode.Open);
+                entrepot_image[chemin[0].Nom[0], chemin[0].Nom[1]].Image = Image.FromStream(fs);
+                fs.Close();
+
+                // Cas de la case d’arrivée
+                fs = new FileStream("../../arrivee.png", FileMode.Open);
+                entrepot_image[chemin[chemin.Count - 1].Nom[0], chemin[chemin.Count - 1].Nom[1]].Image = Image.FromStream(fs);
+                fs.Close();
+
+                // Cas du milieu
+                for (int i = 1; i < chemin.Count - 1; i++)
+                {
+                    // Modification du carré
+                    fs = new FileStream("../../chemin.png", FileMode.Open);
+                    entrepot_image[chemin[i].Nom[0], chemin[i].Nom[1]].Image = Image.FromStream(fs);
+                    fs.Close();
+                }
+
+                // Cas de la case de départ
+                fs = new FileStream("../../depart.png", FileMode.Open);
+                entrepot_image[chemin2[0].Nom[0], chemin2[0].Nom[1]].Image = Image.FromStream(fs);
+                fs.Close();
+
+                // Cas de la case d’arrivée
+                fs = new FileStream("../../arrivee.png", FileMode.Open);
+                entrepot_image[chemin2[chemin2.Count - 1].Nom[0], chemin2[chemin2.Count - 1].Nom[1]].Image = Image.FromStream(fs);
+                fs.Close();
+
+                // Cas du milieu
+                for (int i = 1; i < chemin2.Count - 1; i++)
+                {
+                    // Modification du carré
+                    fs = new FileStream("../../chemin.png", FileMode.Open);
+                    entrepot_image[chemin2[i].Nom[0], chemin2[i].Nom[1]].Image = Image.FromStream(fs);
+                    fs.Close();
+                }
+            }
+        }
+
+        private int recupererOrientation(int x, int y)
+        {
+            int i = 0;
+            while (x != chariots_x[i] && y != chariots_y[i])
+            {
+                i = i + 1;
+            }
+            return chariots_k[i];
         }
     }
 }
