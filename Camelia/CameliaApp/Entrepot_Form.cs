@@ -104,6 +104,10 @@ namespace CameliaApp
                     NoeudDistance noeudInitial = new NoeudDistance(depart, arrivee, entrepot);
                     List<Noeud> chemin = g.RechercherSolutionAEtoile(noeudInitial);
 
+                    // Sauvegarde du chemin
+                    dernier_chemin = new List<Noeud>();
+                    this.dernier_chemin.AddRange(chemin);
+
                     // Cas de la case de départ
                     FileStream fs = new FileStream("../../../CameliaIcon/depart.png", FileMode.Open);
                     entrepot_image[chemin[0].nom.Ligne, chemin[0].nom.Colonne].Image = Image.FromStream(fs);
@@ -123,12 +127,10 @@ namespace CameliaApp
                         fs.Close();
                     }
 
-                    // Déplacement du chariot dans l’entrepôt
-                    entrepot[chariots[rang].Ligne, chariots[rang].Colonne] = 0;
-                    chariots[rang] = chemin[chemin.Count - 1].nom;
-                    entrepot[chariots[rang].Ligne, chariots[rang].Colonne] = -2;
-
                     rafraichir_button.Enabled = true;
+                    distance_button.Enabled = false;
+                    temps_button.Enabled = false;
+                    chariots_button.Enabled = false;
                 }
             }
         }
@@ -160,12 +162,15 @@ namespace CameliaApp
                     Graphe g = new Graphe();
                     NoeudTemps noeudInitial = new NoeudTemps(depart, arrivee, entrepot);
                     List<Noeud> chemin = g.RechercherSolutionAEtoile(noeudInitial);
-                    this.dernier_chemin.AddRange(chemin);
 
                     // Calcul du retour jusqu’à la colonne 1
                     Graphe g2 = new Graphe();
                     NoeudLivraison noeudInitial2 = new NoeudLivraison(arrivee, entrepot);
                     List<Noeud> chemin2 = g2.RechercherSolutionAEtoile(noeudInitial2);
+                    
+                    // Sauvegarde du chemin
+                    dernier_chemin = new List<Noeud>();
+                    this.dernier_chemin.AddRange(chemin);
                     this.dernier_chemin.AddRange(chemin2);
 
                     // Cas de la case de départ
@@ -207,6 +212,10 @@ namespace CameliaApp
                     }
 
                     dynamique_button.Enabled = true;
+                    rafraichir_button.Enabled = true;
+                    distance_button.Enabled = false;
+                    temps_button.Enabled = false;
+                    chariots_button.Enabled = false;
                 }
             }
         }
@@ -216,9 +225,25 @@ namespace CameliaApp
         /// </summary>
         private void Rafraichir_Button_Click(object sender, EventArgs e)
         {
+            // Récupération du point de départ
+            int rang = Trouver_Rang(dernier_chemin[0].nom);
+
+            // Le point de départ devient une case quelconque
+            entrepot[chariots[rang].Ligne, chariots[rang].Colonne] = 0;
+
+            // Récupération du point d’arrivée
+            chariots[rang] = dernier_chemin[dernier_chemin.Count - 1].nom;
+
+            // Le point d’arrivée devient un chariot
+            entrepot[chariots[rang].Ligne, chariots[rang].Colonne] = -2;
+
             Rafraichir_Affichage();
             Ajouter_Chariots();
             rafraichir_button.Enabled = false;
+            dynamique_button.Enabled = false;
+            distance_button.Enabled = true;
+            temps_button.Enabled = true;
+            chariots_button.Enabled = true;
         }
 
         /// <summary>
@@ -230,13 +255,15 @@ namespace CameliaApp
             Ajouter_Chariots();
             Changer_Position();
             dynamique_button.Enabled = false;
+            rafraichir_button.Enabled = false;
+            distance_button.Enabled = true;
+            temps_button.Enabled = true;
+            chariots_button.Enabled = true;
         }
 
         /// <summary>
         ///  Permet de compter le nombre de secondes écoulées
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void Chrono_Timer_Tick(object sender, EventArgs e)
         {
             Rafraichir_Affichage();
