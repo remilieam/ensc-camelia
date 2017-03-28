@@ -46,6 +46,7 @@
     <Compile Include="NoeudDistance.cs" />
     <Compile Include="NoeudLivraison.cs" />
     <Compile Include="NoeudTemps.cs" />
+    <Compile Include="Objet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
