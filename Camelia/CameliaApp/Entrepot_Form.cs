@@ -93,11 +93,7 @@ namespace CameliaApp
                 {
                     // Récupération du point de départ
                     Chariot depart = chariots[0];
-                    int rang = 0;
-                    while (!this.chariots[rang].Egal(chemin_form.Depart))
-                    {
-                        rang++;
-                    }
+                    int rang = Trouver_Rang(chemin_form.Depart);
                     depart = this.chariots[rang];
 
                     // Récupération du point d’arrivée
@@ -154,11 +150,7 @@ namespace CameliaApp
                 {
                     // Récupération du point de départ
                     Chariot depart = chariots[0];
-                    int rang = 0;
-                    while (!this.chariots[rang].Egal(chemin_form.Depart))
-                    {
-                        rang++;
-                    }
+                    int rang = Trouver_Rang(chemin_form.Depart);
                     depart = this.chariots[rang];
 
                     // Récupération du point d’arrivée intermédiaire
@@ -258,16 +250,28 @@ namespace CameliaApp
         }
 
         /// <summary>
+        /// Permet de trouver dans la liste de chariots à un chariot en particulier
+        /// </summary>
+        /// <param name="chariot_a_trouver">Chariot à trouver</param>
+        /// <returns>Rang du chariot trouvé</returns>
+        private int Trouver_Rang(Chariot chariot_a_trouver)
+        {
+            // Récupération de la position actuelle
+            int rang = 0;
+            while (!this.chariots[rang].Egal(chariot_a_trouver))
+            {
+                rang++;
+            }
+            return rang;
+        }
+
+        /// <summary>
         /// Permet de changer la position du chariot pour changer l’affichage 1, 2 ou 6 secondes plus tard
         /// </summary>
         private void Changer_Position()
         {
             // Récupération de la position actuelle
-            int rang = 0;
-            while (!this.chariots[rang].Egal(dernier_chemin[compteur].nom))
-            {
-                rang++;
-            }
+            int rang = Trouver_Rang(dernier_chemin[compteur].nom);
 
             // Modification du timer
             chrono_timer.Interval = 1000;
