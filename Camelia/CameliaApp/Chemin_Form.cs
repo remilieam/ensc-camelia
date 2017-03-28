@@ -19,6 +19,7 @@ namespace CameliaApp
         private string objet_k;
         private int objet_z;
         private int[,] entrepot;
+        public bool fini = false;
 
         // Assesseurs
         public Chariot Depart { get { return depart; } }
@@ -88,6 +89,7 @@ namespace CameliaApp
                 arrivee = new Chariot(destination[1], destination[2], destination[0]);
 
                 this.DialogResult = DialogResult.OK;
+                this.fini = true;
             }
 
             catch (Exception ex)

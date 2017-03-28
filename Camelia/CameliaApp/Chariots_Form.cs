@@ -23,6 +23,7 @@ namespace CameliaApp
 
         // Nombre de chariots
         private int nb_chariots = 0;
+        public bool fini = false;
 
         /// <summary>
         /// Permet de créer le formulaire initial
@@ -146,6 +147,7 @@ namespace CameliaApp
                 }
 
                 this.DialogResult = DialogResult.OK;
+                this.fini = true;
             }
 
             catch (Exception ex)
