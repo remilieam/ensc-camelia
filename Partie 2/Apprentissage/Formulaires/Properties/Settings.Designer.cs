@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Supervise.Properties
+namespace Formulaire.Properties
 {
 
 
