@@ -28,11 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Supervise_Form));
             this.NbCouches_Label = new System.Windows.Forms.Label();
             this.NbCouches_TextBox = new System.Windows.Forms.TextBox();
-            this.Reseau_Button = new System.Windows.Forms.Button();
-            this.NbNeurones_TextBox = new System.Windows.Forms.TextBox();
             this.NbNeurones_Label = new System.Windows.Forms.Label();
+            this.NbNeurones_TextBox = new System.Windows.Forms.TextBox();
+            this.Reseau_Button = new System.Windows.Forms.Button();
             this.Resultat_PictureBox = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.Resultat_PictureBox)).BeginInit();
             this.SuspendLayout();
@@ -53,34 +54,35 @@
             this.NbCouches_TextBox.Size = new System.Drawing.Size(50, 20);
             this.NbCouches_TextBox.TabIndex = 1;
             // 
-            // Reseau_Button
+            // NbNeurones_Label
             // 
-            this.Reseau_Button.Location = new System.Drawing.Point(100, 80);
-            this.Reseau_Button.Name = "Reseau_Button";
-            this.Reseau_Button.Size = new System.Drawing.Size(80, 30);
-            this.Reseau_Button.TabIndex = 2;
-            this.Reseau_Button.Text = "Valider";
-            this.Reseau_Button.UseVisualStyleBackColor = true;
-            this.Reseau_Button.Click += new System.EventHandler(this.Reseau_Button_Click);
+            this.NbNeurones_Label.Location = new System.Drawing.Point(10, 50);
+            this.NbNeurones_Label.Name = "NbNeurones_Label";
+            this.NbNeurones_Label.Size = new System.Drawing.Size(200, 20);
+            this.NbNeurones_Label.TabIndex = 2;
+            this.NbNeurones_Label.Text = "Nombres de neurones par couches :";
+            this.NbNeurones_Label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // NbNeurones_TextBox
             // 
             this.NbNeurones_TextBox.Location = new System.Drawing.Point(210, 50);
             this.NbNeurones_TextBox.Name = "NbNeurones_TextBox";
             this.NbNeurones_TextBox.Size = new System.Drawing.Size(50, 20);
-            this.NbNeurones_TextBox.TabIndex = 4;
+            this.NbNeurones_TextBox.TabIndex = 3;
             // 
-            // NbNeurones_Label
+            // Reseau_Button
             // 
-            this.NbNeurones_Label.Location = new System.Drawing.Point(10, 50);
-            this.NbNeurones_Label.Name = "NbNeurones_Label";
-            this.NbNeurones_Label.Size = new System.Drawing.Size(200, 20);
-            this.NbNeurones_Label.TabIndex = 3;
-            this.NbNeurones_Label.Text = "Nombres de neurones par couches :";
-            this.NbNeurones_Label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.Reseau_Button.Location = new System.Drawing.Point(100, 80);
+            this.Reseau_Button.Name = "Reseau_Button";
+            this.Reseau_Button.Size = new System.Drawing.Size(80, 30);
+            this.Reseau_Button.TabIndex = 4;
+            this.Reseau_Button.Text = "Valider";
+            this.Reseau_Button.UseVisualStyleBackColor = true;
+            this.Reseau_Button.Click += new System.EventHandler(this.Reseau_Button_Click);
             // 
             // Resultat_PictureBox
             // 
+            this.Resultat_PictureBox.Image = ((System.Drawing.Image)(resources.GetObject("Resultat_PictureBox.Image")));
             this.Resultat_PictureBox.Location = new System.Drawing.Point(13, 129);
             this.Resultat_PictureBox.Name = "Resultat_PictureBox";
             this.Resultat_PictureBox.Size = new System.Drawing.Size(800, 800);
@@ -112,9 +114,9 @@
 
         private System.Windows.Forms.Label NbCouches_Label;
         private System.Windows.Forms.TextBox NbCouches_TextBox;
-        private System.Windows.Forms.Button Reseau_Button;
-        private System.Windows.Forms.TextBox NbNeurones_TextBox;
         private System.Windows.Forms.Label NbNeurones_Label;
+        private System.Windows.Forms.TextBox NbNeurones_TextBox;
+        private System.Windows.Forms.Button Reseau_Button;
         private System.Windows.Forms.PictureBox Resultat_PictureBox;
     }
 }
