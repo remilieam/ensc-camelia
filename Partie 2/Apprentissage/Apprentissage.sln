@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Donnees", "Donnees", "{391B0712-F9A7-4F29-B7BD-B418339148DD}"
 	ProjectSection(SolutionItems) = preProject
 		Donnees\datasetclassif.txt = Donnees\datasetclassif.txt
+		Donnees\supervise.png = Donnees\supervise.png
 	EndProjectSection
 EndProject
 Global

@@ -13,11 +13,7 @@ namespace Formulaire
 {
     public partial class Supervise_Form : Form
     {
-
-        private static Graphics g;
-        private static Bitmap bmp;
-        private Random rnd = new Random();
-
+        private static Bitmap Image;
         private Reseau Reseau;
 
         public Supervise_Form()
@@ -63,21 +59,45 @@ namespace Formulaire
             {
                 if (i < 1500)
                 {
-                    Sorties.Add(1);
+                    Sorties.Add(0.1);
                 }
                 else
                 {
-                    Sorties.Add(0);
+                    Sorties.Add(0.9);
                 }
             }
 
+            // Mélange des listes
+            List<List<double>> EntreesM = new List<List<double>>();
+            List<double> SortiesM = new List<double>();
+            for (int i = 0; i < 1500; i++)
+            {
+                EntreesM.Add(new List<double> { Entrees[i][0] / 800.0, Entrees[i][1] / 800.0 });
+                SortiesM.Add(Sorties[i]);
+                EntreesM.Add(new List<double> { Entrees[i + 1500][0] / 800.0, Entrees[i + 1500][1] / 800.0 });
+                SortiesM.Add(Sorties[1500 + i]);
+            }
+
             // Apprentissage supervisé pour un coefficient d’apprentissage de 0.5 et 1000 itérations
-            Reseau.backprop(Entrees, Sorties, 0.5, 1000);
+            Reseau.backprop(EntreesM, SortiesM, 0.5, 1000);
 
             // Affichage de l’image de résultat
-            Tests(g, bmp);
+            Tests();
 
-            MessageBox.Show("Fait !", "Fini", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            // Affichage des valeurs du fichier
+            for (int i = 0; i < 3000; i++)
+            {
+                Entrees[i][0] = Math.Floor(Entrees[i][0]);
+                Entrees[i][1] = Math.Floor(Entrees[i][1]);
+                if (i < 1500)
+                {
+                    Supervise_Form.Image.SetPixel((int)Entrees[i][0], (int)Entrees[i][1], Color.Black);
+                }
+                else
+                {
+                    Supervise_Form.Image.SetPixel((int)Entrees[i][0], (int)Entrees[i][1], Color.White);
+                }
+            }
         }
 
         private List<List<double>> RecupererDonnees(string fichier_source)
@@ -89,9 +109,8 @@ namespace Formulaire
 
                 List<List<double>> Entrees = new List<List<double>>();
                 string Donnee = Lecteur.ReadLine();
-                int Numero = 0;
-                int Couple = 0;
-                Entrees.Add(new List<double> { 0, 0 });
+                int Numero = -1;
+                int Couple = 2;
 
                 while (Donnee != null)
                 {
@@ -112,7 +131,6 @@ namespace Formulaire
                 }
 
                 Lecteur.Close();
-                Entrees.RemoveAt(Entrees.Count - 1);
 
                 return Entrees;
             }
@@ -126,23 +144,23 @@ namespace Formulaire
             return new List<List<double>>();
         }
 
-        public void Tests(Graphics g, Bitmap bmp)
+        public void Tests()
         {
-            bmp = (Bitmap)Resultat_PictureBox.Image;
-            List<List<double>> lvecteursentrees = new List<List<double>>();
-            List<double> lsortiesobtenues;
+            Supervise_Form.Image = (Bitmap)Resultat_PictureBox.Image;
+            List<List<double>> Entrees = new List<List<double>>();
+            List<double> Sorties;
 
             // Vecteurs des entrées
             for (int i = 0; i < 800; i++)
             {
                 for (int j = 0; j < 800; j++)
                 {
-                    lvecteursentrees.Add(new List<double> { i, j });
+                    Entrees.Add(new List<double> { i / 800.0, j / 800.0 });
                 }
             }
 
             // Vecteurs des sorties
-            lsortiesobtenues = Reseau.ResultatsEnSortie(lvecteursentrees);
+            Sorties = Reseau.ResultatsEnSortie(Entrees);
 
             // Affichage
             int compteur = 0;
@@ -150,13 +168,13 @@ namespace Formulaire
             {
                 for (int j = 0; j < 800; j++)
                 {
-                    if (lsortiesobtenues[compteur] == 0)
+                    if (Sorties[compteur] < 0.5)
                     {
-                        bmp.SetPixel(i, j, Color.Yellow);
+                        Supervise_Form.Image.SetPixel(i, j, Color.Yellow);
                     }
                     else
                     {
-                        bmp.SetPixel(i, j, Color.Blue);
+                        Supervise_Form.Image.SetPixel(i, j, Color.Blue);
                     }
                     compteur++;
                 }
