@@ -79,7 +79,7 @@ namespace Formulaire
             }
 
             // Apprentissage supervisé pour un coefficient d’apprentissage de 0.5 et 1000 itérations
-            Reseau.backprop(EntreesM, SortiesM, 0.5, 1000);
+            Reseau.Retropropagation(EntreesM, SortiesM, 0.8, 500);
 
             // Affichage de l’image de résultat
             Tests();
@@ -98,6 +98,8 @@ namespace Formulaire
                     Supervise_Form.Image.SetPixel((int)Entrees[i][0], (int)Entrees[i][1], Color.White);
                 }
             }
+
+            MessageBox.Show("Fin...", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private List<List<double>> RecupererDonnees(string fichier_source)
@@ -160,15 +162,15 @@ namespace Formulaire
             }
 
             // Vecteurs des sorties
-            Sorties = Reseau.ResultatsEnSortie(Entrees);
+            Sorties = Reseau.TesterReseau(Entrees);
 
             // Affichage
-            int compteur = 0;
+            int Compteur = 0;
             for (int i = 0; i < 800; i++)
             {
                 for (int j = 0; j < 800; j++)
                 {
-                    if (Sorties[compteur] < 0.5)
+                    if (Sorties[Compteur] < 0.5)
                     {
                         Supervise_Form.Image.SetPixel(i, j, Color.Yellow);
                     }
@@ -176,7 +178,7 @@ namespace Formulaire
                     {
                         Supervise_Form.Image.SetPixel(i, j, Color.Blue);
                     }
-                    compteur++;
+                    Compteur++;
                 }
             }
         }

@@ -7,206 +7,230 @@ namespace Classes
 {
     public class Reseau
     {
-        Random rnd = new Random();
-        //int nbcouches;
-        List<Neurone> listeneurones;     // Liste des neurones du réseau
-        List<Neurone>[] tabcouches;  // tableau des couches de neurones
-        double[,] tabpoids;      // Matrice d'adjacence des poids synaptiques
+        Random Alea = new Random();
+        List<Neurone> ListeNeurones;    // Liste des neurones du réseau
+        List<Neurone>[] TableauCouches; // tableau des couches de neurones
+        double[,] MatricePoids;         // Matrice d’adjacence des poids synaptiques
 
-        // Constructeur
-        // On initialise un réseau de neurones à partir du nombre d'entrées, du nb de couches
-        // et du nb de neurones par couche
-        public Reseau(int nbentrees, int nbcouches, int neuronesparcouche)
+        /// <summary>
+        /// Constructeur du réseau
+        /// </summary>
+        /// <param name="NbEntrees">Nombre de neurones dans la couche d’entrée (dont le biais)</param>
+        /// <param name="NbCouches">Nombre de couches du réseau (dont les couches d’entrée et de sortie</param>
+        /// <param name="NeuronesParCouche">Nombre de neurones dans les couches cachées</param>
+        public Reseau(int NbEntrees, int NbCouches, int NeuronesParCouche)
         {
-            int i, j, k, cpt;
-            Neurone neurone;
+            int NumeroNeurone = -1;
+            Neurone NeuroneAjoute;
 
-            // Nombre de neurones
-            // nbneurones= nbentrees+(nbcouches-2)*neuronesparcouche+1;
+            // Nombre de neurones du réseau = NbEntrees + (NbCouches - 2) * NeuronesParCouche + 1
+            
             // Initialisation des listes avant de poursuivre
-            listeneurones = new List<Neurone>();
-            tabcouches = new List<Neurone>[nbcouches];
-            for (i = 0; i < nbcouches; i++)
+            ListeNeurones = new List<Neurone>();
+            TableauCouches = new List<Neurone>[NbCouches];
+            for (int i = 0; i < NbCouches; i++)
             {
-                tabcouches[i] = new List<Neurone>();
+                TableauCouches[i] = new List<Neurone>();
             }
-            cpt = -1;
-            for (i = 0; i < nbentrees; i++)
+
+            // Construction de la couche d’entrée
+            for (int i = 0; i < NbEntrees; i++)
             {
-                cpt++;
-                neurone = new Neurone(cpt, 0);
-                listeneurones.Add(neurone);
-                tabcouches[0].Add(neurone);
+                NumeroNeurone++;
+                NeuroneAjoute = new Neurone(NumeroNeurone, 0);
+                ListeNeurones.Add(NeuroneAjoute);
+                TableauCouches[0].Add(NeuroneAjoute);
             }
-            // On fait les couches cachées :
-            for (i = 1; i < nbcouches - 1; i++)
-                for (j = 0; j < neuronesparcouche; j++)
+
+            // Construction des couches cachées
+            for (int i = 1; i < NbCouches - 1; i++)
+            {
+                for (int j = 0; j < NeuronesParCouche; j++)
                 {
-                    cpt++;
-                    neurone = new Neurone(cpt, i);
-                    listeneurones.Add(neurone);
-                    tabcouches[i].Add(neurone);
-                    // Connexion avec neurones couche précédente
-                    for (k = 0; k < tabcouches[i - 1].Count; k++)
+                    NumeroNeurone++;
+                    NeuroneAjoute = new Neurone(NumeroNeurone, i);
+                    ListeNeurones.Add(NeuroneAjoute);
+                    TableauCouches[i].Add(NeuroneAjoute);
+
+                    // Connexion des neurones de la couche cachée avec la couche précédente
+                    for (int k = 0; k < TableauCouches[i - 1].Count; k++)
                     {
-                        tabcouches[i - 1][k].sorties.Add(neurone);
-                        neurone.entrees.Add(tabcouches[i - 1][k]);
+                        TableauCouches[i - 1][k].Sorties.Add(NeuroneAjoute);
+                        NeuroneAjoute.Entrees.Add(TableauCouches[i - 1][k]);
                     }
                 }
-            // On fait le neurone de sortie
-            cpt++;
-            neurone = new Neurone(cpt, nbcouches - 1);
-            listeneurones.Add(neurone);
-            tabcouches[nbcouches - 1].Add(neurone);
-            // Connexion avec neurones couche précédente
-            for (k = 0; k < tabcouches[nbcouches - 2].Count; k++)
-            {
-                tabcouches[nbcouches - 2][k].sorties.Add(neurone);
-                neurone.entrees.Add(tabcouches[nbcouches - 2][k]);
             }
 
-            // Initialisation de la matrice des poids synap. : 0= pas de synapse
-            int nbneurones = listeneurones.Count;
-            tabpoids = new double[nbneurones, nbneurones];
-            Random rnd = new Random();
-            for (i = 0; i < nbneurones; i++)
-                for (j = 0; j < nbneurones; j++)
-                    tabpoids[i, j] = rnd.NextDouble() * 2 - 1;
+            // Construction de la couche de sortie (ici il n’y a qu’un seul neurone de sortie)
+            NumeroNeurone++;
+            NeuroneAjoute = new Neurone(NumeroNeurone, NbCouches - 1);
+            ListeNeurones.Add(NeuroneAjoute);
+            TableauCouches[NbCouches - 1].Add(NeuroneAjoute);
 
-        }
-
-        /*****************************************************************/
-        public void ReInitializationActivation()
-        {
-            Neurone n;
-            int i;
-
-            for (i = 0; i < this.listeneurones.Count; i++)
+            // Connexion du neurone de sortie avec la couche précédente
+            for (int k = 0; k < TableauCouches[NbCouches - 2].Count; k++)
             {
-                n = listeneurones[i];
-                n.ResetSortie();
-            }
-        }
-
-        //********************************************************************
-        // Calcul de la sortie de tous les neurones d'une couche donnée
-        // Méthode appelée par backprop
-        public void ProcessLayerK(int k)
-        {
-            int i;
-            Neurone neurone;
-
-            for (i = 0; i < tabcouches[k].Count; i++)
-            {
-                neurone = tabcouches[k][i];
-                // Calcul de la somme des entrées pondérées par les poids
-                // synaptiques + sigmoïde.
-                neurone.CalculeSortie(tabpoids);
-            }
-        }
-        //************************************************************/
-        /*  Affichage des infos d'1 neurone */
-        public void AfficheInfoNeurone(int couche, int num, List<string> lbox)
-        {
-            Neurone neurone, neurone2;
-            int i;
-
-            neurone = tabcouches[couche][num];
-            lbox.Add("Neurone " + Convert.ToString(neurone.GetNumero()));
-            lbox.Add("Somme :" + Convert.ToString(neurone.GetSomme()));
-            lbox.Add("Sortie :" + Convert.ToString(neurone.GetSortie()));
-            lbox.Add(Convert.ToString(neurone.entrees.Count) + " entrées :");
-            for (i = 0; i < neurone.entrees.Count; i++)
-            {
-                neurone2 = neurone.entrees[i];
-                lbox.Add("Num.:" + Convert.ToString(neurone2.GetNumero())
-                    + " Poids:" + Convert.ToString(tabpoids[neurone2.GetNumero(), neurone.GetNumero()]));
-            }
-            lbox.Add(Convert.ToString(neurone.sorties.Count) + "sorties :");
-            for (i = 0; i < neurone.sorties.Count; i++)
-            {
-                neurone2 = neurone.sorties[i];
-                lbox.Add("Num.:" + Convert.ToString(neurone2.GetNumero())
-                    + " Poids:" + Convert.ToString(tabpoids[neurone.GetNumero(), neurone2.GetNumero()]));
+                TableauCouches[NbCouches - 2][k].Sorties.Add(NeuroneAjoute);
+                NeuroneAjoute.Entrees.Add(TableauCouches[NbCouches - 2][k]);
             }
 
-        }
-
-        /*****************************************************************/
-        // Calcul nécessaire pour backprop
-        private double sommedelta(Neurone neur)
-        {
-            int i;
-            Neurone neuronesucc;
-            double somme;
-
-            somme = 0;
-            for (i = 0; i < neur.sorties.Count; i++)
+            // Initialisation de la matrice des poids synaptiques
+            int NbNeurones = ListeNeurones.Count;
+            MatricePoids = new double[NbNeurones, NbNeurones];
+            for (int i = 0; i < NbNeurones; i++)
             {
-                neuronesucc = neur.sorties[i];
-                somme = somme + tabpoids[neur.GetNumero(), neuronesucc.GetNumero()]
-                                * neuronesucc.Getdelta();
-            }
-            return somme;
-        }
-
-        /******************************************************************/
-        public void backprop(List<List<double>> lvecteursentrees,
-                              List<double> lsortiesdesirees, double alpha, int nbiterations)
-        {
-            int i, j, k;
-            double z;
-            Neurone neur, neursucc;
-            int nbcouches = tabcouches.Length;
-            Random rnd2 = new Random();
-
-            // NbIte est le nombre d'itérations, cad le nombre d'exemples qu vont servir à l'apprentissage
-            for (int nbfois = 0; nbfois < nbiterations; nbfois++)
-            {
-                for (int numexemple = 0; numexemple < lvecteursentrees.Count; numexemple++)
+                for (int j = 0; j < NbNeurones; j++)
                 {
-                    // les entrées sont affectées aux sorties des neurones de la couche 0
-                    for (i = 0; i < lvecteursentrees[0].Count; i++)
-                        tabcouches[0][i].ImposeSortie(lvecteursentrees[numexemple][i]);
+                    MatricePoids[i, j] = Alea.NextDouble() * 2 - 1;
+                }
+            }
+        }
 
-                    // On impose ensuite une constante sur le dernier neurone d'entrée
-                    neur = tabcouches[0][lvecteursentrees[0].Count];
-                    neur.ImposeSortie(1);
+        /// <summary>
+        /// Réinitialisation du réseau afin que chaque neurone ait pour valeur 0
+        /// </summary>
+        public void ReinitialiserActivation()
+        {
+            for (int i = 0; i < this.ListeNeurones.Count; i++)
+            {
+                Neurone NeuroneLu = ListeNeurones[i];
+                NeuroneLu.ReinitialiserSortie();
+            }
+        }
 
-                    // Sortie souhaitée :
-                    z = lsortiesdesirees[numexemple];
+        /// <summary>
+        /// Calcul de la sortie de tous les neurones d’une couche donnée
+        /// 
+        /// Cette méthode est appelée par la méthode 
+        /// </summary>
+        /// <param name="Couche">Numéro de la couche dont on calcule les sorties</param>
+        public void CalculerSortieCouche(int Couche)
+        {
+            // Pour chaque neurone de la couche, on calcule la somme pondérées de ses entrées
+            // par les poids synaptiques, puis on utilise la fonction d’activation (sigmoïde)
+            // afin de connaître la valeur du neurone de sortie
+            for (int i = 0; i < TableauCouches[Couche].Count; i++)
+            {
+                Neurone NeuroneLu = TableauCouches[Couche][i];
+                NeuroneLu.CalculerSortie(MatricePoids);
+            }
+        }
 
-                    // Calcul de la sortie de chaque neurone, couche par couche
-                    for (k = 1; k < nbcouches; k++)
-                        ProcessLayerK(k);
+        /// <summary>
+        /// Affichage d’un neurone (sous forme de listes d’informations)
+        /// </summary>
+        /// <param name="Couche">Numéro de la couche sur laquelle se trouve le neurone</param>
+        /// <param name="Numero">Numéro du neurone</param>
+        /// <param name="Liste">Liste qui contiendra les informations</param>
+        public void AfficheInfoNeurone(int Couche, int Numero, List<string> Liste)
+        {
+            // Récupération du neurone dont on veut connaître les caractéristiques
+            Neurone Neurone = TableauCouches[Couche][Numero];
 
-                    // neur = tabcouches[nbcouches - 1][0]; // sortie du réseau
+            // Ajout des informations à la liste
+            Liste.Add("Neurone " + Convert.ToString(Neurone.Numero));
+            Liste.Add("Somme :" + Convert.ToString(Neurone.Somme));
+            Liste.Add("Sortie :" + Convert.ToString(Neurone.Sortie));
 
-                    // Calcul du gradient et de la modification de chaque poids
-                    //pour chaque neurone de sortie i faire; ici 1 seul neurone de sortie
-                    for (i = 0; i < tabcouches[nbcouches - 1].Count; i++)
+            // Neurones de la couche précédente
+            Liste.Add(Convert.ToString(Neurone.Entrees.Count) + " entrées : ");
+            for (int i = 0; i < Neurone.Entrees.Count; i++)
+            {
+                Neurone NeuronePrecedent = Neurone.Entrees[i];
+                Liste.Add("Numéro : " + Convert.ToString(NeuronePrecedent.Numero)
+                    + " Poids : " + Convert.ToString(MatricePoids[NeuronePrecedent.Numero, Neurone.Numero]));
+            }
+
+            // Neurones de la couche suivante
+            Liste.Add(Convert.ToString(Neurone.Sorties.Count) + " sorties : ");
+            for (int i = 0; i < Neurone.Sorties.Count; i++)
+            {
+                Neurone NeuroneSuivant = Neurone.Sorties[i];
+                Liste.Add("Numéro : " + Convert.ToString(NeuroneSuivant.Numero)
+                    + " Poids : " + Convert.ToString(MatricePoids[Neurone.Numero, NeuroneSuivant.Numero]));
+            }
+        }
+        
+        /// <summary>
+        /// Récupération du dernier delta calculé
+        /// </summary>
+        /// <param name="Neurone">Neurone dont on veut le delta</param>
+        /// <returns>Dernier delta calculé</returns>
+        private double RecuperDelta(Neurone Neurone)
+        {
+            double Somme = 0;
+
+            // Somme pondérée des deltas par les poids synaptiques
+            for (int i = 0; i < Neurone.Sorties.Count; i++)
+            {
+                Neurone NeuroneSuivant = Neurone.Sorties[i];
+                Somme += MatricePoids[Neurone.Numero, NeuroneSuivant.Numero]
+                                * NeuroneSuivant.Delta;
+            }
+            return Somme;
+        }
+
+        /// <summary>
+        /// Calcul des poids synaptiques à adopter de façon à obtenir les valeurs de sortie
+        /// souhaitées
+        /// </summary>
+        /// <param name="Entrees">Vecteur contenant les valeurs des neurones d’entrée</param>
+        /// <param name="Sorties">Vecteur contenant les valeurs des neurones de sortie</param>
+        /// <param name="Alpha">Coefficient d’apprentissage</param>
+        /// <param name="Interations">Nombre d’itérations pour l’apprentissage</param>
+        public void Retropropagation(List<List<double>> Entrees, List<double> Sorties, double Alpha, int Interations)
+        {
+            double Sortie;
+            Neurone Neurone, NeuroneSuivant;
+            int NbCouches = TableauCouches.Length;
+
+            // Pour chaque apprentissage
+            for (int Iteration = 0; Iteration < Interations; Iteration++)
+            {
+                // Pour chaque échantillon
+                for (int Echantillon = 0; Echantillon < Entrees.Count; Echantillon++)
+                {
+                    // Définition des entrées
+                    for (int i = 0; i < Entrees[0].Count; i++)
                     {
-                        // ici 1 seul neurone de sortie, i varie entre 0 et 0 !
-                        neur = tabcouches[nbcouches - 1][i];
-                        neur.Setdelta( //(z - neur.sortie);
-                        neur.gprime(neur.GetSomme()) * (z - neur.GetSortie()));
+                        TableauCouches[0][i].ImposerSortie(Entrees[Echantillon][i]);
                     }
 
-                    // On redescend vers les couches les plus basses
-                    for (k = nbcouches - 2; k > -1; k--)
+                    // Ajout du biais
+                    Neurone = TableauCouches[0][Entrees[0].Count];
+                    Neurone.ImposerSortie(1);
+
+                    // Définition de la sortie souhaitée
+                    Sortie = Sorties[Echantillon];
+
+                    // Calcul de la sortie véritable de chaque neurone, couche par couche
+                    for (int Couche = 1; Couche < NbCouches; Couche++)
+                    {
+                        CalculerSortieCouche(Couche);
+                    }
+
+                    // Calcul du gradient pour le(s) neurone(s) de la couche de sortie
+                    for (int i = 0; i < TableauCouches[NbCouches - 1].Count; i++)
+                    {
+                        Neurone = TableauCouches[NbCouches - 1][i];
+                        Neurone.ActualiserDelta(Neurone.gprime(Neurone.Somme) * (Sortie - Neurone.Sortie));
+                    }
+
+                    // Calcul du gradient pour les neurones des couches cachées
+                    for (int Couche = NbCouches - 2; Couche > -1; Couche--)
                     {
                         // Pour chaque neurone de cette couche, on met à jour les poids
-                        for (j = 0; j < tabcouches[k].Count; j++)
+                        for (int NumeroNeurone = 0; NumeroNeurone < TableauCouches[Couche].Count; NumeroNeurone++)
                         {
-                            neur = tabcouches[k][j];
-                            neur.Setdelta(neur.gprime(neur.GetSomme()) * sommedelta(neur));
-                            // Mise à jour des poids entre j et les neurones i d'arrivée
-                            for (i = 0; i < tabcouches[k + 1].Count; i++)
+                            Neurone = TableauCouches[Couche][NumeroNeurone];
+                            Neurone.ActualiserDelta(Neurone.gprime(Neurone.Somme) * RecuperDelta(Neurone));
+
+                            // Mise à jour des poids entre les neurones de la couche et ceux de la couche suivante
+                            for (int i = 0; i < TableauCouches[Couche + 1].Count; i++)
                             {
-                                neursucc = tabcouches[k + 1][i];
-                                tabpoids[neur.GetNumero(), neursucc.GetNumero()] =
-                                  tabpoids[neur.GetNumero(), neursucc.GetNumero()]
-                                   + alpha * neur.GetSortie() * neursucc.Getdelta();
+                                NeuroneSuivant = TableauCouches[Couche + 1][i];
+                                MatricePoids[Neurone.Numero, NeuroneSuivant.Numero] +=
+                                    Alpha * Neurone.Sortie * NeuroneSuivant.Delta;
                             }
                         }
                     }
@@ -215,36 +239,36 @@ namespace Classes
         }
 
 
-        /**********************************************************************/
-
-        /***********************************************************************/
-        public List<double> ResultatsEnSortie(List<List<double>> lvecteursentrees)
+        public List<double> TesterReseau(List<List<double>> Entrees)
         {
-            int i, k;
-            Neurone neur;
+            List<double> Sorties = new List<double>();
 
-            List<double> lres = new List<double>();
-            // On teste 200 exemples de x pris entre -100 et +100
-            // En fait, x2 sera compris entre -100 et 100, x sera utilisé pour l'affichage entre 0 et 200
-            for (int numexemple = 0; numexemple < lvecteursentrees.Count; numexemple++)
+            for (int Echantillon = 0; Echantillon < Entrees.Count; Echantillon++)
             {
-                // les entrées sont affectées aux sorties des neurones de la couche 0
-                for (i = 0; i < lvecteursentrees[0].Count; i++)
-                    tabcouches[0][i].ImposeSortie(lvecteursentrees[numexemple][i]);
+                // Définition des entrées
+                for (int i = 0; i < Entrees[0].Count; i++)
+                {
+                    TableauCouches[0][i].ImposerSortie(Entrees[Echantillon][i]);
+                }
 
-                // On impose ensuite une constante sur le dernier neurone d'entrée
-                neur = tabcouches[0][lvecteursentrees[0].Count];
-                neur.ImposeSortie(1);
+                // Définition du biais
+                Neurone Biais = TableauCouches[0][Entrees[0].Count];
+                Biais.ImposerSortie(1);
 
-                // Calcul de la sortie de chaque neurone
-                for (k = 1; k < tabcouches.Length; k++)
-                    ProcessLayerK(k);
-                // Le neurone de sortie est le 1er de la dernière couche
-                neur = tabcouches[tabcouches.Length - 1][0];
+                // Calcul de la sortie de chaque neurone avec le réseau actuel
+                for (int i = 1; i < TableauCouches.Length; i++)
+                {
+                    CalculerSortieCouche(i);
+                }
 
-                lres.Add(neur.GetSortie());
+                // Récupération de la valeur du neurone de sortie
+                Neurone Sortie = TableauCouches[TableauCouches.Length - 1][0];
+
+                // Ajout du neurone de sortie à la liste des neurones de sortie
+                Sorties.Add(Sortie.Sortie);
             }
-            return lres;
+
+            return Sorties;
         }
     }
 }
