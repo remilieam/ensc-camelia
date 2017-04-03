@@ -17,7 +17,7 @@ namespace _1C
         public Neurone()
         {
             entrees = new double[3];
-            nombreiteration = 0;
+            nombreiteration = 1;
             //sorties = new Neurone();
         }
 
@@ -43,6 +43,7 @@ namespace _1C
         {
             int i;
             somme = 0;
+           
 
 
 
@@ -53,6 +54,7 @@ namespace _1C
                 somme = somme + w[i] * entrees[i];
             }
             sortie = g(somme);
+            
         }
 
 
@@ -67,7 +69,7 @@ namespace _1C
 
                     for (int i = 0; i < 3; i++)
                     {
-                        w[i] = w[i] + entrees[i];
+                        w[i] = w[i]-entrees[i];
                         CalculeSortie();
                     }
                     nombreiteration += 1;
@@ -75,18 +77,20 @@ namespace _1C
 
             }
             else
+            {
                 while (sortie == 0)
                 {
                     for (int i = 0; i < 3; i++)
                     {
-                        w[i] = w[i] - entrees[i];
+                        w[i] = w[i] + entrees[i];
                         CalculeSortie();
                     }
+                }
                     nombreiteration += 1;
 
 
 
-                }
+                } 
             return nombreiteration;
         }
 
@@ -96,7 +100,7 @@ namespace _1C
 
         public double g(double s)
         {
-            int seuil = 0;
+            int seuil = 1;
             if (s > seuil)
             {
                 sortie = 1;
