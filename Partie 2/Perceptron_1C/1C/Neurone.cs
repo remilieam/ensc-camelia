@@ -13,11 +13,13 @@ namespace _1C
         public int nombreiteration;
         public double somme;
         public double[] w = { 1, 2, 3 };
+        public int nombreerreur;
 
         public Neurone()
         {
             entrees = new double[3];
             nombreiteration = 1;
+            nombreerreur = 0;
             //sorties = new Neurone();
         }
 
@@ -38,6 +40,15 @@ namespace _1C
             nombreiteration = nb;
         }
 
+        public double GetNbErreur()
+        {
+            return nombreerreur;
+        }
+
+        public void SetNbErreur(int nb)
+        {
+            nombreerreur = nb;
+        }
 
         public void CalculeSortie()
         {
@@ -61,37 +72,32 @@ namespace _1C
 
         public int RecalculeSortie(int sortiecorrecte)
         {
-            if (sortiecorrecte == 0)
+            if (sortiecorrecte == 0 &&sortie==1)
             {
 
-                while (sortie == 1)
-                {
-
+                
                     for (int i = 0; i < 3; i++)
                     {
                         w[i] = w[i]-entrees[i];
-                        CalculeSortie();
                     }
-                    nombreiteration += 1;
+                    nombreerreur += 1;
                 }
 
-            }
-            else
+            
+           if (sortiecorrecte==1&&sortie==0)
             {
-                while (sortie == 0)
-                {
+               
                     for (int i = 0; i < 3; i++)
                     {
                         w[i] = w[i] + entrees[i];
-                        CalculeSortie();
                     }
+                
+                    nombreerreur+= 1;
+
+
+
                 }
-                    nombreiteration += 1;
-
-
-
-                } 
-            return nombreiteration;
+            return nombreerreur;
         }
 
 
