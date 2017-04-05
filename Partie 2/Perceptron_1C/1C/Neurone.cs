@@ -20,7 +20,7 @@ namespace _1C
             entrees = new double[3];
             nombreiteration = 1;
             nombreerreur = 0;
-            //sorties = new Neurone();
+            
         }
 
 
