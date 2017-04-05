@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.chariot_label = new System.Windows.Forms.Label();
-            this.chariot_x_textbox = new System.Windows.Forms.TextBox();
-            this.chariot_y_textbox = new System.Windows.Forms.TextBox();
+            this.distance_radiobutton = new System.Windows.Forms.RadioButton();
+            this.temps_radiobutton = new System.Windows.Forms.RadioButton();
             this.objet_label = new System.Windows.Forms.Label();
             this.objet_x_textbox = new System.Windows.Forms.TextBox();
             this.objet_y_textbox = new System.Windows.Forms.TextBox();
@@ -48,21 +48,27 @@
             this.chariot_label.Text = "Choisissez le chariot à déplacer (ligne, colonne) :";
             this.chariot_label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // chariot_x_textbox
+            // distance_radiobutton
             // 
-            this.chariot_x_textbox.Location = new System.Drawing.Point(122, 40);
-            this.chariot_x_textbox.Name = "chariot_x_textbox";
-            this.chariot_x_textbox.Size = new System.Drawing.Size(40, 20);
-            this.chariot_x_textbox.TabIndex = 1;
-            this.chariot_x_textbox.Text = "18";
+            this.distance_radiobutton.AutoSize = true;
+            this.distance_radiobutton.Location = new System.Drawing.Point(122, 40);
+            this.distance_radiobutton.Name = "distance_radiobutton";
+            this.distance_radiobutton.Size = new System.Drawing.Size(40, 20);
+            this.distance_radiobutton.TabIndex = 1;
+            this.distance_radiobutton.TabStop = true;
+            this.distance_radiobutton.Text = "Distance";
+            this.distance_radiobutton.UseVisualStyleBackColor = true;
             // 
-            // chariot_y_textbox
+            // temps_radiobutton
             // 
-            this.chariot_y_textbox.Location = new System.Drawing.Point(198, 40);
-            this.chariot_y_textbox.Name = "chariot_y_textbox";
-            this.chariot_y_textbox.Size = new System.Drawing.Size(40, 20);
-            this.chariot_y_textbox.TabIndex = 2;
-            this.chariot_y_textbox.Text = "20";
+            this.temps_radiobutton.AutoSize = true;
+            this.temps_radiobutton.Location = new System.Drawing.Point(198, 40);
+            this.temps_radiobutton.Name = "temps_radiobutton";
+            this.temps_radiobutton.Size = new System.Drawing.Size(40, 20);
+            this.temps_radiobutton.TabIndex = 2;
+            this.temps_radiobutton.TabStop = true;
+            this.temps_radiobutton.Text = "Temps";
+            this.temps_radiobutton.UseVisualStyleBackColor = true;
             // 
             // objet_label
             // 
@@ -123,15 +129,15 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(360, 180);
-            this.Controls.Add(this.objet_k_listbox);
-            this.Controls.Add(this.valider_button);
-            this.Controls.Add(this.objet_z_textbox);
+            this.Controls.Add(this.chariot_label);
+            this.Controls.Add(this.distance_radiobutton);
+            this.Controls.Add(this.temps_radiobutton);
+            this.Controls.Add(this.objet_label);
             this.Controls.Add(this.objet_y_textbox);
             this.Controls.Add(this.objet_x_textbox);
-            this.Controls.Add(this.chariot_y_textbox);
-            this.Controls.Add(this.chariot_x_textbox);
-            this.Controls.Add(this.objet_label);
-            this.Controls.Add(this.chariot_label);
+            this.Controls.Add(this.objet_k_listbox);
+            this.Controls.Add(this.objet_z_textbox);
+            this.Controls.Add(this.valider_button);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.MaximizeBox = false;
             this.Name = "Chemin_Form";
@@ -145,8 +151,8 @@
         #endregion
 
         private System.Windows.Forms.Label chariot_label;
-        private System.Windows.Forms.TextBox chariot_x_textbox;
-        private System.Windows.Forms.TextBox chariot_y_textbox;
+        private System.Windows.Forms.RadioButton distance_radiobutton;
+        private System.Windows.Forms.RadioButton temps_radiobutton;
         private System.Windows.Forms.Label objet_label;
         private System.Windows.Forms.TextBox objet_x_textbox;
         private System.Windows.Forms.TextBox objet_y_textbox;

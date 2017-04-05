@@ -12,18 +12,14 @@ namespace CameliaApp
 {
     public partial class Chemin_Form : Form
     {
-        private Chariot depart;
         private Chariot arrivee;
-        private int objet_x;
-        private int objet_y;
-        private string objet_k;
-        private int objet_z;
         private int[,] entrepot;
+        private int type = 0;
         public bool fini = false;
 
         // Assesseurs
-        public Chariot Depart { get { return depart; } }
         public Chariot Arrivee { get { return arrivee; } }
+        public int Type { get { return type; } }
 
         /// <summary>
         /// Permet de créer le formulaire initial
@@ -47,34 +43,32 @@ namespace CameliaApp
         {
             try
             {
-                depart = new Chariot(Convert.ToInt32(chariot_x_textbox.Text) - 1,
-                    Convert.ToInt32(chariot_y_textbox.Text) - 1, 0);
+                int objet_x = Convert.ToInt32(objet_x_textbox.Text) - 1;
+                int objet_y = Convert.ToInt32(objet_y_textbox.Text) - 1;
+                string objet_k = objet_k_listbox.SelectedItem.ToString();
+                int objet_z = Convert.ToInt32(objet_z_textbox.Text);
 
-                try
+                if (distance_radiobutton.Checked)
                 {
-                    if (entrepot[depart.Ligne, depart.Colonne] != -2)
-                    {
-                        string message = "Il n’y a pas de chariot à cet endroit.";
-                        throw new Exception(message);
-                    }
+                    type = 1;
                 }
 
-                catch (Exception exc)
+                else if (temps_radiobutton.Checked)
                 {
-                    MessageBox.Show(exc.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    throw new Exception("Veuillez entrer de nouvelles coordonnées pour le chariot.");
+                    type = 2;
                 }
-
-                objet_x = Convert.ToInt32(objet_x_textbox.Text) - 1;
-                objet_y = Convert.ToInt32(objet_y_textbox.Text) - 1;
-                objet_k = objet_k_listbox.SelectedItem.ToString();
-                objet_z = Convert.ToInt32(objet_z_textbox.Text);
 
                 try
                 {
                     if (entrepot[objet_x, objet_y] != -1)
                     {
                         string message = "Il ne peut pas y avoir d’objet à cet endroit.";
+                        throw new Exception(message);
+                    }
+
+                    if (!distance_radiobutton.Checked && !temps_radiobutton.Checked)
+                    {
+                        string message = "Sélectionner “Distance” ou “Temps”.";
                         throw new Exception(message);
                     }
                 }
