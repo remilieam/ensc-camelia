@@ -446,10 +446,37 @@ namespace CameliaApp
         {
             for (int i = 0; i < chariots.Count; i++)
             {
-                // Modification du carré
-                FileStream fs = new FileStream("../../../CameliaIcon/chariot.png", FileMode.Open);
-                entrepot_image[chariots[i].Ligne, chariots[i].Colonne].Image = Image.FromStream(fs);
-                fs.Close();
+                // Modification du carré en fonction de l’orientation
+                if (chariots[i].Orientation == 0)
+                {
+                    FileStream fs = new FileStream("../../../CameliaIcon/nord.png", FileMode.Open);
+                    entrepot_image[chariots[i].Ligne, chariots[i].Colonne].Image = Image.FromStream(fs);
+                    fs.Close();
+                }
+                else if (chariots[i].Orientation == 1)
+                {
+                    FileStream fs = new FileStream("../../../CameliaIcon/est.png", FileMode.Open);
+                    entrepot_image[chariots[i].Ligne, chariots[i].Colonne].Image = Image.FromStream(fs);
+                    fs.Close();
+                }
+                else if (chariots[i].Orientation == 2)
+                {
+                    FileStream fs = new FileStream("../../../CameliaIcon/sud.png", FileMode.Open);
+                    entrepot_image[chariots[i].Ligne, chariots[i].Colonne].Image = Image.FromStream(fs);
+                    fs.Close();
+                }
+                else if (chariots[i].Orientation == 3)
+                {
+                    FileStream fs = new FileStream("../../../CameliaIcon/ouest.png", FileMode.Open);
+                    entrepot_image[chariots[i].Ligne, chariots[i].Colonne].Image = Image.FromStream(fs);
+                    fs.Close();
+                }
+                else
+                {
+                    FileStream fs = new FileStream("../../../CameliaIcon/chariot.png", FileMode.Open);
+                    entrepot_image[chariots[i].Ligne, chariots[i].Colonne].Image = Image.FromStream(fs);
+                    fs.Close();
+                }
 
                 // Chariots = obstacle
                 entrepot[chariots[i].Ligne, chariots[i].Colonne] = -2;

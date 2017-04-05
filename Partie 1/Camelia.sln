@@ -12,9 +12,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CameliaIcon", "CameliaIcon"
 		CameliaIcon\chariot.png = CameliaIcon\chariot.png
 		CameliaIcon\chemin.png = CameliaIcon\chemin.png
 		CameliaIcon\depart.png = CameliaIcon\depart.png
+		CameliaIcon\est.png = CameliaIcon\est.png
 		CameliaIcon\intermediaire.png = CameliaIcon\intermediaire.png
 		CameliaIcon\livraison.png = CameliaIcon\livraison.png
 		CameliaIcon\noir.png = CameliaIcon\noir.png
+		CameliaIcon\nord.png = CameliaIcon\nord.png
+		CameliaIcon\ouest.png = CameliaIcon\ouest.png
+		CameliaIcon\sud.png = CameliaIcon\sud.png
 	EndProjectSection
 EndProject
 Global
