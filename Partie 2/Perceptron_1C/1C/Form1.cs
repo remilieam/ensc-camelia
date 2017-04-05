@@ -19,7 +19,7 @@ namespace _1C
         protected int W1 = 1;
         protected int W2 = 2;
         protected int W3 = 3;
-        protected int nbiterations=1;
+        protected int nbiterations=0;
         protected int sommeerreur;
         protected double []tailleA = new double[]{36.1, 41.1, 47.9, 47, 49.8, 48.5};
         protected double[] tailleB = new double[] { 47.8, 55.5, 62.0, 64.1, 64.3, 65.3 };
@@ -40,8 +40,8 @@ namespace _1C
         }
 
         private void Chercher_button_Click(object sender, EventArgs e)
-        {   
-          
+        {
+            nbiterations += 1;
             erreurA = 0;
             erreurB = 0;
             sommeerreur = 0;
@@ -66,8 +66,8 @@ namespace _1C
             {
                 if (sortiecorrecte == 1)
                 {
-                    n.entrees[0] = tailleA[i] ; //on normalise
-                    n.entrees[1] = poidsA[i] ; //on normalise
+                    n.entrees[0] = tailleA[i] ; 
+                    n.entrees[1] = poidsA[i] ; 
                     n.entrees[2] = 1;
 
                     // On calcule la sortie avec les poids
@@ -90,8 +90,8 @@ namespace _1C
                 if (sortiecorrecte == 0)
                 {
 
-                    n.entrees[0] = tailleB[i]; //on normalise
-                    n.entrees[1] = poidsB[i]; //on normalise
+                    n.entrees[0] = tailleB[i]; 
+                    n.entrees[1] = poidsB[i];
                     n.entrees[2] = 1;
 
                     n.CalculeSortie();
@@ -113,14 +113,18 @@ namespace _1C
                 i++;
                 sortiecorrecte = 1;
             }
+                
+
+                erreur_TextBox.Text = sommeerreur.ToString();
+                w1_textbox.Text = n.w[0].ToString();
+                w2_textbox.Text = n.w[1].ToString();
+                w3_Textbox.Text = n.w[2].ToString();
+                Iteration_Textbox.Text = nbiterations.ToString();
+               Poids_textbox.Text = n.somme.ToString();
+           
 
 
-                Reponse_TextBox.Text = sommeerreur.ToString();
-                classe_TextBox.Text = n.w[1].ToString();
-                Poids_final_TextBox.Text = n.w[2].ToString();
-              
-
-            }
+        }
         
         
 
@@ -139,8 +143,9 @@ namespace _1C
         
         }
 
-       
+        private void label1_Click(object sender, EventArgs e)
+        {
 
-      
+        }
     }
 }

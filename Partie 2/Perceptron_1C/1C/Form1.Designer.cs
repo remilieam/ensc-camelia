@@ -31,13 +31,20 @@
             this.Consigne_taille_label = new System.Windows.Forms.Label();
             this.Consigne_poids_label = new System.Windows.Forms.Label();
             this.Reponse_label = new System.Windows.Forms.Label();
-            this.Reponse_TextBox = new System.Windows.Forms.TextBox();
-            this.Chercher_button = new System.Windows.Forms.Button();
-            this.Poids_final_label = new System.Windows.Forms.Label();
-            this.Poids_final_TextBox = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.classe_TextBox = new System.Windows.Forms.TextBox();
             this.Graphique_PictureBox = new System.Windows.Forms.PictureBox();
+            this.Chercher_button = new System.Windows.Forms.Button();
+            this.erreur_label = new System.Windows.Forms.Label();
+            this.Poids_label = new System.Windows.Forms.Label();
+            this.w1_label = new System.Windows.Forms.Label();
+            this.w2_label = new System.Windows.Forms.Label();
+            this.w3_label = new System.Windows.Forms.Label();
+            this.erreur_TextBox = new System.Windows.Forms.TextBox();
+            this.Poids_textbox = new System.Windows.Forms.TextBox();
+            this.w1_textbox = new System.Windows.Forms.TextBox();
+            this.w2_textbox = new System.Windows.Forms.TextBox();
+            this.w3_Textbox = new System.Windows.Forms.TextBox();
+            this.Iteration_label = new System.Windows.Forms.Label();
+            this.Iteration_Textbox = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.Graphique_PictureBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -62,80 +69,143 @@
             this.Reponse_label.AutoSize = true;
             this.Reponse_label.Location = new System.Drawing.Point(41, 226);
             this.Reponse_label.Name = "Reponse_label";
-            this.Reponse_label.Size = new System.Drawing.Size(130, 13);
+            this.Reponse_label.Size = new System.Drawing.Size(0, 13);
             this.Reponse_label.TabIndex = 4;
-            this.Reponse_label.Text = "Le nombre d\'erreur est de ";
-            // 
-            // Reponse_TextBox
-            // 
-            this.Reponse_TextBox.Location = new System.Drawing.Point(44, 242);
-            this.Reponse_TextBox.Name = "Reponse_TextBox";
-            this.Reponse_TextBox.Size = new System.Drawing.Size(59, 20);
-            this.Reponse_TextBox.TabIndex = 5;
-            // 
-            // Chercher_button
-            // 
-            this.Chercher_button.Location = new System.Drawing.Point(558, 133);
-            this.Chercher_button.Name = "Chercher_button";
-            this.Chercher_button.Size = new System.Drawing.Size(182, 23);
-            this.Chercher_button.TabIndex = 6;
-            this.Chercher_button.Text = "Chercher la classe";
-            this.Chercher_button.UseVisualStyleBackColor = true;
-            this.Chercher_button.Click += new System.EventHandler(this.Chercher_button_Click);
-            // 
-            // Poids_final_label
-            // 
-            this.Poids_final_label.AutoSize = true;
-            this.Poids_final_label.Location = new System.Drawing.Point(570, 242);
-            this.Poids_final_label.Name = "Poids_final_label";
-            this.Poids_final_label.Size = new System.Drawing.Size(151, 13);
-            this.Poids_final_label.TabIndex = 7;
-            this.Poids_final_label.Text = "La valeur du poids final est de ";
-            // 
-            // Poids_final_TextBox
-            // 
-            this.Poids_final_TextBox.Location = new System.Drawing.Point(569, 259);
-            this.Poids_final_TextBox.Name = "Poids_final_TextBox";
-            this.Poids_final_TextBox.Size = new System.Drawing.Size(60, 20);
-            this.Poids_final_TextBox.TabIndex = 8;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(284, 226);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(132, 13);
-            this.label1.TabIndex = 9;
-            this.label1.Text = "La classe de l\'espèce est :";
-            // 
-            // classe_TextBox
-            // 
-            this.classe_TextBox.Location = new System.Drawing.Point(287, 241);
-            this.classe_TextBox.Name = "classe_TextBox";
-            this.classe_TextBox.Size = new System.Drawing.Size(40, 20);
-            this.classe_TextBox.TabIndex = 10;
             // 
             // Graphique_PictureBox
             // 
-            this.Graphique_PictureBox.Location = new System.Drawing.Point(125, 285);
+            this.Graphique_PictureBox.Location = new System.Drawing.Point(125, 268);
             this.Graphique_PictureBox.Name = "Graphique_PictureBox";
             this.Graphique_PictureBox.Size = new System.Drawing.Size(518, 204);
             this.Graphique_PictureBox.TabIndex = 11;
             this.Graphique_PictureBox.TabStop = false;
             this.Graphique_PictureBox.Click += new System.EventHandler(this.Graphique_PictureBox_Click);
             // 
+            // Chercher_button
+            // 
+            this.Chercher_button.Location = new System.Drawing.Point(264, 12);
+            this.Chercher_button.Name = "Chercher_button";
+            this.Chercher_button.Size = new System.Drawing.Size(182, 23);
+            this.Chercher_button.TabIndex = 6;
+            this.Chercher_button.Text = "Faire une iteration";
+            this.Chercher_button.UseVisualStyleBackColor = true;
+            this.Chercher_button.Click += new System.EventHandler(this.Chercher_button_Click);
+            // 
+            // erreur_label
+            // 
+            this.erreur_label.AutoSize = true;
+            this.erreur_label.Location = new System.Drawing.Point(44, 71);
+            this.erreur_label.Name = "erreur_label";
+            this.erreur_label.Size = new System.Drawing.Size(87, 13);
+            this.erreur_label.TabIndex = 12;
+            this.erreur_label.Text = "Nombres d\'erreur";
+            // 
+            // Poids_label
+            // 
+            this.Poids_label.AutoSize = true;
+            this.Poids_label.Location = new System.Drawing.Point(44, 110);
+            this.Poids_label.Name = "Poids_label";
+            this.Poids_label.Size = new System.Drawing.Size(102, 13);
+            this.Poids_label.TabIndex = 13;
+            this.Poids_label.Text = "Valeur du poids final";
+            // 
+            // w1_label
+            // 
+            this.w1_label.AutoSize = true;
+            this.w1_label.Location = new System.Drawing.Point(47, 142);
+            this.w1_label.Name = "w1_label";
+            this.w1_label.Size = new System.Drawing.Size(21, 13);
+            this.w1_label.TabIndex = 14;
+            this.w1_label.Text = "w1";
+            // 
+            // w2_label
+            // 
+            this.w2_label.AutoSize = true;
+            this.w2_label.Location = new System.Drawing.Point(44, 170);
+            this.w2_label.Name = "w2_label";
+            this.w2_label.Size = new System.Drawing.Size(21, 13);
+            this.w2_label.TabIndex = 15;
+            this.w2_label.Text = "w2";
+            // 
+            // w3_label
+            // 
+            this.w3_label.AutoSize = true;
+            this.w3_label.Location = new System.Drawing.Point(44, 200);
+            this.w3_label.Name = "w3_label";
+            this.w3_label.Size = new System.Drawing.Size(21, 13);
+            this.w3_label.TabIndex = 16;
+            this.w3_label.Text = "w3";
+            // 
+            // erreur_TextBox
+            // 
+            this.erreur_TextBox.Location = new System.Drawing.Point(152, 63);
+            this.erreur_TextBox.Name = "erreur_TextBox";
+            this.erreur_TextBox.Size = new System.Drawing.Size(100, 20);
+            this.erreur_TextBox.TabIndex = 17;
+            // 
+            // Poids_textbox
+            // 
+            this.Poids_textbox.Location = new System.Drawing.Point(152, 107);
+            this.Poids_textbox.Name = "Poids_textbox";
+            this.Poids_textbox.Size = new System.Drawing.Size(100, 20);
+            this.Poids_textbox.TabIndex = 18;
+            // 
+            // w1_textbox
+            // 
+            this.w1_textbox.Location = new System.Drawing.Point(152, 135);
+            this.w1_textbox.Name = "w1_textbox";
+            this.w1_textbox.Size = new System.Drawing.Size(100, 20);
+            this.w1_textbox.TabIndex = 19;
+            // 
+            // w2_textbox
+            // 
+            this.w2_textbox.Location = new System.Drawing.Point(152, 170);
+            this.w2_textbox.Name = "w2_textbox";
+            this.w2_textbox.Size = new System.Drawing.Size(100, 20);
+            this.w2_textbox.TabIndex = 20;
+            // 
+            // w3_Textbox
+            // 
+            this.w3_Textbox.Location = new System.Drawing.Point(152, 200);
+            this.w3_Textbox.Name = "w3_Textbox";
+            this.w3_Textbox.Size = new System.Drawing.Size(100, 20);
+            this.w3_Textbox.TabIndex = 21;
+            // 
+            // Iteration_label
+            // 
+            this.Iteration_label.AutoSize = true;
+            this.Iteration_label.Location = new System.Drawing.Point(416, 63);
+            this.Iteration_label.Name = "Iteration_label";
+            this.Iteration_label.Size = new System.Drawing.Size(92, 13);
+            this.Iteration_label.TabIndex = 22;
+            this.Iteration_label.Text = "Nombre d\'itération";
+            // 
+            // Iteration_Textbox
+            // 
+            this.Iteration_Textbox.Location = new System.Drawing.Point(514, 56);
+            this.Iteration_Textbox.Name = "Iteration_Textbox";
+            this.Iteration_Textbox.Size = new System.Drawing.Size(44, 20);
+            this.Iteration_Textbox.TabIndex = 23;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(780, 524);
+            this.Controls.Add(this.Iteration_Textbox);
+            this.Controls.Add(this.Iteration_label);
+            this.Controls.Add(this.w3_Textbox);
+            this.Controls.Add(this.w2_textbox);
+            this.Controls.Add(this.w1_textbox);
+            this.Controls.Add(this.Poids_textbox);
+            this.Controls.Add(this.erreur_TextBox);
+            this.Controls.Add(this.w3_label);
+            this.Controls.Add(this.w2_label);
+            this.Controls.Add(this.w1_label);
+            this.Controls.Add(this.Poids_label);
+            this.Controls.Add(this.erreur_label);
             this.Controls.Add(this.Graphique_PictureBox);
-            this.Controls.Add(this.classe_TextBox);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.Poids_final_TextBox);
-            this.Controls.Add(this.Poids_final_label);
             this.Controls.Add(this.Chercher_button);
-            this.Controls.Add(this.Reponse_TextBox);
             this.Controls.Add(this.Reponse_label);
             this.Controls.Add(this.Consigne_poids_label);
             this.Controls.Add(this.Consigne_taille_label);
@@ -153,13 +223,20 @@
         private System.Windows.Forms.Label Consigne_taille_label;
         private System.Windows.Forms.Label Consigne_poids_label;
         private System.Windows.Forms.Label Reponse_label;
-        private System.Windows.Forms.TextBox Reponse_TextBox;
-        private System.Windows.Forms.Button Chercher_button;
-        private System.Windows.Forms.Label Poids_final_label;
-        private System.Windows.Forms.TextBox Poids_final_TextBox;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox classe_TextBox;
         private System.Windows.Forms.PictureBox Graphique_PictureBox;
+        private System.Windows.Forms.Button Chercher_button;
+        private System.Windows.Forms.Label erreur_label;
+        private System.Windows.Forms.Label Poids_label;
+        private System.Windows.Forms.Label w1_label;
+        private System.Windows.Forms.Label w2_label;
+        private System.Windows.Forms.Label w3_label;
+        private System.Windows.Forms.TextBox erreur_TextBox;
+        private System.Windows.Forms.TextBox Poids_textbox;
+        private System.Windows.Forms.TextBox w1_textbox;
+        private System.Windows.Forms.TextBox w2_textbox;
+        private System.Windows.Forms.TextBox w3_Textbox;
+        private System.Windows.Forms.Label Iteration_label;
+        private System.Windows.Forms.TextBox Iteration_Textbox;
     }
 }
 
