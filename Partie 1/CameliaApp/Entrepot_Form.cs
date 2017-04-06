@@ -13,6 +13,8 @@ namespace CameliaApp
 {
     public partial class Entrepot_Form : Form
     {
+        private Random Alea = new Random();
+
         // Tableaux d’images et d’entiers représentant l’entrepôt
         private PictureBox[,] entrepot_image = new PictureBox[25, 25];
         private int[,] entrepot = new int[25, 25];
@@ -105,7 +107,7 @@ namespace CameliaApp
             {
                 // On ajoute le chariot à la liste de chariots
                 // Par défaut, il est orienté au nord
-                this.chariots.Add(new Chariot(ligne, colonne, 0));
+                this.chariots.Add(new Chariot(ligne, colonne, Alea.Next(4)));
 
                 // Ajout des chariots dans la grille de l’entrepôt
                 this.Ajouter_Chariots();
@@ -236,10 +238,21 @@ namespace CameliaApp
             NoeudTemps noeudInitial = new NoeudTemps(depart, arrivee, entrepot);
             List<Noeud> chemin = g.RechercherSolutionAEtoile(noeudInitial);
 
+            // Mise à jour de l’entrepôt après le premier déplacement
+            int rang = Trouver_Rang(depart);
+            entrepot[chariots[rang].Ligne, chariots[rang].Colonne] = 0;
+            chariots[rang] = chemin[chemin.Count - 1].nom;
+            entrepot[chariots[rang].Ligne, chariots[rang].Colonne] = -2;
+
             // Calcul du retour jusqu’à la colonne 1
             Graphe g2 = new Graphe();
             NoeudLivraison noeudInitial2 = new NoeudLivraison(arrivee, entrepot);
             List<Noeud> chemin2 = g2.RechercherSolutionAEtoile(noeudInitial2);
+
+            // Mise à jour de l’entrepôt après le second déplacement
+            entrepot[chariots[rang].Ligne, chariots[rang].Colonne] = 0;
+            chariots[rang] = chemin[0].nom;
+            entrepot[chariots[rang].Ligne, chariots[rang].Colonne] = -2;
 
             try
             {

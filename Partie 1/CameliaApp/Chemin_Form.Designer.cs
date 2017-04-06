@@ -45,7 +45,7 @@
             this.chariot_label.Name = "chariot_label";
             this.chariot_label.Size = new System.Drawing.Size(340, 20);
             this.chariot_label.TabIndex = 0;
-            this.chariot_label.Text = "Choisissez le chariot à déplacer (ligne, colonne) :";
+            this.chariot_label.Text = "Chemin le plus court en terme de… ?";
             this.chariot_label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // distance_radiobutton
