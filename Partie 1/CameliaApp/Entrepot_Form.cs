@@ -106,7 +106,6 @@ namespace CameliaApp
             if (entrepot[ligne, colonne] == 0)
             {
                 // On ajoute le chariot à la liste de chariots
-                // Par défaut, il est orienté au nord
                 this.chariots.Add(new Chariot(ligne, colonne, Alea.Next(4)));
 
                 // Ajout des chariots dans la grille de l’entrepôt
@@ -249,7 +248,7 @@ namespace CameliaApp
             NoeudLivraison noeudInitial2 = new NoeudLivraison(arrivee, entrepot);
             List<Noeud> chemin2 = g2.RechercherSolutionAEtoile(noeudInitial2);
 
-            // Mise à jour de l’entrepôt après le second déplacement
+            // Dé-mise à jour de l’entrepôt après le second déplacement
             entrepot[chariots[rang].Ligne, chariots[rang].Colonne] = 0;
             chariots[rang] = chemin[0].nom;
             entrepot[chariots[rang].Ligne, chariots[rang].Colonne] = -2;
