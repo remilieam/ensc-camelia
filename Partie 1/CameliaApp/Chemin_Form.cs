@@ -58,6 +58,11 @@ namespace CameliaApp
                     type = 2;
                 }
 
+                else if (realite_radiobutton.Checked)
+                {
+                    type = 3;
+                }
+
                 try
                 {
                     if (entrepot[objet_x, objet_y] != -1)

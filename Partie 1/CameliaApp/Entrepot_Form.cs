@@ -132,9 +132,13 @@ namespace CameliaApp
                             Tracer_Chemin_Distance(depart, chemin_form.Arrivee);
                         }
 
-                        else
+                        else if (chemin_form.Type == 2)
                         {
                             Tracer_Chemin_Temps(depart, chemin_form.Arrivee);
+                        }
+                        else
+                        {
+                            Tracer_Chemin_Realite(depart, chemin_form.Arrivee);
                         }
                     }
                 }
@@ -314,6 +318,48 @@ namespace CameliaApp
         }
 
         /// <summary>
+        /// Permet de calculer et de tracer le chemin le plus court en
+        /// terme de temps pour atteindre l’objet à récupérer avec mouvement des autres chariots
+        /// </summary>
+        /// <param name="depart">Point de départ</param>
+        /// <param name="arrivee">Point d’arrivée</param>
+        private void Tracer_Chemin_Realite(Chariot depart, Chariot arrivee)
+        {
+            // On crée une liste de chariots, une liste d'objets et une liste de graphes
+            List<Chariot> liste_chariots = new List<Chariot>();
+            List<Objet> liste_objets = new List<Objet>();
+            List<List<Noeud>> liste_chemin_1 = new List<List<Noeud>>();
+            List<List<Noeud>> liste_chemin_2 = new List<List<Noeud>>();
+
+            Graphe g, g2;
+            int compteur = 0;
+
+            // On attribue à tous les autres chariots un objet à aller chercher
+            for (int i = 0; i < chariots.Count; i++)
+            {
+                if (chariots[i] != depart)
+                {
+                    liste_chariots.Add(chariots[i]);
+                    liste_objets.Add(Generer_Objet());
+
+                    // Première partie : aller chercher l'objet
+                    g = new Graphe();
+                    NoeudTemps noeudInitial = new NoeudTemps(liste_chariots[compteur], Trouver_Destination(liste_objets[compteur]), entrepot);
+                    liste_chemin_1.Add(g.RechercherSolutionAEtoile(noeudInitial));
+
+                    // Première partie : aller chercher l'objet
+                    g2 = new Graphe();
+                    NoeudLivraison noeudInitial2 = new NoeudLivraison(Trouver_Destination(liste_objets[compteur]), entrepot);
+                    liste_chemin_2.Add(g2.RechercherSolutionAEtoile(noeudInitial2));
+
+                    compteur++;
+                }
+            }
+
+            
+        }
+
+        /// <summary>
         /// Permet de changer la position du chariot pour changer l’affichage 1, 2 ou 6 secondes plus tard
         /// </summary>
         private void Changer_Position()
@@ -490,6 +536,71 @@ namespace CameliaApp
                 // Chariots = obstacle
                 entrepot[chariots[i].Ligne, chariots[i].Colonne] = -2;
             }
+        }
+
+        /// <summary>
+        /// Permet de générer l’emplacement d’un objet 
+        /// </summary>
+        private Objet Generer_Objet()
+        {
+            Objet objet;
+
+            // Correspond à la position(ligne, colonne), orientation et hauteur de l'objet
+            int x, y, k, z;
+
+            // On génère l'orientation aléatoirement
+            k = Alea.Next(1);
+
+            // On génère la hauteur aléatoirement
+            z = Alea.Next(0,11);
+
+            // On génère aléatoirement les positions
+            x = Alea.Next(0, 25);
+            y = Alea.Next(0, 25);
+            bool etagere = true;
+            while (etagere)
+            {
+                // Si ça tombe sur une étagère
+                if (x % 2 == 0 && x != 0 && x != 24 &&
+                        ((y >= 2 && y < 11) || (y >= 14 && y < 23)))
+                {
+                    etagere = false;
+                }
+
+                x = Alea.Next(0, 25);
+                y = Alea.Next(0, 25);
+            }
+            
+            objet = new Objet(x,y,k,z);
+
+            return objet;
+        }
+
+        /// <summary>
+        /// Permet de calculer la destination du chariot à partir des coordonnées
+        /// de l’objet à récupérer
+        /// </summary>
+        /// <param name="objet">Objet à récupérer</param>
+        /// <returns></returns>
+        private Chariot Trouver_Destination(Objet objet)
+        {
+            int x, y, k;
+
+            if (objet.Orientation == 0)
+            {
+                k = 2;
+                x = objet.Ligne - 1;
+            }
+
+            else
+            {
+                k = 0;
+                x = objet.Ligne + 1;
+            }
+
+            y = objet.Colonne;
+
+            return new Chariot(x, y, k);
         }
     }
 }

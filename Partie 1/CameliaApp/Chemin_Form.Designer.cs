@@ -37,6 +37,7 @@
             this.objet_k_listbox = new System.Windows.Forms.ListBox();
             this.objet_z_textbox = new System.Windows.Forms.TextBox();
             this.valider_button = new System.Windows.Forms.Button();
+            this.realite_radiobutton = new System.Windows.Forms.RadioButton();
             this.SuspendLayout();
             // 
             // chariot_label
@@ -51,9 +52,9 @@
             // distance_radiobutton
             // 
             this.distance_radiobutton.AutoSize = true;
-            this.distance_radiobutton.Location = new System.Drawing.Point(122, 40);
+            this.distance_radiobutton.Location = new System.Drawing.Point(65, 40);
             this.distance_radiobutton.Name = "distance_radiobutton";
-            this.distance_radiobutton.Size = new System.Drawing.Size(40, 20);
+            this.distance_radiobutton.Size = new System.Drawing.Size(67, 17);
             this.distance_radiobutton.TabIndex = 1;
             this.distance_radiobutton.TabStop = true;
             this.distance_radiobutton.Text = "Distance";
@@ -62,9 +63,9 @@
             // temps_radiobutton
             // 
             this.temps_radiobutton.AutoSize = true;
-            this.temps_radiobutton.Location = new System.Drawing.Point(198, 40);
+            this.temps_radiobutton.Location = new System.Drawing.Point(163, 40);
             this.temps_radiobutton.Name = "temps_radiobutton";
-            this.temps_radiobutton.Size = new System.Drawing.Size(40, 20);
+            this.temps_radiobutton.Size = new System.Drawing.Size(57, 17);
             this.temps_radiobutton.TabIndex = 2;
             this.temps_radiobutton.TabStop = true;
             this.temps_radiobutton.Text = "Temps";
@@ -124,11 +125,23 @@
             this.valider_button.UseVisualStyleBackColor = true;
             this.valider_button.Click += new System.EventHandler(this.Valider_Button_Click);
             // 
+            // realite_radiobutton
+            // 
+            this.realite_radiobutton.AutoSize = true;
+            this.realite_radiobutton.Location = new System.Drawing.Point(257, 40);
+            this.realite_radiobutton.Name = "realite_radiobutton";
+            this.realite_radiobutton.Size = new System.Drawing.Size(58, 17);
+            this.realite_radiobutton.TabIndex = 9;
+            this.realite_radiobutton.TabStop = true;
+            this.realite_radiobutton.Text = "Réalité";
+            this.realite_radiobutton.UseVisualStyleBackColor = true;
+            // 
             // Chemin_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(360, 180);
+            this.Controls.Add(this.realite_radiobutton);
             this.Controls.Add(this.chariot_label);
             this.Controls.Add(this.distance_radiobutton);
             this.Controls.Add(this.temps_radiobutton);
@@ -159,5 +172,6 @@
         private System.Windows.Forms.ListBox objet_k_listbox;
         private System.Windows.Forms.TextBox objet_z_textbox;
         private System.Windows.Forms.Button valider_button;
+        private System.Windows.Forms.RadioButton realite_radiobutton;
     }
 }
