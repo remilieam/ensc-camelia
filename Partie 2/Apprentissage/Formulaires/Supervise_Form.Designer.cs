@@ -40,39 +40,39 @@
             // 
             // NbCouches_Label
             // 
-            this.NbCouches_Label.Location = new System.Drawing.Point(10, 10);
+            this.NbCouches_Label.Location = new System.Drawing.Point(10, 15);
             this.NbCouches_Label.Name = "NbCouches_Label";
-            this.NbCouches_Label.Size = new System.Drawing.Size(200, 20);
+            this.NbCouches_Label.Size = new System.Drawing.Size(150, 20);
             this.NbCouches_Label.TabIndex = 0;
             this.NbCouches_Label.Text = "Nombres de couches totales :";
             this.NbCouches_Label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // NbCouches_TextBox
             // 
-            this.NbCouches_TextBox.Location = new System.Drawing.Point(210, 10);
+            this.NbCouches_TextBox.Location = new System.Drawing.Point(160, 15);
             this.NbCouches_TextBox.Name = "NbCouches_TextBox";
             this.NbCouches_TextBox.Size = new System.Drawing.Size(50, 20);
             this.NbCouches_TextBox.TabIndex = 1;
             // 
             // NbNeurones_Label
             // 
-            this.NbNeurones_Label.Location = new System.Drawing.Point(10, 50);
+            this.NbNeurones_Label.Location = new System.Drawing.Point(330, 15);
             this.NbNeurones_Label.Name = "NbNeurones_Label";
-            this.NbNeurones_Label.Size = new System.Drawing.Size(200, 20);
+            this.NbNeurones_Label.Size = new System.Drawing.Size(180, 20);
             this.NbNeurones_Label.TabIndex = 2;
             this.NbNeurones_Label.Text = "Nombres de neurones par couches :";
             this.NbNeurones_Label.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // NbNeurones_TextBox
             // 
-            this.NbNeurones_TextBox.Location = new System.Drawing.Point(210, 50);
+            this.NbNeurones_TextBox.Location = new System.Drawing.Point(510, 15);
             this.NbNeurones_TextBox.Name = "NbNeurones_TextBox";
             this.NbNeurones_TextBox.Size = new System.Drawing.Size(50, 20);
             this.NbNeurones_TextBox.TabIndex = 3;
             // 
             // Reseau_Button
             // 
-            this.Reseau_Button.Location = new System.Drawing.Point(100, 80);
+            this.Reseau_Button.Location = new System.Drawing.Point(730, 10);
             this.Reseau_Button.Name = "Reseau_Button";
             this.Reseau_Button.Size = new System.Drawing.Size(80, 30);
             this.Reseau_Button.TabIndex = 4;
@@ -83,7 +83,7 @@
             // Resultat_PictureBox
             // 
             this.Resultat_PictureBox.Image = ((System.Drawing.Image)(resources.GetObject("Resultat_PictureBox.Image")));
-            this.Resultat_PictureBox.Location = new System.Drawing.Point(13, 129);
+            this.Resultat_PictureBox.Location = new System.Drawing.Point(10, 50);
             this.Resultat_PictureBox.Name = "Resultat_PictureBox";
             this.Resultat_PictureBox.Size = new System.Drawing.Size(800, 800);
             this.Resultat_PictureBox.TabIndex = 5;
@@ -93,7 +93,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(828, 944);
+            this.ClientSize = new System.Drawing.Size(820, 860);
             this.Controls.Add(this.Resultat_PictureBox);
             this.Controls.Add(this.NbNeurones_TextBox);
             this.Controls.Add(this.NbNeurones_Label);

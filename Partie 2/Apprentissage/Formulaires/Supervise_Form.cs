@@ -99,7 +99,7 @@ namespace Formulaire
                 }
             }
 
-            MessageBox.Show("Fin...", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Fini...", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private List<List<double>> RecupererDonnees(string fichier_source)
