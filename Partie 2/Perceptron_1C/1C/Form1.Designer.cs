@@ -31,7 +31,6 @@
             this.Consigne_taille_label = new System.Windows.Forms.Label();
             this.Consigne_poids_label = new System.Windows.Forms.Label();
             this.Reponse_label = new System.Windows.Forms.Label();
-            this.Graphique_PictureBox = new System.Windows.Forms.PictureBox();
             this.Chercher_button = new System.Windows.Forms.Button();
             this.erreur_label = new System.Windows.Forms.Label();
             this.Poids_label = new System.Windows.Forms.Label();
@@ -45,7 +44,8 @@
             this.w3_Textbox = new System.Windows.Forms.TextBox();
             this.Iteration_label = new System.Windows.Forms.Label();
             this.Iteration_Textbox = new System.Windows.Forms.TextBox();
-            ((System.ComponentModel.ISupportInitialize)(this.Graphique_PictureBox)).BeginInit();
+            this.Graph_pictureBox = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.Graph_pictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // Consigne_taille_label
@@ -71,15 +71,6 @@
             this.Reponse_label.Name = "Reponse_label";
             this.Reponse_label.Size = new System.Drawing.Size(0, 13);
             this.Reponse_label.TabIndex = 4;
-            // 
-            // Graphique_PictureBox
-            // 
-            this.Graphique_PictureBox.Location = new System.Drawing.Point(125, 268);
-            this.Graphique_PictureBox.Name = "Graphique_PictureBox";
-            this.Graphique_PictureBox.Size = new System.Drawing.Size(518, 204);
-            this.Graphique_PictureBox.TabIndex = 11;
-            this.Graphique_PictureBox.TabStop = false;
-            this.Graphique_PictureBox.Click += new System.EventHandler(this.Graphique_PictureBox_Click);
             // 
             // Chercher_button
             // 
@@ -187,11 +178,20 @@
             this.Iteration_Textbox.Size = new System.Drawing.Size(44, 20);
             this.Iteration_Textbox.TabIndex = 23;
             // 
+            // Graph_pictureBox
+            // 
+            this.Graph_pictureBox.Location = new System.Drawing.Point(282, 107);
+            this.Graph_pictureBox.Name = "Graph_pictureBox";
+            this.Graph_pictureBox.Size = new System.Drawing.Size(486, 358);
+            this.Graph_pictureBox.TabIndex = 24;
+            this.Graph_pictureBox.TabStop = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(780, 524);
+            this.Controls.Add(this.Graph_pictureBox);
             this.Controls.Add(this.Iteration_Textbox);
             this.Controls.Add(this.Iteration_label);
             this.Controls.Add(this.w3_Textbox);
@@ -204,15 +204,13 @@
             this.Controls.Add(this.w1_label);
             this.Controls.Add(this.Poids_label);
             this.Controls.Add(this.erreur_label);
-            this.Controls.Add(this.Graphique_PictureBox);
             this.Controls.Add(this.Chercher_button);
             this.Controls.Add(this.Reponse_label);
             this.Controls.Add(this.Consigne_poids_label);
             this.Controls.Add(this.Consigne_taille_label);
             this.Name = "Form1";
             this.Text = "Graphique";
-            this.Load += new System.EventHandler(this.Form1_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.Graphique_PictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.Graph_pictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -223,7 +221,6 @@
         private System.Windows.Forms.Label Consigne_taille_label;
         private System.Windows.Forms.Label Consigne_poids_label;
         private System.Windows.Forms.Label Reponse_label;
-        private System.Windows.Forms.PictureBox Graphique_PictureBox;
         private System.Windows.Forms.Button Chercher_button;
         private System.Windows.Forms.Label erreur_label;
         private System.Windows.Forms.Label Poids_label;
@@ -237,6 +234,7 @@
         private System.Windows.Forms.TextBox w3_Textbox;
         private System.Windows.Forms.Label Iteration_label;
         private System.Windows.Forms.TextBox Iteration_Textbox;
+        private System.Windows.Forms.PictureBox Graph_pictureBox;
     }
 }
 
