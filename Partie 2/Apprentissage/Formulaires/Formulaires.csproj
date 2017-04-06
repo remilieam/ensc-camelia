@@ -46,6 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Non_Supervise_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Non_Supervise_Form.Designer.cs">
+      <DependentUpon>Non_Supervise_Form.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Supervise_Form.cs">
@@ -54,6 +60,9 @@
     <Compile Include="Supervise_Form.Designer.cs">
       <DependentUpon>Supervise_Form.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Non_Supervise_Form.resx">
+      <DependentUpon>Non_Supervise_Form.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
