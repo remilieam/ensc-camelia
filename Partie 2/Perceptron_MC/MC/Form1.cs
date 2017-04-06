@@ -52,8 +52,8 @@ namespace MC
             for (int i = 0; i < lignes.GetLength(0) / 4; i++)
             {
                 position = new List<double> { };
-                position.Add(int.Parse(lignes[(4 * i) + 1]));
-                position.Add(int.Parse(lignes[(4 * i) + 2]));
+                position.Add(double.Parse(lignes[(4 * i) + 1]) / 500.0);
+                position.Add(double.Parse(lignes[(4 * i) + 2]) / 500.0);
 
                 lvecteursentrees.Add(position);
 
@@ -75,6 +75,10 @@ namespace MC
              }
              */
 
+            // On normalise les entrées
+            
+
+
 
             // Apprentissage
             reseau.backprop(lvecteursentrees, lsortiesdesirees,
@@ -82,8 +86,7 @@ namespace MC
                                Convert.ToInt32(textBoxnbiter.Text));
 
 
-            int x, y;
-            Int32 z;
+            int z;
 
             bmp = new Bitmap(500, 500);
             pictureBox1.Image = bmp;
@@ -103,8 +106,8 @@ namespace MC
                 for (int j = 0; j < bmp.Height; j++)
                 {
                     List<double> vect = new List<double>();
-                    vect.Add(i);
-                    vect.Add(j);
+                    vect.Add(i/500.0);
+                    vect.Add(j/500.0);
                     lentreestests.Add(vect);
                 }
             }
@@ -114,14 +117,16 @@ namespace MC
             lsortiesobtenues = reseau.ResultatsEnSortie(lentreestests);
 
             int cmpt = 0;
+            List<double> zz = new List<double>();
             // Affichage
-            for (x = 0; x < bmp.Width; x++)
+            for (int i = 0; i < bmp.Width; i++)
             {
-                for (y = 0; y < bmp.Height; y++)
+                for (int j = 0; j < bmp.Height; j++)
                 {
-                    z = (Int32)lsortiesobtenues[cmpt];
+                    z = (int)(lsortiesobtenues[cmpt]*255);
+                    zz.Add(z);
 
-                    bmp.SetPixel(x, y, Color.FromArgb(z * 256 + z * 6536 + z));
+                    bmp.SetPixel(i, j, Color.FromArgb(z,z,z));
                     cmpt++;
                 }
             }
@@ -130,6 +135,8 @@ namespace MC
 
             // Tests( g, bmp);
             pictureBox1.Invalidate();
+
+            MessageBox.Show("f " + cmpt);
         }
 
         private void Form1_Load(object sender, EventArgs e)
