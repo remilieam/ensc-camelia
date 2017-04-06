@@ -9,9 +9,6 @@ namespace Classes
     {
         private Point[,] tableau;
         private int nbLignes, nbColonnes;
-        private List<Classe> classes;
-
-        public List<Classe> Classes { get { return classes; } }
 
         /// <summary>
         /// Constructeur
@@ -22,7 +19,6 @@ namespace Classes
         /// <param name="valeurMax">Amplitude maximale des points</param>
         public Carte(int nbLignes, int nbColonnes, int nbPoids, int valeurMax)
         {
-            this.classes = new List<Classe>();
             this.nbColonnes = nbColonnes;
             this.nbLignes = nbLignes;
             this.tableau = new Point[nbLignes, nbColonnes];
@@ -94,8 +90,11 @@ namespace Classes
             }
         }
 
-        public void Regroupement(List<Observation> observations, int nbClasses)
+        public List<Classe> Regroupement(List<Observation> observations, int nbClasses, List<Classe> classes)
         {
+            List<Classe> nouvellesClasses = new List<Classe>();
+            foreach (Classe classe in classes) { nouvellesClasses.Add(classe); }
+
             // Recherche des points qui ne gagnent jamais ou presque jamais
             // Pour cela, on compte le nombre de fois où le point à l’erreur minimale
 
@@ -142,7 +141,7 @@ namespace Classes
                 {
                     if (comptage[i, j] > 5)
                     {
-                        classes.Add(new Classe(tableau[i, j]));
+                        nouvellesClasses.Add(new Classe(tableau[i, j]));
                     }
                 }
             }
@@ -150,13 +149,13 @@ namespace Classes
             // Fusion des classes : le critère le plus simple est la distance interclasse
             do
             {
-                Classe classeMieux1 = classes[0];
-                Classe classeMieux2 = classes[1];
+                Classe classeMieux1 = nouvellesClasses[0];
+                Classe classeMieux2 = nouvellesClasses[1];
                 double distanceMin = 1000000;
 
-                foreach (Classe classe1 in classes)
+                foreach (Classe classe1 in nouvellesClasses)
                 {
-                    foreach (Classe classe2 in classes)
+                    foreach (Classe classe2 in nouvellesClasses)
                     {
                         if (classe1 != classe2)
                         {
@@ -173,9 +172,11 @@ namespace Classes
 
                 // Fusion des 2 classes les plus proches
                 classeMieux1.FusionnerAvec(classeMieux2);
-                classes.Remove(classeMieux2);
+                nouvellesClasses.Remove(classeMieux2);
             }
-            while (classes.Count > nbClasses);
+            while (nouvellesClasses.Count > nbClasses);
+
+            return nouvellesClasses;
         }
 
         /// <summary>

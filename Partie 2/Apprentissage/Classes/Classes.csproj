@@ -40,7 +40,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Carte.cs" />
+    <Compile Include="Classe.cs" />
     <Compile Include="Neurone.cs" />
+    <Compile Include="Observation.cs" />
+    <Compile Include="Point.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reseau.cs" />
   </ItemGroup>

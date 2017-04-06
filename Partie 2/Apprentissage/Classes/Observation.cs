@@ -11,19 +11,19 @@ namespace Classes
         private List<double> e;
 
         // Récupération des coordonnées
-        public double Abscisse { get { return e[0]; } }
-        public double Ordonnee { get { return e[1]; } }
+        public double Ligne { get { return e[0]; } }
+        public double Colonne { get { return e[1]; } }
 
         /// <summary>
         /// Constructeur
         /// </summary>
-        /// <param name="abcsisse">Abscisse de l’observation</param>
-        /// <param name="ordonnee">Ordonnée de l’observation</param>
-        public Observation(double abcsisse, double ordonnee)
+        /// <param name="ligne">Ligne de l’observation</param>
+        /// <param name="colonne">Colonne de l’observation</param>
+        public Observation(double ligne, double colonne)
         {
             e = new List<double>();
-            e.Add(abcsisse);
-            e.Add(ordonnee);
+            e.Add(ligne);
+            e.Add(colonne);
         }
 
         /// <summary>
