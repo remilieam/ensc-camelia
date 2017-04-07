@@ -209,7 +209,7 @@
             this.Controls.Add(this.Consigne_poids_label);
             this.Controls.Add(this.Consigne_taille_label);
             this.Name = "Form1";
-            this.Text = "Graphique";
+            this.Text = "Perceptron 1 Couche";
             ((System.ComponentModel.ISupportInitialize)(this.Graph_pictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
