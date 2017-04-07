@@ -12,8 +12,11 @@ namespace _1C
         public double sortie;
         public int nombreiteration;
         public double somme;
-        public double[] w = { 1, 2, 3 };
+        public double[] w=new double[3];
         public int nombreerreur;
+        public Random rnd= new Random();
+
+
 
         public Neurone()
         {
@@ -21,6 +24,13 @@ namespace _1C
             nombreiteration = 1;
             nombreerreur = 0;
             
+
+            // Génération des wi de manière aléatoire
+            w[0] = rnd.Next(1, 5);
+            w[1] = rnd.Next(1, 5);
+            w[2] = rnd.Next(1, 5);
+
+
         }
 
 
@@ -50,6 +60,11 @@ namespace _1C
             nombreerreur = nb;
         }
 
+
+       
+        /// <summary>
+        /// Méthode qui calcule une première fois w1*E1+w2*E2+w3*E3
+        /// </summary>
         public void CalculeSortie()
         {
             int i;
@@ -70,6 +85,14 @@ namespace _1C
 
 
 
+
+
+
+        /// <summary>
+        /// Méthode qui recalcule la sortie si elle est différente de celle attendue 
+        /// </summary>
+        /// <param name="sortiecorrecte"></param>
+        /// <returns name="nombreerreur"></returns>
         public int RecalculeSortie(int sortiecorrecte)
         {
             if (sortiecorrecte == 0 &&sortie==1)
@@ -103,7 +126,12 @@ namespace _1C
 
 
 
-
+        
+        /// <summary>
+        /// Déduit la sortie en fonction de la position de la somme par rapport au seuil
+        /// </summary>
+        /// <param name="s">somme calculée par CalculeSortie()</param>
+        /// <returns></returns>
         public double g(double s)
         {
             int seuil = 1;
