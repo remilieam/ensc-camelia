@@ -71,7 +71,7 @@ namespace CameliaApp
                         throw new Exception(message);
                     }
 
-                    if (!distance_radiobutton.Checked && !temps_radiobutton.Checked)
+                    if (!realite_radiobutton.Checked && !distance_radiobutton.Checked && !temps_radiobutton.Checked)
                     {
                         string message = "Sélectionner “Distance” ou “Temps”.";
                         throw new Exception(message);

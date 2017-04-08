@@ -445,9 +445,13 @@ namespace CameliaApp
             List<Objet> liste_objets = new List<Objet>();
             List<List<Noeud>> liste_chemin_1 = new List<List<Noeud>>();
             List<List<Noeud>> liste_chemin_2 = new List<List<Noeud>>();
+            List<List<Noeud>> chemins = new List<List<Noeud>>();
+            FileStream fd = new FileStream("../../../CameliaIcon/depart.png", FileMode.Open);
+            FileStream fa = new FileStream("../../../CameliaIcon/arrivee.png", FileMode.Open);
+            FileStream fc = new FileStream("../../../CameliaIcon/chemin.png", FileMode.Open);
 
             Graphe g, g2;
-            int compteur = 0;
+            int c = 0;
 
             // On attribue à tous les autres chariots un objet à aller chercher
             for (int i = 0; i < chariots.Count; i++)
@@ -459,19 +463,63 @@ namespace CameliaApp
 
                     // Première partie : aller chercher l'objet
                     g = new Graphe();
-                    NoeudTemps noeudInitial = new NoeudTemps(liste_chariots[compteur], Trouver_Destination(liste_objets[compteur]), entrepot);
+                    NoeudRealite noeudInitial = new NoeudRealite(liste_chariots[c], Trouver_Destination(liste_objets[c]), entrepot, chemins, liste_chariots, c, true);
                     liste_chemin_1.Add(g.RechercherSolutionAEtoile(noeudInitial));
 
-                    // Première partie : aller chercher l'objet
-                    g2 = new Graphe();
-                    NoeudLivraison noeudInitial2 = new NoeudLivraison(Trouver_Destination(liste_objets[compteur]), entrepot);
-                    liste_chemin_2.Add(g2.RechercherSolutionAEtoile(noeudInitial2));
+                    try
+                    {
+                        if (g.noeudsOuverts.Count == 0)
+                        {
+                            throw new Exception("Pas de solution !");
+                        }
 
-                    compteur++;
+                        // Première partie : aller chercher l'objet
+                        g2 = new Graphe();
+                        NoeudRealite noeudInitial2 = new NoeudRealite(liste_chemin_1[c][liste_chemin_1.Count - 1].nom, Trouver_Destination(liste_objets[c]), entrepot, chemins, liste_chariots, c, false);
+                        liste_chemin_2.Add(g2.RechercherSolutionAEtoile(noeudInitial2));
+
+                        // Liste des chemins
+                        chemins.Add(liste_chemin_1[c]);
+                        chemins[c].AddRange(liste_chemin_2[c]);
+
+                        if (g2.noeudsOuverts.Count == 0)
+                        {
+                            throw new Exception("Pas de solution !");
+                        }
+
+                        // Cas de la case de départ
+                        entrepot_image[liste_chemin_1[c][0].nom.Ligne, liste_chemin_1[c][0].nom.Colonne].Image = Image.FromStream(fd);
+
+                        // Cas de la case d’arrivée
+                        entrepot_image[liste_chemin_1[c][liste_chemin_1[c].Count - 1].nom.Ligne, liste_chemin_1[c][liste_chemin_1[c].Count - 1].nom.Colonne].Image = Image.FromStream(fa);
+
+                        // Cas du milieu
+                        for (int j = 1; j < liste_chemin_1[c].Count - 1; j++)
+                        {
+                            // Modification du carré
+                            entrepot_image[liste_chemin_1[c][j].nom.Ligne, liste_chemin_1[c][j].nom.Colonne].Image = Image.FromStream(fc);
+                        }
+                    }
+
+                    catch (Exception e)
+                    {
+                        MessageBox.Show(e.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                        for (int j = 0; j < 25; j++)
+                        {
+                            for (int k = 0; k < 25; k++)
+                            {
+                                entrepot_image[j, k].Enabled = true;
+                            }
+                        }
+                    }
+
+                    c++;
+
                 }
             }
 
-
+            fd.Close(); fa.Close(); fc.Close();
         }
 
         /// <summary>
@@ -689,15 +737,15 @@ namespace CameliaApp
             bool etagere = true;
             while (etagere)
             {
+                x = alea.Next(0, 25);
+                y = alea.Next(0, 25);
+
                 // Si ça tombe sur une étagère
                 if (x % 2 == 0 && x != 0 && x != 24 &&
                         ((y >= 2 && y < 11) || (y >= 14 && y < 23)))
                 {
                     etagere = false;
                 }
-
-                x = alea.Next(0, 25);
-                y = alea.Next(0, 25);
             }
 
             objet = new Objet(x, y, k, z);

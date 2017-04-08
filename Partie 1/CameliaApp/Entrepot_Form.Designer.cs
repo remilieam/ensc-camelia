@@ -60,7 +60,7 @@
             this.reinitialiser_button.Location = new System.Drawing.Point(524, 400);
             this.reinitialiser_button.Name = "reinitialiser_button";
             this.reinitialiser_button.Size = new System.Drawing.Size(90, 40);
-            this.reinitialiser_button.TabIndex = 4;
+            this.reinitialiser_button.TabIndex = 5;
             this.reinitialiser_button.Text = "Réinitialiser";
             this.reinitialiser_button.UseVisualStyleBackColor = true;
             this.reinitialiser_button.Click += new System.EventHandler(this.Reinitialiser_Button_Click);
