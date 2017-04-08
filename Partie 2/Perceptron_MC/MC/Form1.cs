@@ -16,6 +16,13 @@ namespace MC
             InitializeComponent();
         }
 
+        // QUESTIONS
+        /*
+         * - Pourquoi les valeurs obtenues après apprentissage sont toutes égales ? du coup image toute grise !!
+         * - Pour la question 2, dans le fichier ce n'est pas des coordonnées normales, du coup
+         *   comment comparer les deux images ? (le point (300,300) n'existe pas !!!
+         */
+
         static Graphics g;
         static Bitmap bmp;
         static Bitmap bmp2;
@@ -63,16 +70,11 @@ namespace MC
                 lsortiesdesirees.Add(Convert.ToDouble(lignes[(4 * i) + 3]));
             }
 
-                       
-
-
             // On effectue l'apprentissage
             reseau.backprop(lvecteursentrees, lsortiesdesirees,
                                Convert.ToDouble(textBoxalpha.Text),
                                Convert.ToInt32(textBoxnbiter.Text));
 
-
-            int z;
 
             // On crée notre image
             bmp = new Bitmap(500, 500);
@@ -107,15 +109,14 @@ namespace MC
             // On effectue le test
             lsortiesobtenues = reseau.ResultatsEnSortie(lentreestests);
 
+            int z;
             int cmpt = 0;
-            List<double> zz = new List<double>();
             // On fait l'affichage de la première image
             for (int i = 0; i < bmp.Width; i++)
             {
                 for (int j = 0; j < bmp.Height; j++)
                 {
                     z = (int)(lsortiesobtenues[cmpt]*255);
-                    zz.Add(z);
 
                     bmp.SetPixel(i, j, Color.FromArgb(z,z,z));
                     cmpt++;
@@ -138,22 +139,27 @@ namespace MC
             // On cherche le max et le min dans la liste
             double erreur_max = erreurs.Max();
             double erreur_min = erreurs.Min();
-            
-            // On crée l'échelle en fonction de ces valeurs
+                    
+            // On crée une nouvelle liste qui contiendra les erreurs à l'échelle
+            List<double> erreurs_echelle = new List<double>();
 
+            for (int i = 0; i < erreurs.Count(); i++)
+            {
+                // On ajuste le coefficient de la liste suivant la nouvelle échelle
+                // erreur_min à erreur_max --> 0 à 255
+                erreurs_echelle[i] = (erreurs[i] - erreur_min) * 255 / (erreur_max - erreur_min);
+            }
+
+            int valeur;
+            cmpt = 0;
             // On fait l'affichage de la deuxième image
             for (int i = 0; i < bmp2.Width; i++)
             {
                 for (int j = 0; j < bmp2.Height; j++)
                 {
-                    // Calcul de l'erreur : | valeur approchée - valeur réelle |
-                    erreurs.Add(Math.Abs(lsortiesobtenues[cmpt] - lsortiesdesirees[cmpt]));
+                    valeur = (int)(erreurs_echelle[cmpt]);
 
-                    // On fait varier l'échelle de gris de 0 à 255
-                    z = (int)(lsortiesobtenues[cmpt] * 255);
-                    zz.Add(z);
-
-                    bmp2.SetPixel(i, j, Color.FromArgb(z, z, z));
+                    bmp2.SetPixel(i, j, Color.FromArgb(valeur, valeur, valeur));
                     cmpt++;
                 }
             }
