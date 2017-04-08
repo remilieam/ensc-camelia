@@ -12,13 +12,13 @@ namespace CameliaApp
 {
     public partial class Chemin_Form : Form
     {
-        private Chariot arrivee;
+        private Objet objet;
         private int[,] entrepot;
         private int type = 0;
         public bool fini = false;
 
         // Assesseurs
-        public Chariot Arrivee { get { return arrivee; } }
+        public Objet Objet { get { return objet; } }
         public int Type { get { return type; } }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace CameliaApp
             {
                 int objet_x = Convert.ToInt32(objet_x_textbox.Text) - 1;
                 int objet_y = Convert.ToInt32(objet_y_textbox.Text) - 1;
-                string objet_k = objet_k_listbox.SelectedItem.ToString();
+                int objet_k = Trouver_Orientation(objet_k_listbox.SelectedItem.ToString());
                 int objet_z = Convert.ToInt32(objet_z_textbox.Text);
 
                 if (distance_radiobutton.Checked)
@@ -84,8 +84,7 @@ namespace CameliaApp
                     throw new Exception("Veuillez entrer de nouvelles coordonnées pour l’objet.");
                 }
 
-                List<int> destination = Trouver_Destination(objet_x, objet_y, objet_k);
-                arrivee = new Chariot(destination[1], destination[2], destination[0]);
+                objet = new Objet(objet_x, objet_y, objet_k, objet_z);
 
                 this.DialogResult = DialogResult.OK;
                 this.fini = true;
@@ -105,25 +104,17 @@ namespace CameliaApp
         /// <param name="y">Numéro de colonne de l’objet</param>
         /// <param name="k">Orientation de l’objet</param>
         /// <returns></returns>
-        private List<int> Trouver_Destination(int x, int y, string k)
+        private int Trouver_Orientation(string k)
         {
-            List<int> arrivee = new List<int>();
-
             if (k == "Nord")
             {
-                arrivee.Add(2);
-                arrivee.Add(x - 1);
+                return 0;
             }
 
-            else if (k == "Sud")
+            else
             {
-                arrivee.Add(0);
-                arrivee.Add(x + 1);
+                return 1;
             }
-
-            arrivee.Add(y);
-
-            return arrivee;
         }
     }
 }

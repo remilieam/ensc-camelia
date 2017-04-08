@@ -46,12 +46,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Chariots_Form.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Chariots_Form.Designer.cs">
-      <DependentUpon>Chariots_Form.cs</DependentUpon>
-    </Compile>
     <Compile Include="Chemin_Form.cs">
       <SubType>Form</SubType>
     </Compile>
