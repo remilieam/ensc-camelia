@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.textBoxnbentrees = new System.Windows.Forms.TextBox();
@@ -51,15 +50,16 @@
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(40, 153);
+            this.button1.Location = new System.Drawing.Point(106, 99);
             this.button1.Margin = new System.Windows.Forms.Padding(2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(116, 37);
@@ -70,10 +70,10 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(266, 148);
+            this.button2.Location = new System.Drawing.Point(106, 170);
             this.button2.Margin = new System.Windows.Forms.Padding(2);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(128, 47);
+            this.button2.Size = new System.Drawing.Size(116, 41);
             this.button2.TabIndex = 1;
             this.button2.Text = "apprentissage";
             this.button2.UseVisualStyleBackColor = true;
@@ -138,18 +138,17 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(699, 51);
+            this.pictureBox1.Location = new System.Drawing.Point(343, 51);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(748, 627);
+            this.pictureBox1.Size = new System.Drawing.Size(500, 500);
             this.pictureBox1.TabIndex = 2;
             this.pictureBox1.TabStop = false;
             // 
             // listBox1
             // 
             this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(470, 86);
+            this.listBox1.Location = new System.Drawing.Point(25, 422);
             this.listBox1.Margin = new System.Windows.Forms.Padding(2);
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(216, 160);
@@ -157,7 +156,7 @@
             // 
             // textBoxnumneur
             // 
-            this.textBoxnumneur.Location = new System.Drawing.Point(601, 27);
+            this.textBoxnumneur.Location = new System.Drawing.Point(156, 363);
             this.textBoxnumneur.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxnumneur.Name = "textBoxnumneur";
             this.textBoxnumneur.Size = new System.Drawing.Size(76, 20);
@@ -166,7 +165,7 @@
             // 
             // textBoxnumcouche
             // 
-            this.textBoxnumcouche.Location = new System.Drawing.Point(472, 27);
+            this.textBoxnumcouche.Location = new System.Drawing.Point(27, 363);
             this.textBoxnumcouche.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxnumcouche.Name = "textBoxnumcouche";
             this.textBoxnumcouche.Size = new System.Drawing.Size(76, 20);
@@ -176,7 +175,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(470, 11);
+            this.label4.Location = new System.Drawing.Point(25, 347);
             this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(83, 13);
@@ -186,7 +185,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(598, 11);
+            this.label5.Location = new System.Drawing.Point(153, 347);
             this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(86, 13);
@@ -195,7 +194,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(519, 57);
+            this.button3.Location = new System.Drawing.Point(74, 393);
             this.button3.Margin = new System.Windows.Forms.Padding(2);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(127, 24);
@@ -269,19 +268,10 @@
             this.label10.TabIndex = 21;
             this.label10.Text = "(y compris la constante)";
             // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(166, 443);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(297, 13);
-            this.label11.TabIndex = 22;
-            this.label11.Text = "En jaune la fonction à apprendre, en blanc la sortie du réseau";
-            // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(22, 138);
+            this.label12.Location = new System.Drawing.Point(88, 84);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(154, 13);
             this.label12.TabIndex = 23;
@@ -290,20 +280,29 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(233, 133);
+            this.label13.Location = new System.Drawing.Point(81, 149);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(179, 13);
             this.label13.TabIndex = 24;
             this.label13.Text = "Cliquez plusieurs fois pour converger";
             // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Location = new System.Drawing.Point(851, 51);
+            this.pictureBox2.Margin = new System.Windows.Forms.Padding(2);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(500, 500);
+            this.pictureBox2.TabIndex = 25;
+            this.pictureBox2.TabStop = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1475, 689);
+            this.ClientSize = new System.Drawing.Size(1362, 593);
+            this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.label13);
             this.Controls.Add(this.label12);
-            this.Controls.Add(this.label11);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.label8);
@@ -331,6 +330,7 @@
             this.Text = "Perceptron multi-couches";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -360,8 +360,8 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.PictureBox pictureBox2;
     }
 }

@@ -18,6 +18,7 @@ namespace MC
 
         static Graphics g;
         static Bitmap bmp;
+        static Bitmap bmp2;
         Random rnd = new Random();
 
         Reseau reseau;
@@ -52,35 +53,20 @@ namespace MC
             for (int i = 0; i < lignes.GetLength(0) / 4; i++)
             {
                 position = new List<double> { };
+                // On récpère les positions en les normalisant
                 position.Add(double.Parse(lignes[(4 * i) + 1]) / 500.0);
                 position.Add(double.Parse(lignes[(4 * i) + 2]) / 500.0);
 
                 lvecteursentrees.Add(position);
 
+                // On récupère le niveau de gris
                 lsortiesdesirees.Add(Convert.ToDouble(lignes[(4 * i) + 3]));
             }
 
-            /*
-             for (int i = 0; i < 1000; i++)
-             {
-                 List<double> vect = new List<double>();
-                 double x = rnd.NextDouble();
-                 vect.Add(x); // Une seule valeur ici pour ce vecteur 
-                // EN général, un vecteur sera récupéré dans un fichier de données
-                 lvecteursentrees.Add(vect);
-                // Pour la sortie, idem, en général, on la récupère dans le fichier 
-                // de données; ici on la crée de toute pièce à partir d'une fonction
-                // modèle
-                 lsortiesdesirees.Add(fonctionmodele(x));
-             }
-             */
-
-            // On normalise les entrées
-            
+                       
 
 
-
-            // Apprentissage
+            // On effectue l'apprentissage
             reseau.backprop(lvecteursentrees, lsortiesdesirees,
                                Convert.ToDouble(textBoxalpha.Text),
                                Convert.ToInt32(textBoxnbiter.Text));
@@ -88,17 +74,20 @@ namespace MC
 
             int z;
 
+            // On crée notre image
             bmp = new Bitmap(500, 500);
             pictureBox1.Image = bmp;
 
+            // On remplit cette image de noir
             for (int i = 0; i < bmp.Width; i++)
                 for (int j = 0; j < bmp.Height; j++)
                     bmp.SetPixel(i, j, Color.Black);
 
+            // On crée une autre image
+            bmp2 = new Bitmap(500, 500);
+            pictureBox2.Image = bmp2;
 
-
-            // Les tests !!
-
+            // Les tests sur des valeurs
             List<List<double>> lentreestests = new List<List<double>>();
             // On crée le vecteur test
             for (int i = 0; i < bmp.Width; i++)
@@ -106,19 +95,21 @@ namespace MC
                 for (int j = 0; j < bmp.Height; j++)
                 {
                     List<double> vect = new List<double>();
+                    // On normalise les positions de l'image
                     vect.Add(i/500.0);
                     vect.Add(j/500.0);
                     lentreestests.Add(vect);
                 }
             }
 
-
+            
             List<double> lsortiesobtenues;
+            // On effectue le test
             lsortiesobtenues = reseau.ResultatsEnSortie(lentreestests);
 
             int cmpt = 0;
             List<double> zz = new List<double>();
-            // Affichage
+            // On fait l'affichage de la première image
             for (int i = 0; i < bmp.Width; i++)
             {
                 for (int j = 0; j < bmp.Height; j++)
@@ -131,10 +122,45 @@ namespace MC
                 }
             }
 
+            // On crée la liste qui contiendra toutes les erreurs
+            List<double> erreurs = new List<double>();
+            cmpt = 0;
+            // Calcul de l'erreur pour chaque pixek
+            for (int i = 0; i < bmp2.Width * bmp2.Height; i++)
+            {
+                // Calcul de l'erreur : | valeur approchée - valeur réelle |
+                erreurs.Add(Math.Abs(lsortiesobtenues[cmpt] - lsortiesdesirees[cmpt]));
+
+                cmpt++;
+
+            }
+
+            // On cherche le max et le min dans la liste
+            double erreur_max = erreurs.Max();
+            double erreur_min = erreurs.Min();
+            
+            // On crée l'échelle en fonction de ces valeurs
+
+            // On fait l'affichage de la deuxième image
+            for (int i = 0; i < bmp2.Width; i++)
+            {
+                for (int j = 0; j < bmp2.Height; j++)
+                {
+                    // Calcul de l'erreur : | valeur approchée - valeur réelle |
+                    erreurs.Add(Math.Abs(lsortiesobtenues[cmpt] - lsortiesdesirees[cmpt]));
+
+                    // On fait varier l'échelle de gris de 0 à 255
+                    z = (int)(lsortiesobtenues[cmpt] * 255);
+                    zz.Add(z);
+
+                    bmp2.SetPixel(i, j, Color.FromArgb(z, z, z));
+                    cmpt++;
+                }
+            }
 
 
-            // Tests( g, bmp);
             pictureBox1.Invalidate();
+            pictureBox2.Invalidate();
 
             MessageBox.Show("f " + cmpt);
         }
