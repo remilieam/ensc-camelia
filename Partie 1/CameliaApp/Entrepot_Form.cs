@@ -90,6 +90,35 @@ namespace CameliaApp
         }
 
         /// <summary>
+        /// Permet de retrouver l’entrepôt initial
+        /// </summary>
+        private void Reinitialiser_Button_Click(object sender, EventArgs e)
+        {
+            chariots.Clear();
+            dernier_chemin.Clear();
+            compteur = 0;
+
+            for (int i = 0; i < 25; i++)
+            {
+                for (int j = 0; j < 25; j++)
+                {
+                    if (i % 2 == 0 && i != 0 && i != 24 &&
+                            ((j >= 2 && j < 11) || (j >= 14 && j < 23)))
+                    { entrepot[i, j] = -1; }
+                    else { entrepot[i, j] = 0; }
+                    entrepot_image[i, j].Enabled = true;
+                }
+            }
+
+            Creer_Chariots_Defaut();
+            Afficher_Entrepot();
+            Ajouter_Chariots();
+
+            rafraichir_button.Enabled = false;
+            dynamique_button.Enabled = false;
+        }
+
+        /// <summary>
         /// Permet de cliquer sur une case de l’entrepôt pour faire certaines actions
         /// </summary>
         /// <param name="sender"></param>
@@ -302,6 +331,7 @@ namespace CameliaApp
         /// <param name="arrivee">Point d’arrivée</param>
         private void Tracer_Chemin_Temps(Chariot depart, Objet objet)
         {
+            reinitialiser_button.Enabled = false;
             for (int i = 0; i < 25; i++)
             {
                 for (int j = 0; j < 25; j++)
