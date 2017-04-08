@@ -36,6 +36,8 @@
             this.CoefApprentissage_Label = new System.Windows.Forms.Label();
             this.CoefApprentissage_TextBox = new System.Windows.Forms.TextBox();
             this.Carte_Button = new System.Windows.Forms.Button();
+            this.Classes_Button = new System.Windows.Forms.Button();
+            this.Nouveau_Button = new System.Windows.Forms.Button();
             this.Resultat_PictureBox = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.Resultat_PictureBox)).BeginInit();
             this.SuspendLayout();
@@ -55,7 +57,7 @@
             this.NbLignes_TextBox.Name = "NbLignes_TextBox";
             this.NbLignes_TextBox.Size = new System.Drawing.Size(50, 20);
             this.NbLignes_TextBox.TabIndex = 1;
-            this.NbLignes_TextBox.Text = "10";
+            this.NbLignes_TextBox.Text = "80";
             // 
             // NbColonnes_Label
             // 
@@ -72,7 +74,7 @@
             this.NbColonnes_TextBox.Name = "NbColonnes_TextBox";
             this.NbColonnes_TextBox.Size = new System.Drawing.Size(50, 20);
             this.NbColonnes_TextBox.TabIndex = 3;
-            this.NbColonnes_TextBox.Text = "10";
+            this.NbColonnes_TextBox.Text = "80";
             // 
             // CoefApprentissage_Label
             // 
@@ -89,7 +91,7 @@
             this.CoefApprentissage_TextBox.Name = "CoefApprentissage_TextBox";
             this.CoefApprentissage_TextBox.Size = new System.Drawing.Size(50, 20);
             this.CoefApprentissage_TextBox.TabIndex = 5;
-            this.CoefApprentissage_TextBox.Text = "0,5";
+            this.CoefApprentissage_TextBox.Text = "0,8";
             // 
             // Carte_Button
             // 
@@ -97,9 +99,31 @@
             this.Carte_Button.Name = "Carte_Button";
             this.Carte_Button.Size = new System.Drawing.Size(80, 30);
             this.Carte_Button.TabIndex = 6;
-            this.Carte_Button.Text = "Valider";
+            this.Carte_Button.Text = "Kohonen";
             this.Carte_Button.UseVisualStyleBackColor = true;
             this.Carte_Button.Click += new System.EventHandler(this.Carte_Button_Click);
+            // 
+            // Classes_Button
+            // 
+            this.Classes_Button.Enabled = false;
+            this.Classes_Button.Location = new System.Drawing.Point(730, 50);
+            this.Classes_Button.Name = "Classes_Button";
+            this.Classes_Button.Size = new System.Drawing.Size(80, 30);
+            this.Classes_Button.TabIndex = 7;
+            this.Classes_Button.Text = "Regrouper";
+            this.Classes_Button.UseVisualStyleBackColor = true;
+            this.Classes_Button.Click += new System.EventHandler(this.Classes_Button_Click);
+            // 
+            // Nouveau_Button
+            // 
+            this.Nouveau_Button.Enabled = false;
+            this.Nouveau_Button.Location = new System.Drawing.Point(730, 90);
+            this.Nouveau_Button.Name = "Nouveau_Button";
+            this.Nouveau_Button.Size = new System.Drawing.Size(80, 30);
+            this.Nouveau_Button.TabIndex = 8;
+            this.Nouveau_Button.Text = "Nouveau";
+            this.Nouveau_Button.UseVisualStyleBackColor = true;
+            this.Nouveau_Button.Click += new System.EventHandler(this.Nouveau_Button_Click);
             // 
             // Resultat_PictureBox
             // 
@@ -107,7 +131,7 @@
             this.Resultat_PictureBox.Location = new System.Drawing.Point(10, 50);
             this.Resultat_PictureBox.Name = "Resultat_PictureBox";
             this.Resultat_PictureBox.Size = new System.Drawing.Size(800, 800);
-            this.Resultat_PictureBox.TabIndex = 7;
+            this.Resultat_PictureBox.TabIndex = 9;
             this.Resultat_PictureBox.TabStop = false;
             // 
             // Non_Supervise_Form
@@ -115,19 +139,21 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(820, 860);
-            this.Controls.Add(this.Resultat_PictureBox);
             this.Controls.Add(this.NbLignes_Label);
             this.Controls.Add(this.NbLignes_TextBox);
-            this.Controls.Add(this.Carte_Button);
             this.Controls.Add(this.NbColonnes_Label);
             this.Controls.Add(this.NbColonnes_TextBox);
             this.Controls.Add(this.CoefApprentissage_Label);
             this.Controls.Add(this.CoefApprentissage_TextBox);
+            this.Controls.Add(this.Carte_Button);
+            this.Controls.Add(this.Classes_Button);
+            this.Controls.Add(this.Nouveau_Button);
+            this.Controls.Add(this.Resultat_PictureBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.MaximizeBox = false;
             this.Name = "Non_Supervise_Form";
-            this.Text = "Apprentissage Supervisé";
+            this.Text = "Apprentissage Non-Supervisé";
             ((System.ComponentModel.ISupportInitialize)(this.Resultat_PictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -143,6 +169,8 @@
         private System.Windows.Forms.Label CoefApprentissage_Label;
         private System.Windows.Forms.TextBox CoefApprentissage_TextBox;
         private System.Windows.Forms.Button Carte_Button;
+        private System.Windows.Forms.Button Classes_Button;
+        private System.Windows.Forms.Button Nouveau_Button;
         private System.Windows.Forms.PictureBox Resultat_PictureBox;
     }
 }

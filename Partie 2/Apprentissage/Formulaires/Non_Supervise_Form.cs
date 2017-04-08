@@ -32,34 +32,78 @@ namespace Formulaire
             InitializeComponent();
             Image = (Bitmap)Resultat_PictureBox.Image;
             Graphe = Graphics.FromImage(Resultat_PictureBox.Image);
-            Crayon = new Pen(Color.White, 2);
+            Crayon = new Pen(Color.White, 1);
             RecupererDonnees("../../../Donnees/datasetclassif.txt");
         }
 
         private void Carte_Button_Click(object sender, EventArgs e)
         {
-            try
+            if (NbLignes_TextBox.Enabled)
             {
-                NbLignes = Convert.ToInt32(NbLignes_TextBox.Text);
-                NbColonnes = Convert.ToInt32(NbColonnes_TextBox.Text);
+                try
+                {
+                    NbLignes = Convert.ToInt32(NbLignes_TextBox.Text);
+                    NbColonnes = Convert.ToInt32(NbColonnes_TextBox.Text);
+                    NbLignes_TextBox.Enabled = false;
+                    NbColonnes_TextBox.Enabled = false;
 
-                CoefApprentissage = Convert.ToDouble(CoefApprentissage_TextBox.Text);
+                    CoefApprentissage = Convert.ToDouble(CoefApprentissage_TextBox.Text);
 
-                Classes.Clear();
-                Carte = new Carte(NbLignes, NbColonnes, 2, Image.Width);
-                Carte.AlgoKohonen(Observations, CoefApprentissage);
-                Classes = Carte.Regroupement(Observations, 6, Classes);
+                    Carte = new Carte(NbLignes, NbColonnes, 2, Image.Width);
 
-                Crayon.Color = Color.White;
-                Graphe.FillRectangle(Crayon.Brush, 0, 0, Image.Width, Image.Height);
-                AfficherDonnees();
-                AfficherClasses();
+                    Crayon.Color = Color.White;
+                    Graphe.FillRectangle(Crayon.Brush, 0, 0, Image.Width, Image.Height);
+                    AfficherDonnees();
+                    AfficherPoints();
+                }
+
+                catch (Exception Ex)
+                {
+                    MessageBox.Show(Ex.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
 
-            catch (Exception Ex)
+            else
             {
-                MessageBox.Show(Ex.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                try
+                {
+                    Classes_Button.Enabled = true;
+                    Nouveau_Button.Enabled = true;
+
+                    CoefApprentissage = Convert.ToDouble(CoefApprentissage_TextBox.Text);
+
+                    Carte.AlgoKohonen(Observations, CoefApprentissage);
+
+                    Crayon.Color = Color.White;
+                    Graphe.FillRectangle(Crayon.Brush, 0, 0, Image.Width, Image.Height);
+                    AfficherDonnees();
+                    AfficherPoints();
+                }
+
+                catch (Exception Ex)
+                {
+                    MessageBox.Show(Ex.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
+        }
+
+        private void Classes_Button_Click(object sender, EventArgs e)
+        {
+            Classes.Clear();
+            Classes = Carte.Regroupement(Observations, 6);
+
+            Crayon.Color = Color.White;
+            Graphe.FillRectangle(Crayon.Brush, 0, 0, Image.Width, Image.Height);
+            AfficherDonnees();
+            AfficherClasses();
+        }
+
+        private void Nouveau_Button_Click(object sender, EventArgs e)
+        {
+            NbLignes_TextBox.Enabled = true;
+            NbColonnes_TextBox.Enabled = true;
+            Classes_Button.Enabled = false;
+            Nouveau_Button.Enabled = false;
         }
 
         private void RecupererDonnees(string fichier_source)
@@ -113,6 +157,23 @@ namespace Formulaire
             }
         }
 
+        private void AfficherPoints()
+        {
+            Crayon.Color = Color.Blue;
+
+            for (int i = 0; i < NbLignes; i++)
+            {
+                for (int j = 0; j < NbColonnes; j++)
+                {
+                    int x = Convert.ToInt32(Carte.RecupererPoint(i, j).RecupererPoids(0));
+                    int y = Convert.ToInt32(Carte.RecupererPoint(i, j).RecupererPoids(1));
+                    Graphe.DrawEllipse(Crayon, x - 2, y - 2, 4, 4);
+                }
+            }
+
+            Resultat_PictureBox.Refresh();
+        }
+
         private void AfficherClasses()
         {
             List<Color> Couleurs = new List<Color> { Color.Red, Color.Blue, Color.Green, Color.Brown, Color.Orange, Color.Purple };
@@ -122,8 +183,8 @@ namespace Formulaire
 
                 foreach (Classes.Point point in Classes[i].ListePoints)
                 {
-                    int x = Convert.ToInt32(point.RecupererUnPoids(0));
-                    int y = Convert.ToInt32(point.RecupererUnPoids(1));
+                    int x = Convert.ToInt32(point.RecupererPoids(0));
+                    int y = Convert.ToInt32(point.RecupererPoids(1));
                     Graphe.DrawEllipse(Crayon, x - 2, y - 2, 4, 4);
                 }
             }

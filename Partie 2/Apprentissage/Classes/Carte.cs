@@ -7,7 +7,7 @@ namespace Classes
 {
     public class Carte
     {
-        private Point[,] tableau;
+        private Point[,] carte;
         private int nbLignes, nbColonnes;
 
         /// <summary>
@@ -21,13 +21,13 @@ namespace Classes
         {
             this.nbColonnes = nbColonnes;
             this.nbLignes = nbLignes;
-            this.tableau = new Point[nbLignes, nbColonnes];
+            this.carte = new Point[nbLignes, nbColonnes];
 
             for (int i = 0; i < nbLignes; i++)
             {
                 for (int j = 0; j < nbColonnes; j++)
                 {
-                    tableau[i, j] = new Point(nbPoids, valeurMax);
+                    carte[i, j] = new Point(nbPoids, valeurMax);
                 }
             }
         }
@@ -40,7 +40,7 @@ namespace Classes
         /// <returns>Point à récupérer</returns>
         public Point RecupererPoint(int ligne, int colonne)
         {
-            return tableau[ligne, colonne];
+            return carte[ligne, colonne];
         }
 
         /// <summary>
@@ -67,11 +67,11 @@ namespace Classes
                 {
                     for (int j = 0; j < nbColonnes; j++)
                     {
-                        if (tableau[i, j].CalculerErreur(observation) < erreurMin)
+                        if (carte[i, j].CalculerErreur(observation) < erreurMin)
                         {
                             ligneMieux = i;
                             colonneMieux = j;
-                            erreurMin = tableau[i, j].CalculerErreur(observation);
+                            erreurMin = carte[i, j].CalculerErreur(observation);
                         }
                     }
                 }
@@ -83,20 +83,18 @@ namespace Classes
                     {
                         if (i >= 0 && i < nbLignes && j >= 0 && j < nbColonnes)
                         {
-                            tableau[i, j].ModifierPoids(observation, alpha);
+                            carte[i, j].ModifierPoids(observation, alpha);
                         }
                     }
                 }
             }
         }
 
-        public List<Classe> Regroupement(List<Observation> observations, int nbClasses, List<Classe> classes)
+        public List<Classe> Regroupement(List<Observation> observations, int nbClasses)
         {
-            List<Classe> nouvellesClasses = new List<Classe>();
-            foreach (Classe classe in classes) { nouvellesClasses.Add(classe); }
-
             // Recherche des points qui ne gagnent jamais ou presque jamais
             // Pour cela, on compte le nombre de fois où le point à l’erreur minimale
+            List<Classe> classes = new List<Classe>();
 
             // Tableau pour compter
             int[,] comptage = new int[nbLignes, nbColonnes];
@@ -121,18 +119,17 @@ namespace Classes
                 {
                     for (int j = 0; j < nbColonnes; j++)
                     {
-                        if (tableau[i, j].CalculerErreur(observation) < erreurMin)
+                        if (carte[i, j].CalculerErreur(observation) < erreurMin)
                         {
                             ligneMieux = i;
                             colonneMieux = j;
-                            erreurMin = tableau[i, j].CalculerErreur(observation);
+                            erreurMin = carte[i, j].CalculerErreur(observation);
                         }
                     }
                 }
 
                 comptage[ligneMieux, colonneMieux]++;
             }
-
 
             // Initialisation des classes (en prenant les meilleures)
             for (int i = 0; i < nbLignes; i++)
@@ -141,7 +138,7 @@ namespace Classes
                 {
                     if (comptage[i, j] > 5)
                     {
-                        nouvellesClasses.Add(new Classe(tableau[i, j]));
+                        classes.Add(new Classe(carte[i, j]));
                     }
                 }
             }
@@ -149,21 +146,21 @@ namespace Classes
             // Fusion des classes : le critère le plus simple est la distance interclasse
             do
             {
-                Classe classeMieux1 = nouvellesClasses[0];
-                Classe classeMieux2 = nouvellesClasses[1];
+                Classe classeFusionnee1 = classes[0];
+                Classe classeFusionnee2 = classes[1];
                 double distanceMin = 1000000;
 
-                foreach (Classe classe1 in nouvellesClasses)
+                foreach (Classe classe1 in classes)
                 {
-                    foreach (Classe classe2 in nouvellesClasses)
+                    foreach (Classe classe2 in classes)
                     {
                         if (classe1 != classe2)
                         {
                             if (CalculerDistanceClasses(classe1, classe2) < distanceMin)
                             {
                                 distanceMin = CalculerDistanceClasses(classe1, classe2);
-                                classeMieux1 = classe1;
-                                classeMieux2 = classe2;
+                                classeFusionnee1 = classe1;
+                                classeFusionnee2 = classe2;
                             }
                         }
                     }
@@ -171,12 +168,12 @@ namespace Classes
                 }
 
                 // Fusion des 2 classes les plus proches
-                classeMieux1.FusionnerAvec(classeMieux2);
-                nouvellesClasses.Remove(classeMieux2);
+                classeFusionnee1.FusionnerAvec(classeFusionnee2);
+                classes.Remove(classeFusionnee2);
             }
-            while (nouvellesClasses.Count > nbClasses);
+            while (classes.Count > nbClasses);
 
-            return nouvellesClasses;
+            return classes;
         }
 
         /// <summary>
@@ -194,9 +191,9 @@ namespace Classes
             {
                 foreach (Point point2 in classe2.ListePoints)
                 {
-                    if (point2.CalculerDistance(point2) < distanceMin)
+                    if (point1.CalculerDistance(point2) < distanceMin)
                     {
-                        distanceMin = point2.CalculerDistance(point2);
+                        distanceMin = point1.CalculerDistance(point2);
                     }
                 }
             }

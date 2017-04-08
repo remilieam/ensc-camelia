@@ -7,10 +7,10 @@ namespace Classes
 {
     public class Point
     {
-        // Un point est connecté à d’autres points
-        // Entre chacun de ses points, il y a un certain poids
+        // Comme une observation a 2 composantes, chaque point
+        // a 2 poids
         private List<double> poids;
-        private Random alea = new Random();
+        private static Random alea = new Random();
 
         /// <summary>
         /// Constructeur
@@ -32,24 +32,24 @@ namespace Classes
         /// <summary>
         /// Récupération du ie poids
         /// </summary>
-        /// <param name="i">Numéro du poids</param>
+        /// <param name="i">0 pour le poids lié à la ligne et 1 pour celui lié à la colonne</param>
         /// <returns>Poids associé au numéro passé en argument</returns>
-        public double RecupererUnPoids(int i)
+        public double RecupererPoids(int i)
         {
             return poids[i];
         }
 
         /// <summary>
-        /// Calcul de l’erreur
+        /// Calcul de l’erreur (distance entre un point et une observation)
         /// </summary>
-        /// <param name="obs">Observation sur laquelle on calcule l’erreur</param>
+        /// <param name="observation">Observation sur laquelle on calcule l’erreur</param>
         /// <returns>Erreur calculée</returns>
-        public double CalculerErreur(Observation obs)
+        public double CalculerErreur(Observation observation)
         {
             double somme = 0;
             for (int i = 0; i < poids.Count; i++)
             {
-                somme = somme + Math.Pow(poids[i] - obs.Valeur(i), 2);
+                somme = somme + Math.Pow(poids[i] - observation.Valeur(i), 2);
             }
             return Math.Sqrt(somme);
         }
@@ -57,13 +57,13 @@ namespace Classes
         /// <summary>
         /// Modification des poids
         /// </summary>
-        /// <param name="obs">Observation sur laquelle on se base pour modifier les poids</param>
+        /// <param name="observation">Observation sur laquelle on se base pour modifier les poids</param>
         /// <param name="alpha">Coefficient d’apprentissage</param>
-        public void ModifierPoids(Observation obs, double alpha)
+        public void ModifierPoids(Observation observation, double alpha)
         {
             for (int i = 0; i < poids.Count; i++)
             {
-                poids[i] = poids[i] - alpha * (poids[i] - obs.Valeur(i));
+                poids[i] = poids[i] - alpha * (poids[i] - observation.Valeur(i));
             }
         }
 
@@ -74,12 +74,12 @@ namespace Classes
         /// <returns>Distance entre 2 points</returns>
         public double CalculerDistance(Point autrePoint)
         {
-            double dist = 0;
+            double distance = 0;
             for (int i = 0; i < poids.Count; i++)
             {
-                dist = dist + Math.Pow(poids[i] - autrePoint.poids[i], 2);
+                distance = distance + Math.Pow(poids[i] - autrePoint.poids[i], 2);
             }
-            return Math.Sqrt(dist);
+            return Math.Sqrt(distance);
         }
     }
 }
