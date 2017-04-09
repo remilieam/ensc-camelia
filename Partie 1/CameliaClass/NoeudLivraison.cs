@@ -124,7 +124,7 @@ namespace CameliaClass
         /// <returns>Nœud</returns>
         public override string ToString()
         {
-            return "Position du nœud :\n  - Ligne : " + this.nom.Ligne + "\n  - Colonne : " + this.nom.Colonne + "\n  - Orientation : " + this.nom.Orientation; 
+            return "Ligne : " + this.nom.Ligne + " / Colonne : " + this.nom.Colonne + " / Orientation : " + this.nom.Orientation; 
         }
     }
 }

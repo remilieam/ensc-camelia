@@ -225,43 +225,5 @@ namespace CameliaClass
                 while ((N != null) && (trouve == false));
             }
         }
-
-
-        ///// <summary>
-        ///// Permet d’afficher l’arbre de recherche grâce à un TreeView.
-        ///// Celui-ci est mis à jour avec les nœuds de la liste des fermés,
-        ///// on ne tient pas compte des ouverts
-        ///// </summary>
-        ///// <param name="TV">TreeView</param>
-        //public void AvoirArbreRecherche(TreeView TV)
-        //{
-        //    if (noeudsFermes == null) return;
-        //    if (noeudsFermes.Count == 0) return;
-
-        //    // On suppose le TreeView préexistant
-        //    TV.Nodes.Clear();
-
-        //    TreeNode TN = new TreeNode(noeudsFermes[0].ToString());
-        //    TV.Nodes.Add(TN);
-
-        //    AjouterBranche(noeudsFermes[0], TN);
-        //}
-
-        ///// <summary>
-        ///// Permet d’ajouter une branche à l’arbre de recherche.
-        ///// AjouterBranche est exclusivement appelée par AvoirArbreRecherche.
-        ///// Les nœuds sont ajoutés de manière récursive
-        ///// </summary>
-        ///// <param name="GN"></param>
-        ///// <param name="TN"></param>
-        //private void AjouterBranche(Noeud GN, TreeNode TN)
-        //{
-        //    foreach (Noeud GNfils in GN.Enfants)
-        //    {
-        //        TreeNode TNfils = new TreeNode(GNfils.ToString());
-        //        TN.Nodes.Add(TNfils);
-        //        if (GNfils.Enfants.Count > 0) { AjouterBranche(GNfils, TNfils); }
-        //    }
-        //}
     }
 }

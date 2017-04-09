@@ -29,6 +29,7 @@ namespace CameliaApp
         // Liste contenant le dernier chemin et la dernière livraison
         private List<Noeud> dernier_chemin = new List<Noeud>();
         private Objet dernier_objet;
+        private Graphe dernier_graphe;
         private int compteur = 0;
 
         /// <summary>
@@ -44,6 +45,18 @@ namespace CameliaApp
 
             rafraichir_button.Enabled = false;
             dynamique_button.Enabled = false;
+            detail_button.Enabled = false;
+        }
+
+        /// <summary>
+        /// Permet d’afficher les détails de la recherche
+        /// </summary>
+        private void Detail_Button_Click(object sender, EventArgs e)
+        {
+            Arbre_Form arbre_form = new Arbre_Form(dernier_graphe);
+            if (arbre_form.ShowDialog() == DialogResult.OK)
+            {
+            }
         }
 
         /// <summary>
@@ -67,6 +80,7 @@ namespace CameliaApp
             Ajouter_Chariots();
             rafraichir_button.Enabled = false;
             dynamique_button.Enabled = false;
+            detail_button.Enabled = false;
 
             MessageBox.Show("Déplacement terminé en " + Calculer_Temps() + " secondes et " + dernier_chemin.Count + " pas !", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -87,6 +101,7 @@ namespace CameliaApp
             Changer_Position();
             dynamique_button.Enabled = false;
             rafraichir_button.Enabled = false;
+            detail_button.Enabled = false;
         }
 
         /// <summary>
@@ -274,6 +289,7 @@ namespace CameliaApp
             Chariot arrivee = Trouver_Destination(objet);
             NoeudDistance noeudInitial = new NoeudDistance(depart, arrivee, entrepot);
             List<Noeud> chemin = g.RechercherSolutionAEtoile(noeudInitial);
+            dernier_graphe = g;
 
             try
             {
@@ -307,6 +323,7 @@ namespace CameliaApp
                 }
 
                 rafraichir_button.Enabled = true;
+                detail_button.Enabled = true;
             }
 
             catch (Exception e)
@@ -331,7 +348,6 @@ namespace CameliaApp
         /// <param name="arrivee">Point d’arrivée</param>
         private void Tracer_Chemin_Temps(Chariot depart, Objet objet)
         {
-            reinitialiser_button.Enabled = false;
             for (int i = 0; i < 25; i++)
             {
                 for (int j = 0; j < 25; j++)
@@ -345,6 +361,7 @@ namespace CameliaApp
             Chariot arrivee = Trouver_Destination(objet);
             NoeudTemps noeudInitial = new NoeudTemps(depart, arrivee, entrepot);
             List<Noeud> chemin = g.RechercherSolutionAEtoile(noeudInitial);
+            dernier_graphe = g;
 
             try
             {
@@ -416,6 +433,7 @@ namespace CameliaApp
 
                 dynamique_button.Enabled = true;
                 rafraichir_button.Enabled = true;
+                detail_button.Enabled = true;
             }
 
             catch (Exception e)
