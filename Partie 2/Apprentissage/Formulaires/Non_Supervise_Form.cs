@@ -15,6 +15,7 @@ namespace Formulaire
     {
         private static List<Observation> Observations = new List<Observation>();
         private static Random Alea = new Random();
+        private int NbIterations;
 
         private int NbLignes;
         private int NbColonnes;
@@ -30,6 +31,7 @@ namespace Formulaire
         public Non_Supervise_Form()
         {
             InitializeComponent();
+            NbIterations = 0;
             Image = (Bitmap)Resultat_PictureBox.Image;
             Graphe = Graphics.FromImage(Resultat_PictureBox.Image);
             Crayon = new Pen(Color.White, 1);
@@ -67,6 +69,7 @@ namespace Formulaire
             {
                 try
                 {
+                    NbIterations++;
                     Classes_Button.Enabled = true;
                     Nouveau_Button.Enabled = true;
 
@@ -96,14 +99,65 @@ namespace Formulaire
             Graphe.FillRectangle(Crayon.Brush, 0, 0, Image.Width, Image.Height);
             AfficherDonnees();
             AfficherClasses();
+
+            Coloriage_Button.Enabled = true;
+
+            MessageBox.Show("Résultat pour " + NbIterations + " itérations.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void Coloriage_Button_Click(object sender, EventArgs e)
+        {
+            List<Color> Couleurs = new List<Color> { Color.Red, Color.Blue, Color.Green, Color.Brown, Color.Orange, Color.Purple };
+
+            for (int i = 0; i < 800; i++)
+            {
+                for (int j = 0; j < 800; j++)
+                {
+                    // Définition du point (= neurone = pixel)
+                    Classes.Point Pixel = new Classes.Point(2, 800);
+                    Pixel.ModifierPoids(i, j);
+
+                    // Modification du pixel en fonction du numéro de classe
+                    Image.SetPixel(i, j, Couleurs[RechercherClasse(Pixel)]);
+                }
+            }
+
+            // Calcul du pourcentage de bonne classification et de mauvaise
+            int BonneClassification = 0;
+            int MauvaiseClassification = 0;
+            for (int i = 0; i < 6; i++)
+            {
+                Classes.Point Observation = new Classes.Point(2, 800);
+                Observation.ModifierPoids((int)Math.Floor(Observations[i * 500].Ligne), (int)Math.Floor(Observations[i * 500].Colonne));
+                int NumeroClasse = RechercherClasse(Observation);
+
+                for (int j = 0; j < 500; j++)
+                {
+                    Observation = new Classes.Point(2, 800);
+                    Observation.ModifierPoids((int)Math.Floor(Observations[i * 500 + j].Ligne), (int)Math.Floor(Observations[i * 500 + j].Colonne));
+                    if (NumeroClasse != RechercherClasse(Observation))
+                    {
+                        MauvaiseClassification++;
+                    }
+                    else { BonneClassification++; }
+                }
+            }
+
+            AfficherDonnees();
+
+            MessageBox.Show("Pourcentage de bonne classification : " + (BonneClassification) / 3000.0 +
+                "\nPourcentage de mauvaise classification : " + (MauvaiseClassification) / 3000.0, "Information",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void Nouveau_Button_Click(object sender, EventArgs e)
         {
+            NbIterations = 0;
             NbLignes_TextBox.Enabled = true;
             NbColonnes_TextBox.Enabled = true;
             Classes_Button.Enabled = false;
             Nouveau_Button.Enabled = false;
+            Coloriage_Button.Enabled = false;
         }
 
         private void RecupererDonnees(string fichier_source)
@@ -121,6 +175,7 @@ namespace Formulaire
                 while (Donnee != null)
                 {
                     double DonneeChiffree = Convert.ToDouble(Donnee);
+
                     if (Item != 2)
                     {
                         Coordonnees[Item] = DonneeChiffree;
@@ -138,9 +193,11 @@ namespace Formulaire
                 }
 
                 Lecteur.Close();
-
+                
+                Observations.Add(new Observation(Coordonnees[0], Coordonnees[1]));
                 Observations.RemoveAt(0);
 
+                // Mélange des observations
                 int NbObservations = Observations.Count;
                 List<Observation> ObservationsMelangees = new List<Observation>();
 
@@ -202,6 +259,30 @@ namespace Formulaire
             }
 
             Resultat_PictureBox.Refresh();
+        }
+
+        private int RechercherClasse(Classes.Point Neurone)
+        {
+            // Recherche de la classe gagnante
+            int NumeroClasseGagnante = 0;
+            double DistanceMin = Neurone.CalculerDistance(Classes[0].ListePoints[0]);
+
+            // On recherche le neurone qui a la plus faible distance du pixel
+            // dans chacune des 6 classes. La classe gagnante est celle à laquelle
+            // appartient le neurone ayant la plus faible distance avec le pixel
+            for (int k = 0; k < Classes.Count; k++)
+            {
+                for (int l = 0; l < Classes[k].ListePoints.Count; l++)
+                {
+                    if (DistanceMin > Neurone.CalculerDistance(Classes[k].ListePoints[l]))
+                    {
+                        DistanceMin = Neurone.CalculerDistance(Classes[k].ListePoints[l]);
+                        NumeroClasseGagnante = k;
+                    }
+                }
+            }
+
+            return NumeroClasseGagnante;
         }
     }
 }

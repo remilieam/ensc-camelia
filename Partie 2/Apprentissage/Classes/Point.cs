@@ -30,6 +30,17 @@ namespace Classes
         }
 
         /// <summary>
+        /// Modification des poids
+        /// </summary>
+        /// <param name="ligne">Poids de la ligne</param>
+        /// <param name="colonne">Poids de la colonne</param>
+        public void ModifierPoids(int ligne, int colonne)
+        {
+            poids[0] = ligne;
+            poids[1] = colonne;
+        }
+
+        /// <summary>
         /// Récupération du ie poids
         /// </summary>
         /// <param name="i">0 pour le poids lié à la ligne et 1 pour celui lié à la colonne</param>
