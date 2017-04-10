@@ -48,10 +48,10 @@ namespace Classes
         /// </summary>
         /// <param name="observations">Liste des observations</param>
         /// <param name="alpha">Coefficient d’apprentissage</param>
-        public void AlgoKohonen(List<Observation> observations, double alpha)
+        public void AlgoKohonen(List<Observation> observations, double alpha, int distance)
         {
             // Distance pour laquelle on considère que 2 points sont voisins
-            int distanceMax = 1;
+            int distanceMax = distance;
 
             // Pour chaque observation
             foreach (Observation observation in observations)
@@ -136,7 +136,7 @@ namespace Classes
             {
                 for (int j = 0; j < nbColonnes; j++)
                 {
-                    if (comptage[i, j] > 5)
+                    if (comptage[i, j] > 10)
                     {
                         classes.Add(new Classe(carte[i, j]));
                     }

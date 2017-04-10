@@ -72,7 +72,7 @@ namespace Formulaire
 
                     CoefApprentissage = Convert.ToDouble(CoefApprentissage_TextBox.Text);
 
-                    Carte.AlgoKohonen(Observations, CoefApprentissage);
+                    Carte.AlgoKohonen(Observations, CoefApprentissage, 2);
 
                     Crayon.Color = Color.White;
                     Graphe.FillRectangle(Crayon.Brush, 0, 0, Image.Width, Image.Height);
@@ -137,9 +137,21 @@ namespace Formulaire
                     Donnee = Lecteur.ReadLine();
                 }
 
+                Lecteur.Close();
+
                 Observations.RemoveAt(0);
 
-                Lecteur.Close();
+                int NbObservations = Observations.Count;
+                List<Observation> ObservationsMelangees = new List<Observation>();
+
+                for (int i = 0; i < NbObservations; i++)
+                {
+                    int Numero = Alea.Next(Observations.Count);
+                    ObservationsMelangees.Add(Observations[Numero]);
+                    Observations.RemoveAt(Numero);
+                }
+
+                Observations = ObservationsMelangees;
             }
 
             catch (Exception Ex)
