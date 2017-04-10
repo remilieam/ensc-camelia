@@ -13,6 +13,7 @@ namespace Formulaire
 {
     public partial class Non_Supervise_Form : Form
     {
+        private static List<Observation> ObservationsTriees = new List<Observation>();
         private static List<Observation> Observations = new List<Observation>();
         private static Random Alea = new Random();
         private int NbIterations;
@@ -125,16 +126,17 @@ namespace Formulaire
             // Calcul du pourcentage de bonne classification et de mauvaise
             int BonneClassification = 0;
             int MauvaiseClassification = 0;
+
             for (int i = 0; i < 6; i++)
             {
                 Classes.Point Observation = new Classes.Point(2, 800);
-                Observation.ModifierPoids((int)Math.Floor(Observations[i * 500].Ligne), (int)Math.Floor(Observations[i * 500].Colonne));
+                Observation.ModifierPoids((int)Math.Floor(ObservationsTriees[i * 500].Ligne), (int)Math.Floor(ObservationsTriees[i * 500].Colonne));
                 int NumeroClasse = RechercherClasse(Observation);
 
                 for (int j = 0; j < 500; j++)
                 {
                     Observation = new Classes.Point(2, 800);
-                    Observation.ModifierPoids((int)Math.Floor(Observations[i * 500 + j].Ligne), (int)Math.Floor(Observations[i * 500 + j].Colonne));
+                    Observation.ModifierPoids((int)Math.Floor(ObservationsTriees[i * 500 + j].Ligne), (int)Math.Floor(ObservationsTriees[i * 500 + j].Colonne));
                     if (NumeroClasse != RechercherClasse(Observation))
                     {
                         MauvaiseClassification++;
@@ -145,8 +147,8 @@ namespace Formulaire
 
             AfficherDonnees();
 
-            MessageBox.Show("Pourcentage de bonne classification : " + (BonneClassification) / 3000.0 +
-                "\nPourcentage de mauvaise classification : " + (MauvaiseClassification) / 3000.0, "Information",
+            MessageBox.Show("Pourcentage de bonne classification : " + Math.Round(BonneClassification / 3000.0, 2) +
+                "\nPourcentage de mauvaise classification : " + Math.Round(MauvaiseClassification / 3000.0, 2), "Information",
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
@@ -199,6 +201,7 @@ namespace Formulaire
 
                 // Mélange des observations
                 int NbObservations = Observations.Count;
+                ObservationsTriees.AddRange(Observations);
                 List<Observation> ObservationsMelangees = new List<Observation>();
 
                 for (int i = 0; i < NbObservations; i++)
