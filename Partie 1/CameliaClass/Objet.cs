@@ -20,6 +20,16 @@ namespace CameliaClass
             Hauteur = z;
         }
 
+        public bool Egal(Objet objet)
+        {
+            if (this.Ligne == objet.Ligne && this.Colonne == objet.Colonne && this.Orientation == objet.Orientation)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         public override string ToString()
         {
             return "Objet :\n  - Ligne : " + this.Ligne + "\n  - Colonne : " + this.Colonne + "\n  - Orientation : " + this.Orientation + "\n  - Hauteur : " + this.Hauteur;

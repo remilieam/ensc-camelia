@@ -13,8 +13,6 @@ namespace CameliaClass
         /// <summary>
         /// Constructeur
         /// </summary>
-        /// <param name="x">Ligne du nœud</param>
-        /// <param name="y">Colonne du nœud</param>
         public NoeudDistance(Chariot chariot) : base()
         {
             this.nom = chariot;
@@ -23,10 +21,6 @@ namespace CameliaClass
         /// <summary>
         /// Constructeur du premier nœud
         /// </summary>
-        /// <param name="x">Ligne du premier nœud</param>
-        /// <param name="y">Colonne du premier nœud</param>
-        /// <param name="xFinal">Ligne du nœud objectif</param>
-        /// <param name="yFinal">Colonne du nœud objectif</param>
         /// <param name="entrepot">Entrepôt</param>
         public NoeudDistance(Chariot depart, Chariot arrivee, int[,] entrepot)
             : base()

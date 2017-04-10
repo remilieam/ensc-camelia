@@ -34,6 +34,7 @@
             this.dynamique_button = new System.Windows.Forms.Button();
             this.reinitialiser_button = new System.Windows.Forms.Button();
             this.chrono_timer = new System.Windows.Forms.Timer(this.components);
+            this.realite_button = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // detail_button
@@ -81,11 +82,22 @@
             this.chrono_timer.Interval = 1000;
             this.chrono_timer.Tick += new System.EventHandler(this.Chrono_Timer_Tick);
             // 
+            // realite_button
+            // 
+            this.realite_button.Location = new System.Drawing.Point(524, 474);
+            this.realite_button.Name = "realite_button";
+            this.realite_button.Size = new System.Drawing.Size(90, 40);
+            this.realite_button.TabIndex = 4;
+            this.realite_button.Text = "Realite";
+            this.realite_button.UseVisualStyleBackColor = true;
+            this.realite_button.Click += new System.EventHandler(this.realite_button_Click);
+            // 
             // Entrepot_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(618, 524);
+            this.Controls.Add(this.realite_button);
             this.Controls.Add(this.detail_button);
             this.Controls.Add(this.rafraichir_button);
             this.Controls.Add(this.dynamique_button);
@@ -106,5 +118,6 @@
         private System.Windows.Forms.Button dynamique_button;
         private System.Windows.Forms.Button reinitialiser_button;
         private System.Windows.Forms.Timer chrono_timer;
+        private System.Windows.Forms.Button realite_button;
     }
 }

@@ -11,14 +11,12 @@ namespace CameliaClass
         private static int[,] entrepot = new int[25, 25];
         private static List<List<Noeud>> chemins;
         private static List<Chariot> chariots;
-        private static int pas;
+        private static int temps;
         private static bool mode;
 
         /// <summary>
         /// Constructeur
         /// </summary>
-        /// <param name="x">Ligne du nœud</param>
-        /// <param name="y">Colonne du nœud</param>
         public NoeudRealite(Chariot chariot) : base()
         {
             this.nom = chariot;
@@ -27,12 +25,8 @@ namespace CameliaClass
         /// <summary>
         /// Constructeur du premier nœud
         /// </summary>
-        /// <param name="x">Ligne du premier nœud</param>
-        /// <param name="y">Colonne du premier nœud</param>
-        /// <param name="xFinal">Ligne du nœud objectif</param>
-        /// <param name="yFinal">Colonne du nœud objectif</param>
         /// <param name="entrepot">Entrepôt</param>
-        public NoeudRealite(Chariot depart, Chariot arrivee, int[,] entrepot, List<List<Noeud>> chemins, List<Chariot> chariots, int pas, bool mode)
+        public NoeudRealite(Chariot depart, Chariot arrivee, int[,] entrepot, List<List<Noeud>> chemins, List<Chariot> chariots, int temps, bool mode)
             : base()
         {
             this.nom = depart;
@@ -40,25 +34,34 @@ namespace CameliaClass
             NoeudRealite.entrepot = entrepot;
             NoeudRealite.chemins = chemins;
             NoeudRealite.chariots = chariots;
-            NoeudRealite.pas = pas;
+            NoeudRealite.temps = temps;
             NoeudRealite.mode = mode;
+
 
             for (int i = 0; i < chemins.Count; i++)
             {
-                for (int j = 0; j < 25; j++)
+                int t = 0;
+                int j = 0;
+                while (t < temps && j < (chemins[i].Count - 1))
                 {
-                    for (int k = 0; k < 25; k++)
+                    t += 1;
+
+                    if (chemins[i][j].nom.Orientation != chemins[i][j + 1].nom.Orientation)
                     {
-                        if (chariots[i].Ligne == j && chariots[i].Colonne == k)
+                        t += 3;
+
+                        if (chemins[i][j].nom.Orientation % 2 == chemins[i][j + 1].nom.Orientation % 2)
                         {
-                            if (chemins[i].Count > pas)
-                            {
-                                NoeudRealite.entrepot[j, k] = 0;
-                                NoeudRealite.entrepot[chemins[i][pas].nom.Ligne, chemins[i][pas].nom.Colonne] = -2;
-                            }
+                            t += 3;
                         }
                     }
+
+                    j += 1;
                 }
+
+                entrepot[chariots[i].Ligne, chariots[i].Colonne] = 0;
+                chariots[i] = chemins[i][j].nom;
+                entrepot[chariots[i].Ligne, chariots[i].Colonne] = -2;
             }
         }
 

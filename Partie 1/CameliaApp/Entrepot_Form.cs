@@ -459,30 +459,53 @@ namespace CameliaApp
         private void Tracer_Chemin_Realite(Chariot depart, Objet objet)
         {
             // On crée une liste de chariots, une liste d'objets et une liste de graphes
-            List<Chariot> liste_chariots = new List<Chariot>();
-            List<Objet> liste_objets = new List<Objet>();
+            List<Objet> objets = new List<Objet>();
             List<List<Noeud>> liste_chemin_1 = new List<List<Noeud>>();
+            List<int> liste_temps = new List<int>();
             List<List<Noeud>> liste_chemin_2 = new List<List<Noeud>>();
             List<List<Noeud>> chemins = new List<List<Noeud>>();
             FileStream fd = new FileStream("../../../CameliaIcon/depart.png", FileMode.Open);
             FileStream fa = new FileStream("../../../CameliaIcon/arrivee.png", FileMode.Open);
             FileStream fc = new FileStream("../../../CameliaIcon/chemin.png", FileMode.Open);
 
+            int rang = Trouver_Rang(depart);
+            chariots.Add(chariots[rang]);
+            chariots.RemoveAt(rang);
+
+            // Attribution des objets à aller chercher aux chariots
+            for (int i = 0; i < chariots.Count - 1; i++)
+            {
+                Objet objetAjoute = Generer_Objet();
+                bool existeDeja = false;
+
+                while (!existeDeja)
+                {
+                    int j = 0;
+                    while (!existeDeja && j < objets.Count)
+                    {
+                        existeDeja = (objetAjoute.Egal(objets[j]) && objetAjoute.Egal(objet));
+                        j++;
+                    }
+                    objetAjoute = Generer_Objet();
+                }
+
+                objets.Add(objetAjoute);
+            }
+
+            objets.Add(objet);
             Graphe g, g2;
-            int c = 0;
 
             // On attribue à tous les autres chariots un objet à aller chercher
             for (int i = 0; i < chariots.Count; i++)
             {
-                if (chariots[i] != depart)
+                // Cas où il n'y a qu'un seul chariot qui bouge
+                if (i == 0)
                 {
-                    liste_chariots.Add(chariots[i]);
-                    liste_objets.Add(Generer_Objet());
-
-                    // Première partie : aller chercher l'objet
+                    // Calcul du premier trajet
                     g = new Graphe();
-                    NoeudRealite noeudInitial = new NoeudRealite(liste_chariots[c], Trouver_Destination(liste_objets[c]), entrepot, chemins, liste_chariots, c, true);
+                    NoeudRealite noeudInitial = new NoeudRealite(chariots[i], Trouver_Destination(objets[i]), entrepot, chemins, chariots, i, true);
                     liste_chemin_1.Add(g.RechercherSolutionAEtoile(noeudInitial));
+                    dernier_chemin = g.RechercherSolutionAEtoile(noeudInitial);
 
                     try
                     {
@@ -491,50 +514,162 @@ namespace CameliaApp
                             throw new Exception("Pas de solution !");
                         }
 
-                        // Première partie : aller chercher l'objet
+                        // Mise à jour de la position du chariot dans l'entrepôt
+                        entrepot[chariots[i].Ligne, chariots[i].Colonne] = 0;
+                        chariots[i] = liste_chemin_1[i][liste_chemin_1[i].Count - 1].nom;
+                        entrepot[chariots[i].Ligne, chariots[i].Colonne] = -2;
+
+                        // Calcul du second trajet
                         g2 = new Graphe();
-                        NoeudRealite noeudInitial2 = new NoeudRealite(liste_chemin_1[c][liste_chemin_1.Count - 1].nom, Trouver_Destination(liste_objets[c]), entrepot, chemins, liste_chariots, c, false);
+                        NoeudRealite noeudInitial2 = new NoeudRealite(liste_chemin_1[i][liste_chemin_1.Count - 1].nom, Trouver_Destination(objets[i]), entrepot, chemins, chariots, i, false);
                         liste_chemin_2.Add(g2.RechercherSolutionAEtoile(noeudInitial2));
+                        dernier_chemin.AddRange(g2.RechercherSolutionAEtoile(noeudInitial2));
+                        liste_temps.Add(Calculer_Temps());
 
-                        // Liste des chemins
-                        chemins.Add(liste_chemin_1[c]);
-                        chemins[c].AddRange(liste_chemin_2[c]);
-
-                        if (g2.noeudsOuverts.Count == 0)
-                        {
-                            throw new Exception("Pas de solution !");
-                        }
-
-                        // Cas de la case de départ
-                        entrepot_image[liste_chemin_1[c][0].nom.Ligne, liste_chemin_1[c][0].nom.Colonne].Image = Image.FromStream(fd);
-
-                        // Cas de la case d’arrivée
-                        entrepot_image[liste_chemin_1[c][liste_chemin_1[c].Count - 1].nom.Ligne, liste_chemin_1[c][liste_chemin_1[c].Count - 1].nom.Colonne].Image = Image.FromStream(fa);
-
-                        // Cas du milieu
-                        for (int j = 1; j < liste_chemin_1[c].Count - 1; j++)
-                        {
-                            // Modification du carré
-                            entrepot_image[liste_chemin_1[c][j].nom.Ligne, liste_chemin_1[c][j].nom.Colonne].Image = Image.FromStream(fc);
-                        }
+                        // Mise à jour de la position du chariot dans l'entrepôt
+                        entrepot[chariots[i].Ligne, chariots[i].Colonne] = 0;
+                        chariots[i] = liste_chemin_2[i][liste_chemin_2[i].Count - 1].nom;
+                        entrepot[chariots[i].Ligne, chariots[i].Colonne] = -2;
                     }
 
                     catch (Exception e)
                     {
                         MessageBox.Show(e.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
 
-                        for (int j = 0; j < 25; j++)
-                        {
-                            for (int k = 0; k < 25; k++)
-                            {
-                                entrepot_image[j, k].Enabled = true;
-                            }
-                        }
+                else
+                {
+                    List<Noeud> trajet = new List<Noeud>();
+
+                    int max = liste_temps[0];
+                    foreach (int t in liste_temps)
+                    {
+                        max = (t > max) ? t : max;
                     }
 
-                    c++;
+                    // Calcul du premier trajet
+                    for (int j = 0; j < max; j++)
+                    {
+                        g = new Graphe();
+                        NoeudRealite noeudInitial = new NoeudRealite(chariots[i], Trouver_Destination(objets[i]), entrepot, chemins, chariots, i, true);
+                        trajet.Add(g.RechercherSolutionAEtoile(noeudInitial)[0]);
+
+                        // Mise à jour de la position
+                        entrepot[chariots[i].Ligne, chariots[i].Colonne] = 0;
+                        chariots[i] = trajet[j].nom;
+                        entrepot[chariots[i].Ligne, chariots[i].Colonne] = -2;
+                    }
+
+                    if (!trajet[trajet.Count].nom.Egal(Trouver_Destination(objets[i])))
+                    {
+                        g = new Graphe();
+                        NoeudRealite noeudInitial = new NoeudRealite(chariots[i], Trouver_Destination(objets[i]), entrepot, chemins, chariots, i, true);
+                        trajet.AddRange(g.RechercherSolutionAEtoile(noeudInitial));
+
+                        // Mise à jour de la position
+                        entrepot[chariots[i].Ligne, chariots[i].Colonne] = 0;
+                        chariots[i] = trajet[trajet.Count - 1].nom;
+                        entrepot[chariots[i].Ligne, chariots[i].Colonne] = -2;
+                    }
+
+                    liste_chemin_1.Add(trajet);
+                    dernier_chemin = trajet;
+                    int temps_trajet_1 = Calculer_Temps();
+
+                    try
+                    {
+                        if (trajet.Count == 0)
+                        {
+                            throw new Exception("Pas de solution !");
+                        }
+
+                        trajet = new List<Noeud>();
+
+                        if (temps_trajet_1 < max)
+                        {
+                            for (int j = temps_trajet_1; j < max; j++)
+                            {
+                                g = new Graphe();
+                                NoeudRealite noeudInitial = new NoeudRealite(chariots[i], Trouver_Destination(objets[i]), entrepot, chemins, chariots, i, false);
+                                trajet.Add(g.RechercherSolutionAEtoile(noeudInitial)[0]);
+
+                                // Mise à jour de la position
+                                entrepot[chariots[i].Ligne, chariots[i].Colonne] = 0;
+                                chariots[i] = trajet[j].nom;
+                                entrepot[chariots[i].Ligne, chariots[i].Colonne] = -2;
+                            }
+                        }
+
+                        else
+                        {
+                            g = new Graphe();
+                            NoeudRealite noeudInitial = new NoeudRealite(chariots[i], Trouver_Destination(objets[i]), entrepot, chemins, chariots, i, false);
+                            trajet.AddRange(g.RechercherSolutionAEtoile(noeudInitial));
+
+                            // Mise à jour de la position
+                            entrepot[chariots[i].Ligne, chariots[i].Colonne] = 0;
+                            chariots[i] = trajet[trajet.Count - 1].nom;
+                            entrepot[chariots[i].Ligne, chariots[i].Colonne] = -2;
+                        }
+
+                        liste_chemin_2.Add(trajet);
+                    }
+
+                    catch (Exception e)
+                    {
+                        MessageBox.Show(e.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
 
                 }
+
+                //try
+                //{
+                //    if (g.noeudsOuverts.Count == 0)
+                //    {
+                //        throw new Exception("Pas de solution !");
+                //    }
+
+                //    // Première partie : aller chercher l'objet
+                //    g2 = new Graphe();
+                //    NoeudRealite noeudInitial2 = new NoeudRealite(liste_chemin_1[i][liste_chemin_1.Count - 1].nom, Trouver_Destination(objets[i]), entrepot, chemins, chariots, i, false);
+                //    liste_chemin_2.Add(g2.RechercherSolutionAEtoile(noeudInitial2));
+
+                //    // Liste des chemins
+                //    chemins.Add(liste_chemin_1[i]);
+                //    chemins[i].AddRange(liste_chemin_2[i]);
+
+                //    if (g2.noeudsOuverts.Count == 0)
+                //    {
+                //        throw new Exception("Pas de solution !");
+                //    }
+
+                //    // Cas de la case de départ
+                //    entrepot_image[liste_chemin_1[i][0].nom.Ligne, liste_chemin_1[i][0].nom.Colonne].Image = Image.FromStream(fd);
+
+                //    // Cas de la case d’arrivée
+                //    entrepot_image[liste_chemin_1[i][liste_chemin_1[i].Count - 1].nom.Ligne, liste_chemin_1[i][liste_chemin_1[i].Count - 1].nom.Colonne].Image = Image.FromStream(fa);
+
+                //    // Cas du milieu
+                //    for (int j = 1; j < liste_chemin_1[i].Count - 1; j++)
+                //    {
+                //        // Modification du carré
+                //        entrepot_image[liste_chemin_1[i][j].nom.Ligne, liste_chemin_1[i][j].nom.Colonne].Image = Image.FromStream(fc);
+                //    }
+                //}
+
+                //catch (Exception e)
+                //{
+                //    MessageBox.Show(e.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                //    for (int j = 0; j < 25; j++)
+                //    {
+                //        for (int k = 0; k < 25; k++)
+                //        {
+                //            entrepot_image[j, k].Enabled = true;
+                //        }
+                //    }
+                //}
             }
 
             fd.Close(); fa.Close(); fc.Close();
@@ -832,6 +967,32 @@ namespace CameliaApp
                 }
             }
             return temps;
+        }
+
+        private void realite_button_Click(object sender, EventArgs e)
+        {
+            // Rangement des chariots sur la zone de livraison (1ère colonne).
+            int ligneLibre = 0;
+            for (int i = 0; i < chariots.Count; i++)
+            {
+                chariots[i].Orientation = 1;
+                if (chariots[i].Colonne != 0)
+                {
+                    entrepot[chariots[i].Ligne, chariots[i].Colonne] = 0;
+                    while (entrepot[ligneLibre, 0] != 0)
+                    {
+                        ligneLibre += 1;
+                    }
+                    chariots[i].Colonne = 0;
+                    chariots[i].Ligne = ligneLibre;
+
+                    entrepot[chariots[i].Ligne, chariots[i].Colonne] = -2;
+
+                }
+            }
+
+            Afficher_Entrepot();
+            Ajouter_Chariots();
         }
     }
 }
