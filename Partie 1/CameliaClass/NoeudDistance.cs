@@ -97,7 +97,7 @@ namespace CameliaClass
         /// </summary>
         public override void CalculerHCout()
         {
-            this.HCout = Math.Sqrt((NoeudDistance.arrivee.Colonne - this.nom.Colonne) ^ 2 + (NoeudDistance.arrivee.Ligne - this.nom.Ligne) ^ 2);
+            this.HCout = Math.Sqrt(Math.Pow(NoeudDistance.arrivee.Colonne - this.nom.Colonne, 2) + Math.Pow(NoeudDistance.arrivee.Ligne - this.nom.Ligne, 2));
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace CameliaClass
         /// <returns>Nœud</returns>
         public override string ToString()
         {
-            return "Ligne : " + this.nom.Ligne + " / Colonne : " + this.nom.Colonne + " / Orientation : " + this.nom.Orientation; 
+            return "Ligne : " + (this.nom.Ligne + 1) + " / Colonne : " + (this.nom.Colonne + 1) + " / Orientation : " + this.nom.Orientation;
         }
     }
 }

@@ -476,17 +476,20 @@ namespace CameliaApp
             for (int i = 0; i < chariots.Count - 1; i++)
             {
                 Objet objetAjoute = Generer_Objet();
-                bool existeDeja = false;
+                bool existeDeja = true;
 
-                while (!existeDeja)
+                while (existeDeja)
                 {
+                    objetAjoute = Generer_Objet();
+
                     int j = 0;
-                    while (!existeDeja && j < objets.Count)
+                    existeDeja = objetAjoute.Egal(objet);
+
+                    while (existeDeja && j < objets.Count)
                     {
-                        existeDeja = (objetAjoute.Egal(objets[j]) && objetAjoute.Egal(objet));
+                        existeDeja =  objetAjoute.Egal(objet) && objetAjoute.Egal(objets[j]);
                         j++;
                     }
-                    objetAjoute = Generer_Objet();
                 }
 
                 objets.Add(objetAjoute);
@@ -503,7 +506,7 @@ namespace CameliaApp
                 {
                     // Calcul du premier trajet
                     g = new Graphe();
-                    NoeudRealite noeudInitial = new NoeudRealite(chariots[i], Trouver_Destination(objets[i]), entrepot, chemins, chariots, i, true);
+                    NoeudRealite noeudInitial = new NoeudRealite(chariots[i], Trouver_Destination(objets[i]), entrepot, chemins, chariots, i, false);
                     liste_chemin_1.Add(g.RechercherSolutionAEtoile(noeudInitial));
                     dernier_chemin = g.RechercherSolutionAEtoile(noeudInitial);
 
@@ -521,10 +524,12 @@ namespace CameliaApp
 
                         // Calcul du second trajet
                         g2 = new Graphe();
-                        NoeudRealite noeudInitial2 = new NoeudRealite(liste_chemin_1[i][liste_chemin_1.Count - 1].nom, Trouver_Destination(objets[i]), entrepot, chemins, chariots, i, false);
+                        NoeudRealite noeudInitial2 = new NoeudRealite(liste_chemin_1[i][liste_chemin_1[i].Count - 1].nom, Trouver_Destination(objets[i]), entrepot, chemins, chariots, i, true);
                         liste_chemin_2.Add(g2.RechercherSolutionAEtoile(noeudInitial2));
                         dernier_chemin.AddRange(g2.RechercherSolutionAEtoile(noeudInitial2));
+                        dernier_objet = objets[i];
                         liste_temps.Add(Calculer_Temps());
+                        chemins.Add(dernier_chemin);
 
                         // Mise à jour de la position du chariot dans l'entrepôt
                         entrepot[chariots[i].Ligne, chariots[i].Colonne] = 0;
@@ -549,22 +554,30 @@ namespace CameliaApp
                     }
 
                     // Calcul du premier trajet
-                    for (int j = 0; j < max; j++)
+                    int j = 0;
+                    while (!trajet[trajet.Count - 1].nom.Egal(Trouver_Destination(objets[i])) || max < j)
                     {
                         g = new Graphe();
-                        NoeudRealite noeudInitial = new NoeudRealite(chariots[i], Trouver_Destination(objets[i]), entrepot, chemins, chariots, i, true);
-                        trajet.Add(g.RechercherSolutionAEtoile(noeudInitial)[0]);
+                        NoeudRealite noeudInitial = new NoeudRealite(chariots[i], Trouver_Destination(objets[i]), entrepot, chemins, chariots, j, false);
+                        if (j == 0) { trajet.Add(g.RechercherSolutionAEtoile(noeudInitial)[0]); }
 
-                        // Mise à jour de la position
-                        entrepot[chariots[i].Ligne, chariots[i].Colonne] = 0;
-                        chariots[i] = trajet[j].nom;
-                        entrepot[chariots[i].Ligne, chariots[i].Colonne] = -2;
+                        if (trajet.Count > 0)
+                        {
+                            trajet.Add(g.RechercherSolutionAEtoile(noeudInitial)[1]);
+
+                            // Mise à jour de la position
+                            entrepot[chariots[i].Ligne, chariots[i].Colonne] = 0;
+                            chariots[i] = trajet[j + 1].nom;
+                            entrepot[chariots[i].Ligne, chariots[i].Colonne] = -2;
+                        }
+
+                        j++;
                     }
 
-                    if (!trajet[trajet.Count].nom.Egal(Trouver_Destination(objets[i])))
+                    if (!trajet[trajet.Count - 1].nom.Egal(Trouver_Destination(objets[i])))
                     {
                         g = new Graphe();
-                        NoeudRealite noeudInitial = new NoeudRealite(chariots[i], Trouver_Destination(objets[i]), entrepot, chemins, chariots, i, true);
+                        NoeudRealite noeudInitial = new NoeudRealite(chariots[i], Trouver_Destination(objets[i]), entrepot, chemins, chariots, max, false);
                         trajet.AddRange(g.RechercherSolutionAEtoile(noeudInitial));
 
                         // Mise à jour de la position
@@ -575,6 +588,7 @@ namespace CameliaApp
 
                     liste_chemin_1.Add(trajet);
                     dernier_chemin = trajet;
+                    dernier_objet = objets[i];
                     int temps_trajet_1 = Calculer_Temps();
 
                     try
@@ -591,7 +605,7 @@ namespace CameliaApp
                             for (int j = temps_trajet_1; j < max; j++)
                             {
                                 g = new Graphe();
-                                NoeudRealite noeudInitial = new NoeudRealite(chariots[i], Trouver_Destination(objets[i]), entrepot, chemins, chariots, i, false);
+                                NoeudRealite noeudInitial = new NoeudRealite(chariots[i], Trouver_Destination(objets[i]), entrepot, chemins, chariots, j, true);
                                 trajet.Add(g.RechercherSolutionAEtoile(noeudInitial)[0]);
 
                                 // Mise à jour de la position
@@ -604,7 +618,7 @@ namespace CameliaApp
                         else
                         {
                             g = new Graphe();
-                            NoeudRealite noeudInitial = new NoeudRealite(chariots[i], Trouver_Destination(objets[i]), entrepot, chemins, chariots, i, false);
+                            NoeudRealite noeudInitial = new NoeudRealite(chariots[i], Trouver_Destination(objets[i]), entrepot, chemins, chariots, temps_trajet_1, true);
                             trajet.AddRange(g.RechercherSolutionAEtoile(noeudInitial));
 
                             // Mise à jour de la position
@@ -614,6 +628,9 @@ namespace CameliaApp
                         }
 
                         liste_chemin_2.Add(trajet);
+                        dernier_chemin.AddRange(trajet);
+                        dernier_objet = objets[i];
+                        liste_temps.Add(Calculer_Temps());
                     }
 
                     catch (Exception e)
@@ -719,9 +736,9 @@ namespace CameliaApp
         /// </summary>
         private void Creer_Chariots_Defaut()
         {
-            List<int> chariots_x = new List<int> { 0, 13, 24, 5, 16, 13, 23, 14, 18, 6, 17, 15, 23, 8, 5 };
-            List<int> chariots_y = new List<int> { 0, 12, 24, 7, 12, 3, 0, 13, 23, 1, 19, 7, 23, 24, 20 };
-            List<int> chariots_k = new List<int> { 0, 2, 1, 2, 3, 1, 0, 0, 2, 1, 2, 3, 1, 0, 3 };
+            List<int> chariots_x = new List<int> { 0, 13, 24 };//, 5, 16, 13, 23, 14, 18, 6, 17, 15, 23, 8, 5 };
+            List<int> chariots_y = new List<int> { 0, 12, 24};//, 7, 12, 3, 0, 13, 23, 1, 19, 7, 23, 24, 20 };
+            List<int> chariots_k = new List<int> { 0, 2, 1 };//, 2, 3, 1, 0, 0, 2, 1, 2, 3, 1, 0, 3 };
 
             for (int i = 0; i < chariots_x.Count; i++)
             {
