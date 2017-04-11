@@ -115,7 +115,7 @@ namespace CameliaClass
         /// </summary>
         public override void CalculerHCout()
         {
-            this.HCout = Math.Sqrt(Math.Pow(NoeudDistance.arrivee.Colonne - this.nom.Colonne, 2) + Math.Pow(NoeudDistance.arrivee.Ligne - this.nom.Ligne, 2));
+            this.HCout = Math.Sqrt(Math.Pow(NoeudTemps.arrivee.Colonne - this.nom.Colonne, 2) + Math.Pow(NoeudTemps.arrivee.Ligne - this.nom.Ligne, 2));
         }
 
         /// <summary>

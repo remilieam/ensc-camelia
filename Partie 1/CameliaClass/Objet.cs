@@ -32,7 +32,7 @@ namespace CameliaClass
 
         public override string ToString()
         {
-            return "Objet :\n  - Ligne : " + this.Ligne + "\n  - Colonne : " + this.Colonne + "\n  - Orientation : " + this.Orientation + "\n  - Hauteur : " + this.Hauteur;
+            return "Ligne : " + (this.Ligne + 1) + " / Colonne : " + (this.Colonne + 1) + " / Orientation : " + this.Orientation + " / Hauteur : " + this.Hauteur;
         }
     }
 }

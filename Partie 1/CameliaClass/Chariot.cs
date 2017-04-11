@@ -30,7 +30,7 @@ namespace CameliaClass
 
         public override string ToString()
         {
-            return "Chariot :\n  - Ligne : " + this.Ligne + "\n  - Colonne : " + this.Colonne + "\n  - Orientation : " + this.Orientation;
+            return "Ligne : " + (this.Ligne + 1) + " / Colonne : " + (this.Colonne + 1) + " / Orientation : " + this.Orientation;
         }
     }
 }

@@ -41,34 +41,37 @@ namespace CameliaClass
             NoeudRealite.entrepot = entrepot;
             NoeudRealite.chemins = chemins;
             NoeudRealite.chariots = chariots;
-            NoeudRealite.temps = temps;
+            NoeudRealite.temps = temps + 1;
             NoeudRealite.mode = mode;
 
-            for (int i = 0; i < chemins.Count; i++)
+            if (NoeudRealite.temps != 0)
             {
-                int j = 0; // Numéro du noeud lu
-                int t = 0; // Temps pour atteindre le noeud j+1
-
-                while (t < temps && j < (chemins[i].Count - 1))
+                for (int i = 0; i < chemins.Count; i++)
                 {
-                    t += 1;
+                    int j = 0; // Numéro du noeud lu
+                    int t = 0; // Temps pour atteindre le noeud j+1
 
-                    if (chemins[i][j].nom.Orientation != chemins[i][j + 1].nom.Orientation)
+                    while (t < NoeudRealite.temps && j < (chemins[i].Count - 1))
                     {
-                        t += 3;
+                        t += 1;
 
-                        if (chemins[i][j].nom.Orientation % 2 == chemins[i][j + 1].nom.Orientation % 2)
+                        if (chemins[i][j].nom.Orientation != chemins[i][j + 1].nom.Orientation)
                         {
                             t += 3;
+
+                            if (chemins[i][j].nom.Orientation % 2 == chemins[i][j + 1].nom.Orientation % 2)
+                            {
+                                t += 3;
+                            }
                         }
+
+                        j += 1;
                     }
 
-                    j += 1;
+                    entrepot[chariots[i].Ligne, chariots[i].Colonne] = 0;
+                    chariots[i] = (j == (chemins[i].Count - 1)) ? chemins[i][j].nom : chemins[i][j - 1].nom;
+                    entrepot[chariots[i].Ligne, chariots[i].Colonne] = -2;
                 }
-
-                entrepot[chariots[i].Ligne, chariots[i].Colonne] = 0;
-                chariots[i] = (j == (chemins[i].Count - 1)) ? chemins[i][j].nom : chemins[i][j - 1].nom;
-                entrepot[chariots[i].Ligne, chariots[i].Colonne] = -2;
             }
         }
 
