@@ -12,6 +12,7 @@ namespace CameliaClass
         /// <summary>
         /// Constructeur
         /// </summary>
+        /// <param name="chariot">Chariot servant de nœud</param>
         public NoeudLivraison(Chariot chariot) : base()
         {
             this.nom = chariot;
@@ -20,7 +21,8 @@ namespace CameliaClass
         /// <summary>
         /// Constructeur du premier nœud
         /// </summary>
-        /// <param name="entrepot">Entrepôt</param>
+        /// <param name="depart">Nœud de départ</param>
+        /// <param name="entrepot">Configuration de l’entrepôt au départ</param>
         public NoeudLivraison(Chariot depart, int[,] entrepot)
             : base()
         {
@@ -32,7 +34,7 @@ namespace CameliaClass
         /// Permet de vérifier si 2 nœuds sont identiques
         /// </summary>
         /// <param name="noeudEvalue">Nœud que l’on compare</param>
-        /// <returns></returns>
+        /// <returns>true si les nœuds sont les mêmes, false sinon</returns>
         public override bool EstEgal(Noeud noeudEvalue)
         {
             return (this.nom.Egal(noeudEvalue.nom));
@@ -110,6 +112,9 @@ namespace CameliaClass
         /// </summary>
         public override void CalculerHCout()
         {
+            if (this.nom.Orientation == 3) { this.HCout = 0; }
+            else if (this.nom.Orientation == 1) { this.HCout = 2; }
+            else { this.HCout = 1; }
         }
 
         /// <summary>
@@ -118,7 +123,7 @@ namespace CameliaClass
         /// <returns>Nœud</returns>
         public override string ToString()
         {
-            return "Ligne : " + this.nom.Ligne + " / Colonne : " + this.nom.Colonne + " / Orientation : " + this.nom.Orientation; 
+            return "Ligne : " + (this.nom.Ligne + 1) + " / Colonne : " + (this.nom.Colonne + 1) + " / Orientation : " + this.nom.Orientation;
         }
     }
 }

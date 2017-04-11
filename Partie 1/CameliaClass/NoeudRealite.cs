@@ -17,6 +17,7 @@ namespace CameliaClass
         /// <summary>
         /// Constructeur
         /// </summary>
+        /// <param name="chariot">Chariot servant de nœud</param>
         public NoeudRealite(Chariot chariot) : base()
         {
             this.nom = chariot;
@@ -25,7 +26,13 @@ namespace CameliaClass
         /// <summary>
         /// Constructeur du premier nœud
         /// </summary>
-        /// <param name="entrepot">Entrepôt</param>
+        /// <param name="depart">Nœud de départ</param>
+        /// <param name="arrivee">Nœud d’arrivée</param>
+        /// <param name="entrepot">Configuration de l’entrepôt au départ</param>
+        /// <param name="chemins">Chemins des chariots en mouvement</param>
+        /// <param name="chariots">Chariots présent dans l’entrepôt</param>
+        /// <param name="temps">Temps écoulé depuis le départ</param>
+        /// <param name="mode">false pour la récupération, true pour la livraison</param>
         public NoeudRealite(Chariot depart, Chariot arrivee, int[,] entrepot, List<List<Noeud>> chemins, List<Chariot> chariots, int temps, bool mode)
             : base()
         {
@@ -34,7 +41,7 @@ namespace CameliaClass
             NoeudRealite.entrepot = entrepot;
             NoeudRealite.chemins = chemins;
             NoeudRealite.chariots = chariots;
-            NoeudRealite.temps = temps; // Temps écoulé depuis le départ
+            NoeudRealite.temps = temps;
             NoeudRealite.mode = mode;
 
             for (int i = 0; i < chemins.Count; i++)
@@ -69,7 +76,7 @@ namespace CameliaClass
         /// Permet de vérifier si 2 nœuds sont identiques
         /// </summary>
         /// <param name="noeudEvalue">Nœud que l’on compare</param>
-        /// <returns></returns>
+        /// <returns>true si les nœuds sont les mêmes, false sinon</returns>
         public override bool EstEgal(Noeud noeudEvalue)
         {
             return (this.nom.Egal(noeudEvalue.nom));
@@ -155,7 +162,7 @@ namespace CameliaClass
         /// </summary>
         public override void CalculerHCout()
         {
-            this.HCout = Math.Sqrt((NoeudRealite.arrivee.Colonne - this.nom.Colonne) ^ 2 + (NoeudRealite.arrivee.Ligne - this.nom.Ligne) ^ 2);
+            this.HCout = Math.Sqrt(Math.Pow(NoeudRealite.arrivee.Colonne - this.nom.Colonne, 2) + Math.Pow(NoeudRealite.arrivee.Ligne - this.nom.Ligne, 2));
         }
 
         /// <summary>
@@ -164,7 +171,7 @@ namespace CameliaClass
         /// <returns>Nœud</returns>
         public override string ToString()
         {
-            return "Ligne : " + this.nom.Ligne + " / Colonne : " + this.nom.Colonne + " / Orientation : " + this.nom.Orientation; 
+            return "Ligne : " + (this.nom.Ligne + 1) + " / Colonne : " + (this.nom.Colonne + 1) + " / Orientation : " + this.nom.Orientation;
         }
     }
 }
