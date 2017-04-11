@@ -85,10 +85,7 @@ namespace MC
                 for (int j = 0; j < bmp.Height; j++)
                     bmp.SetPixel(i, j, Color.Black);
 
-            // On crée une autre image
-            bmp2 = new Bitmap(500, 500);
-            pictureBox2.Image = bmp2;
-
+           
             // Les tests sur des valeurs
             List<List<double>> lentreestests = new List<List<double>>();
             // On crée le vecteur test
@@ -98,8 +95,8 @@ namespace MC
                 {
                     List<double> vect = new List<double>();
                     // On normalise les positions de l'image
-                    vect.Add(i/500.0);
-                    vect.Add(j/500.0);
+                    vect.Add(i / 500.0);
+                    vect.Add(j / 500.0);
                     lentreestests.Add(vect);
                 }
             }
@@ -116,59 +113,67 @@ namespace MC
             {
                 for (int j = 0; j < bmp.Height; j++)
                 {
-                    z = (int)(lsortiesobtenues[cmpt]*255);
+                    z = (int)(lsortiesobtenues[cmpt] * 255);
 
-                    bmp.SetPixel(i, j, Color.FromArgb(z,z,z));
+                    bmp.SetPixel(i, j, Color.FromArgb(z, z, z));
                     cmpt++;
                 }
             }
 
+
+            // On crée une autre image
+            bmp2 = new Bitmap(500, 500);
+            pictureBox2.Image = bmp2;
+
+            // On remplit cette image de noir
+            for (int i = 0; i < bmp2.Width; i++)
+                for (int j = 0; j < bmp2.Height; j++)
+                    bmp2.SetPixel(i, j, Color.Black);
+            
             // On crée la liste qui contiendra toutes les erreurs
             List<double> erreurs = new List<double>();
-            cmpt = 0;
-            // Calcul de l'erreur pour chaque pixek
-            for (int i = 0; i < bmp2.Width * bmp2.Height; i++)
+            // Calcul de l'erreur pour chaque pixel et affichage
+            for (int i = 0; i < lvecteursentrees.Count(); i++)
             {
+                // On récupère les coordonnées du fichier
+                int x = (int)(lvecteursentrees[i][0] * 500);
+                int y = (int)(lvecteursentrees[i][1] * 500);
+
+                // On determine la position dans l"image 500*500
+                int indice = y * bmp.Width + x;
+
                 // Calcul de l'erreur : | valeur approchée - valeur réelle |
-                erreurs.Add(Math.Abs(lsortiesobtenues[cmpt] - lsortiesdesirees[cmpt]));
-
-                cmpt++;
-
+                erreurs.Add(Math.Abs(lsortiesobtenues[indice] - lsortiesdesirees[i]));
+                
             }
 
             // On cherche le max et le min dans la liste
             double erreur_max = erreurs.Max();
             double erreur_min = erreurs.Min();
-                    
-            // On crée une nouvelle liste qui contiendra les erreurs à l'échelle
-            List<double> erreurs_echelle = new List<double>();
-
+  
+            int valeur;
             for (int i = 0; i < erreurs.Count(); i++)
             {
+                // On récupère les coordonnées du fichier
+                int x = (int)(lvecteursentrees[i][0] * 500);
+                int y = (int)(lvecteursentrees[i][1] * 500);
+
                 // On ajuste le coefficient de la liste suivant la nouvelle échelle
                 // erreur_min à erreur_max --> 0 à 255
-                erreurs_echelle[i] = (erreurs[i] - erreur_min) * 255 / (erreur_max - erreur_min);
+                valeur = (int)((erreurs[i] - erreur_min) * 255 / (erreur_max - erreur_min));
+
+                bmp2.SetPixel(x, y, Color.FromArgb(valeur, valeur, valeur));
+
             }
 
-            int valeur;
-            cmpt = 0;
-            // On fait l'affichage de la deuxième image
-            for (int i = 0; i < bmp2.Width; i++)
-            {
-                for (int j = 0; j < bmp2.Height; j++)
-                {
-                    valeur = (int)(erreurs_echelle[cmpt]);
+            // On calcule la valeur moyenne des erreurs
+            double valeur_moyenne = erreurs.Sum() / (erreurs.Count * 1.0);
+            valeur_taux_resi_label.Text = Convert.ToString(valeur_moyenne);
 
-                    bmp2.SetPixel(i, j, Color.FromArgb(valeur, valeur, valeur));
-                    cmpt++;
-                }
-            }
-
-
+                        
             pictureBox1.Invalidate();
             pictureBox2.Invalidate();
 
-            MessageBox.Show("f " + cmpt);
         }
 
         private void Form1_Load(object sender, EventArgs e)

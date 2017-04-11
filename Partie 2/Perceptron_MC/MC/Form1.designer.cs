@@ -53,6 +53,8 @@
             this.label12 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.taux_resi_label = new System.Windows.Forms.Label();
+            this.valeur_taux_resi_label = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
@@ -291,15 +293,34 @@
             this.pictureBox2.Location = new System.Drawing.Point(851, 51);
             this.pictureBox2.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(50, 60);
+            this.pictureBox2.Size = new System.Drawing.Size(500, 500);
             this.pictureBox2.TabIndex = 25;
             this.pictureBox2.TabStop = false;
+            // 
+            // taux_resi_label
+            // 
+            this.taux_resi_label.AutoSize = true;
+            this.taux_resi_label.Location = new System.Drawing.Point(860, 30);
+            this.taux_resi_label.Name = "taux_resi_label";
+            this.taux_resi_label.Size = new System.Drawing.Size(117, 13);
+            this.taux_resi_label.TabIndex = 26;
+            this.taux_resi_label.Text = "Taux d\'erreur résiduel : ";
+            // 
+            // valeur_taux_resi_label
+            // 
+            this.valeur_taux_resi_label.AutoSize = true;
+            this.valeur_taux_resi_label.Location = new System.Drawing.Point(983, 30);
+            this.valeur_taux_resi_label.Name = "valeur_taux_resi_label";
+            this.valeur_taux_resi_label.Size = new System.Drawing.Size(0, 13);
+            this.valeur_taux_resi_label.TabIndex = 27;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1362, 593);
+            this.Controls.Add(this.valeur_taux_resi_label);
+            this.Controls.Add(this.taux_resi_label);
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.label13);
             this.Controls.Add(this.label12);
@@ -363,5 +384,7 @@
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.Label taux_resi_label;
+        private System.Windows.Forms.Label valeur_taux_resi_label;
     }
 }
