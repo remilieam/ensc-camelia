@@ -15,10 +15,16 @@ namespace Formulaire
     {
         private static Bitmap Image;
         private Reseau Reseau;
+        private Timer Chrono;
+        private int Secondes;
 
         public Supervise_Form()
         {
             InitializeComponent();
+            Chrono = new Timer();
+            Chrono.Tick += new EventHandler(Chrono_Tick);
+            Chrono.Interval = 1000;
+            Secondes = 0;
         }
 
         private void Reseau_Button_Click(object sender, EventArgs e)
@@ -78,8 +84,10 @@ namespace Formulaire
                 SortiesM.Add(Sorties[1500 + i]);
             }
 
-            // Apprentissage supervisé pour un coefficient d’apprentissage de 0.5 et 1000 itérations
-            Reseau.Retropropagation(EntreesM, SortiesM, 0.8, 500);
+            // Apprentissage supervisé pour un coefficient d’apprentissage de 0.5 et 500 itérations
+            Chrono.Start();
+            Reseau.Retropropagation(EntreesM, SortiesM, 0.5, 500);
+            Chrono.Stop();
 
             // Affichage de l’image de résultat
             Tests();
@@ -89,6 +97,7 @@ namespace Formulaire
             {
                 Entrees[i][0] = Math.Floor(Entrees[i][0]);
                 Entrees[i][1] = Math.Floor(Entrees[i][1]);
+
                 if (i < 1500)
                 {
                     Supervise_Form.Image.SetPixel((int)Entrees[i][0], (int)Entrees[i][1], Color.Black);
@@ -99,7 +108,36 @@ namespace Formulaire
                 }
             }
 
-            MessageBox.Show("Fini...", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            // Calcul du pourcentage de bonne et mauvaise classification
+            List<double> SortiesCalculees = Reseau.TesterReseau(EntreesM);
+
+            int BonneClassification = 0;
+            int MauvaiseClassification = 0;
+
+            for (int i = 0; i < SortiesCalculees.Count; i++)
+            {
+                if (i % 2 == 0)
+                {
+                    if (SortiesCalculees[i] < 0.5) { BonneClassification++; }
+                    else { MauvaiseClassification++; }
+                }
+
+                else
+                {
+                    if (SortiesCalculees[i] > 0.5) { BonneClassification++; }
+                    else { MauvaiseClassification++; }
+                }
+            }
+
+            string Message = "Pourcentage de bonne classification : " + Math.Round(BonneClassification / 3000.0, 4) * 100 +
+                "\nPourcentage de mauvaise classification : " + Math.Round(MauvaiseClassification / 3000.0, 4) * 100 +
+                "\nTemps d’apprentissage : " + Secondes;
+            MessageBox.Show(Message, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void Chrono_Tick(object sender, EventArgs e)
+        {
+            Secondes += 1;
         }
 
         private List<List<double>> RecupererDonnees(string fichier_source)
@@ -172,7 +210,7 @@ namespace Formulaire
                 {
                     if (Sorties[Compteur] < 0.5)
                     {
-                        Supervise_Form.Image.SetPixel(i, j, Color.Yellow);
+                        Supervise_Form.Image.SetPixel(i, j, Color.Orange);
                     }
                     else
                     {

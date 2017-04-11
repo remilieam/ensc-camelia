@@ -15,7 +15,7 @@ namespace Formulaire
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Non_Supervise_Form());
+            Application.Run(new Supervise_Form());
         }
     }
 }
