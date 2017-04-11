@@ -34,14 +34,14 @@ namespace CameliaClass
             NoeudRealite.entrepot = entrepot;
             NoeudRealite.chemins = chemins;
             NoeudRealite.chariots = chariots;
-            NoeudRealite.temps = temps;
+            NoeudRealite.temps = temps; // Temps écoulé depuis le départ
             NoeudRealite.mode = mode;
-
 
             for (int i = 0; i < chemins.Count; i++)
             {
-                int t = 0;
-                int j = 0;
+                int j = 0; // Numéro du noeud lu
+                int t = 0; // Temps pour atteindre le noeud j+1
+
                 while (t < temps && j < (chemins[i].Count - 1))
                 {
                     t += 1;
@@ -60,7 +60,7 @@ namespace CameliaClass
                 }
 
                 entrepot[chariots[i].Ligne, chariots[i].Colonne] = 0;
-                chariots[i] = chemins[i][j].nom;
+                chariots[i] = (j == (chemins[i].Count - 1)) ? chemins[i][j].nom : chemins[i][j - 1].nom;
                 entrepot[chariots[i].Ligne, chariots[i].Colonne] = -2;
             }
         }

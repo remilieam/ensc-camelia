@@ -461,13 +461,15 @@ namespace CameliaApp
             // On crée une liste de chariots, une liste d'objets et une liste de graphes
             List<Objet> objets = new List<Objet>();
             List<List<Noeud>> liste_chemin_1 = new List<List<Noeud>>();
-            List<int> liste_temps = new List<int>();
             List<List<Noeud>> liste_chemin_2 = new List<List<Noeud>>();
+            List<int> liste_temps = new List<int>();
             List<List<Noeud>> chemins = new List<List<Noeud>>();
             FileStream fd = new FileStream("../../../CameliaIcon/depart.png", FileMode.Open);
             FileStream fa = new FileStream("../../../CameliaIcon/arrivee.png", FileMode.Open);
             FileStream fc = new FileStream("../../../CameliaIcon/chemin.png", FileMode.Open);
+            Graphe g, g2;
 
+            // Placement du chariot sur lequel on a cliqué à la fin de la liste
             int rang = Trouver_Rang(depart);
             chariots.Add(chariots[rang]);
             chariots.RemoveAt(rang);
@@ -487,7 +489,7 @@ namespace CameliaApp
 
                     while (existeDeja && j < objets.Count)
                     {
-                        existeDeja =  objetAjoute.Egal(objet) && objetAjoute.Egal(objets[j]);
+                        existeDeja =  objetAjoute.Egal(objets[j]);
                         j++;
                     }
                 }
@@ -496,9 +498,8 @@ namespace CameliaApp
             }
 
             objets.Add(objet);
-            Graphe g, g2;
 
-            // On attribue à tous les autres chariots un objet à aller chercher
+            // Calcul des chemins de chaque chariot
             for (int i = 0; i < chariots.Count; i++)
             {
                 // Cas où il n'y a qu'un seul chariot qui bouge
@@ -506,13 +507,14 @@ namespace CameliaApp
                 {
                     // Calcul du premier trajet
                     g = new Graphe();
-                    NoeudRealite noeudInitial = new NoeudRealite(chariots[i], Trouver_Destination(objets[i]), entrepot, chemins, chariots, i, false);
+                    NoeudTemps noeudInitial = new NoeudTemps(chariots[i], Trouver_Destination(objets[i]), entrepot);
+
+                    // Ajout du premier trajet du premier chariot la liste
                     liste_chemin_1.Add(g.RechercherSolutionAEtoile(noeudInitial));
-                    dernier_chemin = g.RechercherSolutionAEtoile(noeudInitial);
 
                     try
                     {
-                        if (g.noeudsOuverts.Count == 0)
+                        if (liste_chemin_1[i].Count == 0)
                         {
                             throw new Exception("Pas de solution !");
                         }
@@ -524,17 +526,28 @@ namespace CameliaApp
 
                         // Calcul du second trajet
                         g2 = new Graphe();
-                        NoeudRealite noeudInitial2 = new NoeudRealite(liste_chemin_1[i][liste_chemin_1[i].Count - 1].nom, Trouver_Destination(objets[i]), entrepot, chemins, chariots, i, true);
+                        NoeudLivraison noeudInitial2 = new NoeudLivraison(liste_chemin_1[i][liste_chemin_1[i].Count - 1].nom, entrepot);
+
+                        // Ajout du deuxième trajet du premier chariot à la liste
                         liste_chemin_2.Add(g2.RechercherSolutionAEtoile(noeudInitial2));
-                        dernier_chemin.AddRange(g2.RechercherSolutionAEtoile(noeudInitial2));
-                        dernier_objet = objets[i];
-                        liste_temps.Add(Calculer_Temps());
-                        chemins.Add(dernier_chemin);
+                        liste_chemin_2.RemoveAt(0);
 
                         // Mise à jour de la position du chariot dans l'entrepôt
                         entrepot[chariots[i].Ligne, chariots[i].Colonne] = 0;
                         chariots[i] = liste_chemin_2[i][liste_chemin_2[i].Count - 1].nom;
                         entrepot[chariots[i].Ligne, chariots[i].Colonne] = -2;
+
+                        // Récupération du dernier chemin et objet
+                        dernier_chemin = new List<Noeud>();
+                        dernier_chemin.AddRange(liste_chemin_1[i]);
+                        dernier_chemin.AddRange(liste_chemin_2[i]);
+                        dernier_objet = objets[i];
+
+                        // Calcul du temps de parcours du premier chariot
+                        liste_temps.Add(Calculer_Temps());
+
+                        // Ajout du trajet du premier chariot à la liste
+                        chemins.Add(dernier_chemin);
                     }
 
                     catch (Exception e)
@@ -547,6 +560,7 @@ namespace CameliaApp
                 {
                     List<Noeud> trajet = new List<Noeud>();
 
+                    // Récupération du temps durant il y a des chariots en mouvement
                     int max = liste_temps[0];
                     foreach (int t in liste_temps)
                     {
@@ -555,13 +569,16 @@ namespace CameliaApp
 
                     // Calcul du premier trajet
                     int j = 0;
-                    while (!trajet[trajet.Count - 1].nom.Egal(Trouver_Destination(objets[i])) || max < j)
+
+                    // Si des chariots bougent dans l’entrepôt
+                    while (j < max || !trajet[trajet.Count - 1].nom.Egal(Trouver_Destination(objets[i])))
                     {
                         g = new Graphe();
                         NoeudRealite noeudInitial = new NoeudRealite(chariots[i], Trouver_Destination(objets[i]), entrepot, chemins, chariots, j, false);
                         if (j == 0) { trajet.Add(g.RechercherSolutionAEtoile(noeudInitial)[0]); }
 
-                        if (trajet.Count > 0)
+                        // Cas où le chariot peut bouger => Ajout de la prochaine position à la liste
+                        if (g.RechercherSolutionAEtoile(noeudInitial).Count > 1)
                         {
                             trajet.Add(g.RechercherSolutionAEtoile(noeudInitial)[1]);
 
@@ -571,14 +588,21 @@ namespace CameliaApp
                             entrepot[chariots[i].Ligne, chariots[i].Colonne] = -2;
                         }
 
+                        // Cas où il doit rester immobile => Ajout de sa position actuelle à la liste
+                        else { trajet.Add(trajet[trajet.Count - 1]); }
+
                         j++;
                     }
 
+                    // Si jamais tous les chariots sont revenus à la zone de livraison
                     if (!trajet[trajet.Count - 1].nom.Egal(Trouver_Destination(objets[i])))
                     {
+                        // Calcul du chemin restant
                         g = new Graphe();
                         NoeudRealite noeudInitial = new NoeudRealite(chariots[i], Trouver_Destination(objets[i]), entrepot, chemins, chariots, max, false);
-                        trajet.AddRange(g.RechercherSolutionAEtoile(noeudInitial));
+                        List<Noeud> trajet_a_ajoute = g.RechercherSolutionAEtoile(noeudInitial);
+                        trajet_a_ajoute.RemoveAt(0);
+                        trajet.AddRange(trajet_a_ajoute);
 
                         // Mise à jour de la position
                         entrepot[chariots[i].Ligne, chariots[i].Colonne] = 0;
@@ -586,35 +610,50 @@ namespace CameliaApp
                         entrepot[chariots[i].Ligne, chariots[i].Colonne] = -2;
                     }
 
+                    // Ajout du premier trajet du i° chariot à la liste
                     liste_chemin_1.Add(trajet);
-                    dernier_chemin = trajet;
+
+                    // Calcul du temps de parcours du i° chariot durant le premier trajet
+                    dernier_chemin = liste_chemin_1[i];
                     dernier_objet = objets[i];
                     int temps_trajet_1 = Calculer_Temps();
 
                     try
                     {
-                        if (trajet.Count == 0)
+                        if (liste_chemin_1[i].Count == 0)
                         {
                             throw new Exception("Pas de solution !");
                         }
 
                         trajet = new List<Noeud>();
 
-                        if (temps_trajet_1 < max)
+                        // Calcul du second trajet
+                        int k = temps_trajet_1;
+
+                        // Si des chariots bougent dans l’entrepôt
+                        if (k < max)
                         {
-                            for (int j = temps_trajet_1; j < max; j++)
+                            g = new Graphe();
+                            NoeudRealite noeudInitial = new NoeudRealite(chariots[i], Trouver_Destination(objets[i]), entrepot, chemins, chariots, k, true);
+
+                            // Cas où le chariot peut bouger => Ajout de la prochaine position à la liste
+                            if (g.RechercherSolutionAEtoile(noeudInitial).Count > 1)
                             {
-                                g = new Graphe();
-                                NoeudRealite noeudInitial = new NoeudRealite(chariots[i], Trouver_Destination(objets[i]), entrepot, chemins, chariots, j, true);
-                                trajet.Add(g.RechercherSolutionAEtoile(noeudInitial)[0]);
+                                trajet.Add(g.RechercherSolutionAEtoile(noeudInitial)[1]);
 
                                 // Mise à jour de la position
                                 entrepot[chariots[i].Ligne, chariots[i].Colonne] = 0;
-                                chariots[i] = trajet[j].nom;
+                                chariots[i] = trajet[k + 1].nom;
                                 entrepot[chariots[i].Ligne, chariots[i].Colonne] = -2;
                             }
+
+                            // Cas où il doit rester immobile => Ajout de sa position actuelle à la liste
+                            else { trajet.Add(trajet[trajet.Count - 1]); }
+
+                            k++;
                         }
 
+                        // Si jamais tous les chariots sont revenus à la zone de livraison
                         else
                         {
                             g = new Graphe();
@@ -627,17 +666,24 @@ namespace CameliaApp
                             entrepot[chariots[i].Ligne, chariots[i].Colonne] = -2;
                         }
 
+                        // Ajout du premier trajet du i° chariot à la liste
                         liste_chemin_2.Add(trajet);
-                        dernier_chemin.AddRange(trajet);
+
+                        // Récupération du dernier chemin et objet
+                        dernier_chemin.AddRange(liste_chemin_2[i]);
                         dernier_objet = objets[i];
+
+                        // Calcul du temps de parcours du i° chariot
                         liste_temps.Add(Calculer_Temps());
+
+                        // Ajout du trajet du premier chariot à la liste
+                        chemins.Add(dernier_chemin);
                     }
 
                     catch (Exception e)
                     {
                         MessageBox.Show(e.Message, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
-
                 }
 
                 //try
@@ -990,21 +1036,23 @@ namespace CameliaApp
         {
             // Rangement des chariots sur la zone de livraison (1ère colonne).
             int ligneLibre = 0;
+
             for (int i = 0; i < chariots.Count; i++)
             {
                 chariots[i].Orientation = 1;
                 if (chariots[i].Colonne != 0)
                 {
                     entrepot[chariots[i].Ligne, chariots[i].Colonne] = 0;
+
                     while (entrepot[ligneLibre, 0] != 0)
                     {
                         ligneLibre += 1;
                     }
+
                     chariots[i].Colonne = 0;
                     chariots[i].Ligne = ligneLibre;
 
                     entrepot[chariots[i].Ligne, chariots[i].Colonne] = -2;
-
                 }
             }
 
