@@ -90,6 +90,7 @@ namespace Formulaire
             Chrono.Stop();
 
             // Affichage de l’image de résultat
+            Resultat_PictureBox.Refresh();
             Tests();
 
             // Affichage des valeurs du fichier
