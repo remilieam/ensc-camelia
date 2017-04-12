@@ -90,6 +90,7 @@ namespace Formulaire
             Chrono.Stop();
 
             // Affichage de l’image de résultat
+            Resultat_PictureBox.Refresh();
             Tests();
 
             // Affichage des valeurs du fichier
@@ -219,6 +220,11 @@ namespace Formulaire
                     Compteur++;
                 }
             }
+        }
+
+        private void Supervise_Form_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.DialogResult = DialogResult.OK;
         }
     }
 }

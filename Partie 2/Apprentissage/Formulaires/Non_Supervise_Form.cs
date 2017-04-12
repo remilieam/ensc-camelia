@@ -146,6 +146,7 @@ namespace Formulaire
             }
 
             AfficherDonnees();
+            Resultat_PictureBox.Refresh();
 
             MessageBox.Show("Pourcentage de bonne classification : " + Math.Round(BonneClassification / 3000.0, 2) +
                 "\nPourcentage de mauvaise classification : " + Math.Round(MauvaiseClassification / 3000.0, 2), "Information",
@@ -286,6 +287,11 @@ namespace Formulaire
             }
 
             return NumeroClasseGagnante;
+        }
+
+        private void Non_Supervise_Form_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.DialogResult = DialogResult.OK;
         }
     }
 }

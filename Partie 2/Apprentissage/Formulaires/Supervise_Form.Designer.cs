@@ -104,6 +104,7 @@
             this.MaximizeBox = false;
             this.Name = "Supervise_Form";
             this.Text = "Apprentissage Supervisé";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Supervise_Form_FormClosed);
             ((System.ComponentModel.ISupportInitialize)(this.Resultat_PictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
