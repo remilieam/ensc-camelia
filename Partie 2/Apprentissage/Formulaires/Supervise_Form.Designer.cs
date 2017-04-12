@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Supervise_Form));
             this.NbCouches_Label = new System.Windows.Forms.Label();
             this.NbCouches_TextBox = new System.Windows.Forms.TextBox();
@@ -35,6 +36,7 @@
             this.NbNeurones_TextBox = new System.Windows.Forms.TextBox();
             this.Reseau_Button = new System.Windows.Forms.Button();
             this.Resultat_PictureBox = new System.Windows.Forms.PictureBox();
+            this.Chrono_Timer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.Resultat_PictureBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -89,6 +91,11 @@
             this.Resultat_PictureBox.TabIndex = 5;
             this.Resultat_PictureBox.TabStop = false;
             // 
+            // Chrono_Timer
+            // 
+            this.Chrono_Timer.Interval = 1000;
+            this.Chrono_Timer.Tick += new System.EventHandler(this.Chrono_Timer_Tick);
+            // 
             // Supervise_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -119,5 +126,6 @@
         private System.Windows.Forms.TextBox NbNeurones_TextBox;
         private System.Windows.Forms.Button Reseau_Button;
         private System.Windows.Forms.PictureBox Resultat_PictureBox;
+        private System.Windows.Forms.Timer Chrono_Timer;
     }
 }

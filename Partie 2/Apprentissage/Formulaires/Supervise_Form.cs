@@ -15,15 +15,11 @@ namespace Formulaire
     {
         private static Bitmap Image;
         private Reseau Reseau;
-        private Timer Chrono;
         private int Secondes;
 
         public Supervise_Form()
         {
             InitializeComponent();
-            Chrono = new Timer();
-            Chrono.Tick += new EventHandler(Chrono_Tick);
-            Chrono.Interval = 1000;
             Secondes = 0;
         }
 
@@ -85,12 +81,11 @@ namespace Formulaire
             }
 
             // Apprentissage supervisé pour un coefficient d’apprentissage de 0.5 et 500 itérations
-            Chrono.Start();
+            Chrono_Timer.Start();
             Reseau.Retropropagation(EntreesM, SortiesM, 0.5, 500);
-            Chrono.Stop();
+            Chrono_Timer.Stop();
 
             // Affichage de l’image de résultat
-            Resultat_PictureBox.Refresh();
             Tests();
 
             // Affichage des valeurs du fichier
@@ -109,8 +104,9 @@ namespace Formulaire
                 }
             }
 
-            // Calcul du pourcentage de bonne et mauvaise classification
+            // Calcul du pourcentage de bonne et mauvaise classification et calcul de l’erreur résiduelle
             List<double> SortiesCalculees = Reseau.TesterReseau(EntreesM);
+            double ErreurResiduelle = 0;
 
             int BonneClassification = 0;
             int MauvaiseClassification = 0;
@@ -121,24 +117,23 @@ namespace Formulaire
                 {
                     if (SortiesCalculees[i] < 0.5) { BonneClassification++; }
                     else { MauvaiseClassification++; }
+                    ErreurResiduelle += Math.Abs(SortiesCalculees[i] - 0.1);
                 }
 
                 else
                 {
                     if (SortiesCalculees[i] > 0.5) { BonneClassification++; }
                     else { MauvaiseClassification++; }
+                    ErreurResiduelle += Math.Abs(SortiesCalculees[i] - 0.9);
                 }
             }
 
+            Resultat_PictureBox.Refresh();
             string Message = "Pourcentage de bonne classification : " + Math.Round(BonneClassification / 3000.0, 4) * 100 +
                 "\nPourcentage de mauvaise classification : " + Math.Round(MauvaiseClassification / 3000.0, 4) * 100 +
+                "\nErreur résiduelle : " + Math.Round(ErreurResiduelle / 3000.0, 2) +
                 "\nTemps d’apprentissage : " + Secondes;
             MessageBox.Show(Message, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-        private void Chrono_Tick(object sender, EventArgs e)
-        {
-            Secondes += 1;
         }
 
         private List<List<double>> RecupererDonnees(string fichier_source)
@@ -225,6 +220,11 @@ namespace Formulaire
         private void Supervise_Form_FormClosed(object sender, FormClosedEventArgs e)
         {
             this.DialogResult = DialogResult.OK;
+        }
+
+        private void Chrono_Timer_Tick(object sender, EventArgs e)
+        {
+            Secondes += 1;
         }
     }
 }
