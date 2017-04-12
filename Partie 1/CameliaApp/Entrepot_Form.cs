@@ -671,7 +671,7 @@ namespace CameliaApp
                         nb_deplacement = 0;
 
                         // Si des chariots bougent dans l’entrepôt
-                        while (temps_ecoule < max || chariots[i].Colonne != 0)
+                        while (temps_ecoule < max && chariots[i].Colonne != 0)
                         {
                             passe_dans_while = true;
                             g = new Graphe();
@@ -796,9 +796,9 @@ namespace CameliaApp
         /// </summary>
         private void Creer_Chariots_Defaut()
         {
-            List<int> chariots_x = new List<int> { 0, 13, 24, 5, 16, 13, 23, 14, 18, 6, 17, 15, 23, 8, 5 };
-            List<int> chariots_y = new List<int> { 0, 12, 24, 7, 12, 3, 0, 13, 23, 1, 19, 7, 23, 24, 20 };
-            List<int> chariots_k = new List<int> { 0, 2, 1, 2, 3, 1, 0, 0, 2, 1, 2, 3, 1, 0, 3 };
+            List<int> chariots_x = new List<int> { 0, 13, 24, 5, 16, 13, 23, 14, 18, 6};//, 17, 15, 23, 8, 5 };
+            List<int> chariots_y = new List<int> { 0, 12, 24, 7, 12, 3, 0, 13, 23, 1 };//, 19, 7, 23, 24, 20 };
+            List<int> chariots_k = new List<int> { 0, 2, 1, 2, 3, 1, 0, 0, 2, 1 };//, 2, 3, 1, 0, 3 };
 
             for (int i = 0; i < chariots_x.Count; i++)
             {
@@ -1088,7 +1088,7 @@ namespace CameliaApp
                     }
 
                     entrepot[chariots[i].Ligne, chariots[i].Colonne] = 0;
-                    chariots[i] = (j == (chemins_realite[i].Count - 1)) ? chemins_realite[i][j].nom : chemins_realite[i][j - 1].nom;
+                    chariots[i] = (j == (chemins_realite[i].Count - 1) && t >= temps_timer) ? chemins_realite[i][j].nom : chemins_realite[i][j - 1].nom;
                     entrepot[chariots[i].Ligne, chariots[i].Colonne] = -2;
                 }
             }
@@ -1118,7 +1118,7 @@ namespace CameliaApp
                 max = (max < temps_realite[i]) ? temps_realite[i] : max;
             }
 
-            if (temps_timer < max)
+            if (temps_timer <= max)
             {
                 Super_Affichage_Dynamique();
             }

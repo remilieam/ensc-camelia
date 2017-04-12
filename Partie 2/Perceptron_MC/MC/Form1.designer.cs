@@ -55,6 +55,8 @@
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.taux_resi_label = new System.Windows.Forms.Label();
             this.valeur_taux_resi_label = new System.Windows.Forms.Label();
+            this.erreur_max_label = new System.Windows.Forms.Label();
+            this.erreur_max_valeur = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
@@ -212,7 +214,7 @@
             this.textBoxnbiter.Name = "textBoxnbiter";
             this.textBoxnbiter.Size = new System.Drawing.Size(60, 20);
             this.textBoxnbiter.TabIndex = 15;
-            this.textBoxnbiter.Text = "1";
+            this.textBoxnbiter.Text = "100";
             // 
             // label6
             // 
@@ -314,11 +316,30 @@
             this.valeur_taux_resi_label.Size = new System.Drawing.Size(0, 13);
             this.valeur_taux_resi_label.TabIndex = 27;
             // 
+            // erreur_max_label
+            // 
+            this.erreur_max_label.AutoSize = true;
+            this.erreur_max_label.Location = new System.Drawing.Point(860, 8);
+            this.erreur_max_label.Name = "erreur_max_label";
+            this.erreur_max_label.Size = new System.Drawing.Size(63, 13);
+            this.erreur_max_label.TabIndex = 28;
+            this.erreur_max_label.Text = "Erreur max :";
+            // 
+            // erreur_max_valeur
+            // 
+            this.erreur_max_valeur.AutoSize = true;
+            this.erreur_max_valeur.Location = new System.Drawing.Point(929, 9);
+            this.erreur_max_valeur.Name = "erreur_max_valeur";
+            this.erreur_max_valeur.Size = new System.Drawing.Size(0, 13);
+            this.erreur_max_valeur.TabIndex = 29;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1362, 593);
+            this.Controls.Add(this.erreur_max_valeur);
+            this.Controls.Add(this.erreur_max_label);
             this.Controls.Add(this.valeur_taux_resi_label);
             this.Controls.Add(this.taux_resi_label);
             this.Controls.Add(this.pictureBox2);
@@ -386,5 +407,7 @@
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.Label taux_resi_label;
         private System.Windows.Forms.Label valeur_taux_resi_label;
+        private System.Windows.Forms.Label erreur_max_label;
+        private System.Windows.Forms.Label erreur_max_valeur;
     }
 }

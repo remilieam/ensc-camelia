@@ -170,6 +170,9 @@ namespace MC
             double valeur_moyenne = erreurs.Sum() / (erreurs.Count * 1.0);
             valeur_taux_resi_label.Text = Convert.ToString(valeur_moyenne);
 
+            // On affiche l'erreur max
+            erreur_max_valeur.Text = Convert.ToString(erreur_max);
+
                         
             pictureBox1.Invalidate();
             pictureBox2.Invalidate();

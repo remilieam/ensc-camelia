@@ -69,7 +69,7 @@ namespace CameliaClass
                     }
 
                     entrepot[chariots[i].Ligne, chariots[i].Colonne] = 0;
-                    chariots[i] = (j == (chemins[i].Count - 1)) ? chemins[i][j].nom : chemins[i][j - 1].nom;
+                    chariots[i] = (j == (chemins[i].Count - 1) && t >= NoeudRealite.temps) ? chemins[i][j].nom : chemins[i][j - 1].nom;
                     entrepot[chariots[i].Ligne, chariots[i].Colonne] = -2;
                 }
             }
