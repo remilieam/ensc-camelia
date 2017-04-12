@@ -163,10 +163,11 @@
             this.Controls.Add(this.Nouveau_Button);
             this.Controls.Add(this.Resultat_PictureBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
-            this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.Margin = new System.Windows.Forms.Padding(6);
             this.MaximizeBox = false;
             this.Name = "Non_Supervise_Form";
             this.Text = "Apprentissage Non-Supervisé";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Non_Supervise_Form_FormClosed);
             ((System.ComponentModel.ISupportInitialize)(this.Resultat_PictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

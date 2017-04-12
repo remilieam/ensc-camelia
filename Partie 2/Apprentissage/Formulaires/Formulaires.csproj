@@ -46,6 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Apprentissage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Apprentissage.Designer.cs">
+      <DependentUpon>Apprentissage.cs</DependentUpon>
+    </Compile>
     <Compile Include="Non_Supervise_Form.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -60,6 +66,9 @@
     <Compile Include="Supervise_Form.Designer.cs">
       <DependentUpon>Supervise_Form.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Apprentissage.resx">
+      <DependentUpon>Apprentissage.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Non_Supervise_Form.resx">
       <DependentUpon>Non_Supervise_Form.cs</DependentUpon>
     </EmbeddedResource>

@@ -220,5 +220,10 @@ namespace Formulaire
                 }
             }
         }
+
+        private void Supervise_Form_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.DialogResult = DialogResult.OK;
+        }
     }
 }

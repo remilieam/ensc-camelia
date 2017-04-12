@@ -287,5 +287,10 @@ namespace Formulaire
 
             return NumeroClasseGagnante;
         }
+
+        private void Non_Supervise_Form_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            this.DialogResult = DialogResult.OK;
+        }
     }
 }
