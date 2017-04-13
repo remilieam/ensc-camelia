@@ -74,7 +74,7 @@
             this.realite_button.Name = "realite_button";
             this.realite_button.Size = new System.Drawing.Size(90, 40);
             this.realite_button.TabIndex = 3;
-            this.realite_button.Text = "Réalité";
+            this.realite_button.Text = "Livraison";
             this.realite_button.UseVisualStyleBackColor = true;
             this.realite_button.Click += new System.EventHandler(this.Realite_Button_Click);
             // 
@@ -95,7 +95,7 @@
             // 
             // realite_timer
             // 
-            this.realite_timer.Interval = 1000;
+            this.realite_timer.Interval = 500;
             this.realite_timer.Tick += new System.EventHandler(this.Realite_Timer_Tick);
             // 
             // Entrepot_Form

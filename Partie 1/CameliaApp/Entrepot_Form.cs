@@ -39,9 +39,10 @@ namespace CameliaApp
         private Objet dernier_objet;
         private List<Graphe> dernier_graphe = new List<Graphe>();
 
-        // Listes pour sauvegarder les chemins et les temps pour les déplacements de tous les chariots
+        // Listes pour sauvegarder les chemins, les temps et les objets pour les déplacements de tous les chariots
         private List<List<Noeud>> chemins_realite = new List<List<Noeud>>();
         private List<int> temps_realite = new List<int>();
+        private List<Objet> objets_realite = new List<Objet>();
 
         /// <summary>
         /// Permet de créer le formulaire initial
@@ -995,6 +996,7 @@ namespace CameliaApp
 
             this.chemins_realite = chemins;
             this.temps_realite = temps;
+            this.objets_realite = objets;
             Super_Affichage_Dynamique();
             realite_timer.Start();
         }
@@ -1330,6 +1332,9 @@ namespace CameliaApp
             return temps;
         }
 
+        /// <summary>
+        /// Permet d’actualiser la configuration de l’entrepôt et de l’afficher
+        /// </summary>
         private void Super_Affichage_Dynamique()
         {
             for (int i = 0; i < chariots.Count; i++)
@@ -1339,6 +1344,11 @@ namespace CameliaApp
                     entrepot[chariots[i].Ligne, chariots[i].Colonne] = 0;
                     chariots[i] = chemins_realite[i][temps_timer].nom;
                     entrepot[chariots[i].Ligne, chariots[i].Colonne] = -2;
+
+                    if (chariots[i].Egal(Trouver_Destination(objets_realite[i])))
+                    {
+                        chariots[i].Orientation = 4;
+                    }
                 }
             }
 
