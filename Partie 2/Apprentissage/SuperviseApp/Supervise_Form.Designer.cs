@@ -1,4 +1,4 @@
-﻿namespace Formulaire
+﻿namespace SuperviseApp
 {
     partial class Supervise_Form
     {
@@ -115,7 +115,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.Resultat_PictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion

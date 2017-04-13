@@ -1,6 +1,6 @@
-﻿namespace Formulaire
+﻿namespace NonSuperviseApp
 {
-    partial class Non_Supervise_Form
+    partial class NonSupervise_Form
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Non_Supervise_Form));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NonSupervise_Form));
             this.NbLignes_Label = new System.Windows.Forms.Label();
             this.NbLignes_TextBox = new System.Windows.Forms.TextBox();
             this.NbColonnes_Label = new System.Windows.Forms.Label();
@@ -171,7 +171,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.Resultat_PictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion

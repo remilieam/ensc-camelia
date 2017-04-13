@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Classes
+namespace NonSuperviseClass
 {
-    public class Point
+    public class Neurone
     {
-        // Comme une observation a 2 composantes, chaque point
+        // Comme une observation a 2 composantes, chaque neurone
         // a 2 poids
         private List<double> poids;
         private static Random alea = new Random();
@@ -15,9 +15,9 @@ namespace Classes
         /// <summary>
         /// Constructeur
         /// </summary>
-        /// <param name="nbPoids">Nombre de poids du point</param>
-        /// <param name="valeurMax">Amplitude maximale des poids du point</param>
-        public Point(int nbPoids, int valeurMax)
+        /// <param name="nbPoids">Nombre de poids du neurone</param>
+        /// <param name="valeurMax">Amplitude maximale des poids du neurone</param>
+        public Neurone(int nbPoids, int valeurMax)
         {
             poids = new List<double>();
 
@@ -41,7 +41,7 @@ namespace Classes
         }
 
         /// <summary>
-        /// Récupération du ie poids
+        /// Récupération du i° poids
         /// </summary>
         /// <param name="i">0 pour le poids lié à la ligne et 1 pour celui lié à la colonne</param>
         /// <returns>Poids associé au numéro passé en argument</returns>
@@ -51,7 +51,7 @@ namespace Classes
         }
 
         /// <summary>
-        /// Calcul de l’erreur (distance entre un point et une observation)
+        /// Calcul de l’erreur (distance entre un neurone et une observation)
         /// </summary>
         /// <param name="observation">Observation sur laquelle on calcule l’erreur</param>
         /// <returns>Erreur calculée</returns>
@@ -79,16 +79,16 @@ namespace Classes
         }
 
         /// <summary>
-        /// Calcul la distance entre 2 points
+        /// Calcul la distance entre 2 neurones
         /// </summary>
-        /// <param name="autrePoint">Second point</param>
-        /// <returns>Distance entre 2 points</returns>
-        public double CalculerDistance(Point autrePoint)
+        /// <param name="autreNeurone">Second neurone</param>
+        /// <returns>Distance entre les 2 neurones</returns>
+        public double CalculerDistance(Neurone autreNeurone)
         {
             double distance = 0;
             for (int i = 0; i < poids.Count; i++)
             {
-                distance = distance + Math.Pow(poids[i] - autrePoint.poids[i], 2);
+                distance = distance + Math.Pow(poids[i] - autreNeurone.poids[i], 2);
             }
             return Math.Sqrt(distance);
         }

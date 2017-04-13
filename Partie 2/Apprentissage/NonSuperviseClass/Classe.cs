@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Classes
+namespace NonSuperviseClass
 {
     public class Classe
     {
-        // Liste des points appartenant à la classe
-        private List<Point> listePoints = new List<Point>();
-        public List<Point> ListePoints { get { return listePoints; } }
+        // Liste des neurones appartenant à la classe
+        private List<Neurone> listeNeurones = new List<Neurone>();
+        public List<Neurone> ListeNeurones { get { return listeNeurones; } }
 
         /// <summary>
         /// Constructeur
         /// </summary>
-        /// <param name="neurone">Point initial de la classe</param>
-        public Classe(Point point)
+        /// <param name="neurone">Neurone initial de la classe</param>
+        public Classe(Neurone neurone)
         {
-            listePoints.Add(point);
+            listeNeurones.Add(neurone);
         }
 
         /// <summary>
@@ -26,9 +26,9 @@ namespace Classes
         /// <param name="autreClasse">Classe qui fusionne avec notre classe actuelle</param>
         public void FusionnerAvec(Classe autreClasse)
         {
-            foreach (Point point in autreClasse.ListePoints)
+            foreach (Neurone neurone in autreClasse.listeNeurones)
             {
-                listePoints.Add(point);
+                listeNeurones.Add(neurone);
             }
         }
     }

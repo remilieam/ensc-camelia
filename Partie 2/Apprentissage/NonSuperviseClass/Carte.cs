@@ -3,42 +3,42 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Classes
+namespace NonSuperviseClass
 {
     public class Carte
     {
-        private Point[,] carte;
+        private Neurone[,] carte;
         private int nbLignes, nbColonnes;
 
         /// <summary>
         /// Constructeur
         /// </summary>
-        /// <param name="nbColonnes">Nombre de colonnes de la carte</param>
-        /// <param name="nbPoids">Nombre de poids par point</param>
         /// <param name="nbLignes">Nombre de lignes de la table</param>
-        /// <param name="valeurMax">Amplitude maximale des points</param>
+        /// <param name="nbColonnes">Nombre de colonnes de la carte</param>
+        /// <param name="nbPoids">Nombre de poids par neurone</param>
+        /// <param name="valeurMax">Amplitude maximale des poids des neurones</param>
         public Carte(int nbLignes, int nbColonnes, int nbPoids, int valeurMax)
         {
             this.nbColonnes = nbColonnes;
             this.nbLignes = nbLignes;
-            this.carte = new Point[nbLignes, nbColonnes];
+            this.carte = new Neurone[nbLignes, nbColonnes];
 
             for (int i = 0; i < nbLignes; i++)
             {
                 for (int j = 0; j < nbColonnes; j++)
                 {
-                    carte[i, j] = new Point(nbPoids, valeurMax);
+                    carte[i, j] = new Neurone(nbPoids, valeurMax);
                 }
             }
         }
 
         /// <summary>
-        /// Récupération d’un point du tableau
+        /// Récupération d’un neurone du tableau
         /// </summary>
-        /// <param name="ligne">Numéro de ligne du point à récupérer</param>
-        /// <param name="colonne">Numéro de colonne du point à récupérer</param>
-        /// <returns>Point à récupérer</returns>
-        public Point RecupererPoint(int ligne, int colonne)
+        /// <param name="ligne">Numéro de ligne du neurone à récupérer</param>
+        /// <param name="colonne">Numéro de colonne du neurone à récupérer</param>
+        /// <returns>Neurone à récupérer</returns>
+        public Neurone RecupererNeurone(int ligne, int colonne)
         {
             return carte[ligne, colonne];
         }
@@ -50,7 +50,7 @@ namespace Classes
         /// <param name="alpha">Coefficient d’apprentissage</param>
         public void AlgoKohonen(List<Observation> observations, double alpha, int distance)
         {
-            // Distance pour laquelle on considère que 2 points sont voisins
+            // Distance pour laquelle on considère que 2 neurones sont voisins
             int distanceMax = distance;
 
             // Pour chaque observation
@@ -59,7 +59,7 @@ namespace Classes
                 double erreurMin = 1000;
                 alpha = alpha - 0.00001;
 
-                // Recherche des coordonnées du point qui a la plus faible erreur
+                // Recherche des coordonnées du neurone qui a la plus faible erreur
                 int ligneMieux = 0;
                 int colonneMieux = 0;
 
@@ -76,7 +76,7 @@ namespace Classes
                     }
                 }
 
-                // Mise à jour des poids des points voisins du meilleur point
+                // Mise à jour des poids des neurones voisins du meilleur neurone
                 for (int i = ligneMieux - distanceMax; i <= ligneMieux + distanceMax; i++)
                 {
                     for (int j = colonneMieux - distanceMax; j <= colonneMieux + distanceMax; j++)
@@ -92,14 +92,14 @@ namespace Classes
 
         public List<Classe> Regroupement(List<Observation> observations, int nbClasses)
         {
-            // Recherche des points qui ne gagnent jamais ou presque jamais
-            // Pour cela, on compte le nombre de fois où le point à l’erreur minimale
+            // Recherche des neurones qui ne gagnent jamais ou presque jamais
+            // Pour cela, on compte le nombre de fois où le neurone à l’erreur minimale
             List<Classe> classes = new List<Classe>();
 
             // Tableau pour compter
             int[,] comptage = new int[nbLignes, nbColonnes];
 
-            // Initialisation à 0 pour tous les points de la carte
+            // Initialisation à 0 pour tous les neurones de la carte
             for (int i = 0; i < nbLignes; i++)
             {
                 for (int j = 0; j < nbColonnes; j++)
@@ -108,7 +108,7 @@ namespace Classes
                 }
             }
 
-            // Pour chaque observation, on cherche quel point à l’erreur la plus faible
+            // Pour chaque observation, on cherche quel neurone à l’erreur la plus faible
             foreach (Observation observation in observations)
             {
                 double erreurMin = 100000;
@@ -164,7 +164,6 @@ namespace Classes
                             }
                         }
                     }
-
                 }
 
                 // Fusion des 2 classes les plus proches
@@ -186,14 +185,14 @@ namespace Classes
         {
             double distanceMin = 1000;
 
-            // On calcule la distance entre chaque point de chaque classe
-            foreach (Point point1 in classe1.ListePoints)
+            // On calcule la distance entre chaque neurone de chaque classe
+            foreach (Neurone neurone1 in classe1.ListeNeurones)
             {
-                foreach (Point point2 in classe2.ListePoints)
+                foreach (Neurone neurone2 in classe2.ListeNeurones)
                 {
-                    if (point1.CalculerDistance(point2) < distanceMin)
+                    if (neurone1.CalculerDistance(neurone2) < distanceMin)
                     {
-                        distanceMin = point1.CalculerDistance(point2);
+                        distanceMin = neurone1.CalculerDistance(neurone2);
                     }
                 }
             }

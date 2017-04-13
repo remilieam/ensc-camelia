@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // Les informations générales relatives à un assembly dépendent de 
 // l'ensemble d'attributs suivant. Changez les valeurs de ces attributs pour modifier les informations
 // associées à un assembly.
-[assembly: AssemblyTitle("Classes")]
+[assembly: AssemblyTitle("NonSuperviseApp")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Bordeaux INP - ENSC")]
-[assembly: AssemblyProduct("Classes")]
-[assembly: AssemblyCopyright("Copyright © Bordeaux INP - ENSC 2017")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("NonSuperviseApp")]
+[assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // Le GUID suivant est pour l'ID de la typelib si ce projet est exposé à COM
-[assembly: Guid("137b28a9-e2d7-4f09-9e48-a02e9776eab6")]
+[assembly: Guid("c99e4752-e288-44eb-aa10-1767a6ec6dfd")]
 
 // Les informations de version pour un assembly se composent des quatre valeurs suivantes :
 //

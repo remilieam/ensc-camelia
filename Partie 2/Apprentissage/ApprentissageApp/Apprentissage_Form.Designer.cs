@@ -1,4 +1,4 @@
-﻿namespace Formulaire
+﻿namespace ApprentissageApp
 {
     partial class Apprentissage_Form
     {

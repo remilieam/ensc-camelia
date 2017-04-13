@@ -7,11 +7,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using Classes;
+using NonSuperviseClass;
 
-namespace Formulaire
+namespace NonSuperviseApp
 {
-    public partial class Non_Supervise_Form : Form
+    public partial class NonSupervise_Form : Form
     {
         private static List<Observation> ObservationsTriees = new List<Observation>();
         private static List<Observation> Observations = new List<Observation>();
@@ -29,14 +29,14 @@ namespace Formulaire
         private Carte Carte;
         private static List<Classe> Classes = new List<Classe>();
 
-        public Non_Supervise_Form()
+        public NonSupervise_Form()
         {
             InitializeComponent();
             NbIterations = 0;
             Image = (Bitmap)Resultat_PictureBox.Image;
             Graphe = Graphics.FromImage(Resultat_PictureBox.Image);
             Crayon = new Pen(Color.White, 1);
-            RecupererDonnees("../../../Donnees/datasetclassif.txt");
+            RecupererDonnees("../../../ApprentissageData/datasetclassif.txt");
         }
 
         private void Carte_Button_Click(object sender, EventArgs e)
@@ -115,7 +115,7 @@ namespace Formulaire
                 for (int j = 0; j < 800; j++)
                 {
                     // Définition du point (= neurone = pixel)
-                    Classes.Point Pixel = new Classes.Point(2, 800);
+                    Neurone Pixel = new Neurone(2, 800);
                     Pixel.ModifierPoids(i, j);
 
                     // Modification du pixel en fonction du numéro de classe
@@ -129,13 +129,13 @@ namespace Formulaire
 
             for (int i = 0; i < 6; i++)
             {
-                Classes.Point Observation = new Classes.Point(2, 800);
+                Neurone Observation = new Neurone(2, 800);
                 Observation.ModifierPoids((int)Math.Floor(ObservationsTriees[i * 500].Ligne), (int)Math.Floor(ObservationsTriees[i * 500].Colonne));
                 int NumeroClasse = RechercherClasse(Observation);
 
                 for (int j = 0; j < 500; j++)
                 {
-                    Observation = new Classes.Point(2, 800);
+                    Observation = new Neurone(2, 800);
                     Observation.ModifierPoids((int)Math.Floor(ObservationsTriees[i * 500 + j].Ligne), (int)Math.Floor(ObservationsTriees[i * 500 + j].Colonne));
                     if (NumeroClasse != RechercherClasse(Observation))
                     {
@@ -238,8 +238,8 @@ namespace Formulaire
             {
                 for (int j = 0; j < NbColonnes; j++)
                 {
-                    int x = Convert.ToInt32(Carte.RecupererPoint(i, j).RecupererPoids(0));
-                    int y = Convert.ToInt32(Carte.RecupererPoint(i, j).RecupererPoids(1));
+                    int x = Convert.ToInt32(Carte.RecupererNeurone(i, j).RecupererPoids(0));
+                    int y = Convert.ToInt32(Carte.RecupererNeurone(i, j).RecupererPoids(1));
                     Graphe.DrawEllipse(Crayon, x - 2, y - 2, 4, 4);
                 }
             }
@@ -254,7 +254,7 @@ namespace Formulaire
             {
                 Crayon.Color = Couleurs[i];
 
-                foreach (Classes.Point point in Classes[i].ListePoints)
+                foreach (Neurone point in Classes[i].ListeNeurones)
                 {
                     int x = Convert.ToInt32(point.RecupererPoids(0));
                     int y = Convert.ToInt32(point.RecupererPoids(1));
@@ -265,22 +265,22 @@ namespace Formulaire
             Resultat_PictureBox.Refresh();
         }
 
-        private int RechercherClasse(Classes.Point Neurone)
+        private int RechercherClasse(Neurone Neurone)
         {
             // Recherche de la classe gagnante
             int NumeroClasseGagnante = 0;
-            double DistanceMin = Neurone.CalculerDistance(Classes[0].ListePoints[0]);
+            double DistanceMin = Neurone.CalculerDistance(Classes[0].ListeNeurones[0]);
 
             // On recherche le neurone qui a la plus faible distance du pixel
             // dans chacune des 6 classes. La classe gagnante est celle à laquelle
             // appartient le neurone ayant la plus faible distance avec le pixel
             for (int k = 0; k < Classes.Count; k++)
             {
-                for (int l = 0; l < Classes[k].ListePoints.Count; l++)
+                for (int l = 0; l < Classes[k].ListeNeurones.Count; l++)
                 {
-                    if (DistanceMin > Neurone.CalculerDistance(Classes[k].ListePoints[l]))
+                    if (DistanceMin > Neurone.CalculerDistance(Classes[k].ListeNeurones[l]))
                     {
-                        DistanceMin = Neurone.CalculerDistance(Classes[k].ListePoints[l]);
+                        DistanceMin = Neurone.CalculerDistance(Classes[k].ListeNeurones[l]);
                         NumeroClasseGagnante = k;
                     }
                 }

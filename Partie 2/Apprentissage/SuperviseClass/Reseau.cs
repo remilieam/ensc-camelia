@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Classes
+namespace SuperviseClass
 {
     public class Reseau
     {
@@ -24,7 +24,7 @@ namespace Classes
             Neurone NeuroneAjoute;
 
             // Nombre de neurones du réseau = NbEntrees + (NbCouches - 2) * NeuronesParCouche + 1
-            
+
             // Initialisation des listes avant de poursuivre
             ListeNeurones = new List<Neurone>();
             TableauCouches = new List<Neurone>[NbCouches];
@@ -150,7 +150,7 @@ namespace Classes
                     + " Poids : " + Convert.ToString(MatricePoids[Neurone.Numero, NeuroneSuivant.Numero]));
             }
         }
-        
+
         /// <summary>
         /// Récupération du dernier delta calculé
         /// </summary>
@@ -238,7 +238,11 @@ namespace Classes
             }
         }
 
-
+        /// <summary>
+        /// Calcul à partir des entrées fournies les sorties prédites par le réseau
+        /// </summary>
+        /// <param name="Entrees">Liste contenant les entrées du reseau</param>
+        /// <returns>Listes des sorties prédites par le réseau</returns>
         public List<double> TesterReseau(List<List<double>> Entrees)
         {
             List<double> Sorties = new List<double>();

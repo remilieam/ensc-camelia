@@ -7,9 +7,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using Classes;
+using SuperviseClass;
 
-namespace Formulaire
+namespace SuperviseApp
 {
     public partial class Supervise_Form : Form
     {
@@ -53,7 +53,7 @@ namespace Formulaire
             Reseau = new Reseau(3, NbCouches, NbNeurones);
 
             // Récupération des valeurs d’entrées
-            List<List<double>> Entrees = this.RecupererDonnees("../../../Donnees/datasetclassif.txt");
+            List<List<double>> Entrees = this.RecupererDonnees("../../../ApprentissageData/datasetclassif.txt");
 
             // Récupération des sorties désirées
             List<double> Sorties = new List<double>();
