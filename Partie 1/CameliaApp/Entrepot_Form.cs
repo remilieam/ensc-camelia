@@ -102,6 +102,8 @@ namespace CameliaApp
             rafraichir_button.Enabled = false;
             dynamique_button.Enabled = false;
             detail_button.Enabled = false;
+            realite_button.Enabled = true;
+            reinitialiser_button.Enabled = true;
 
             MessageBox.Show("Déplacement terminé en " + Calculer_Temps() + " secondes et " + dernier_chemin.Count + " pas !", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -169,6 +171,14 @@ namespace CameliaApp
                 }
             }
 
+            for (int i = 0; i < 25; i++)
+            {
+                for (int j = 1; j < 25; j++)
+                {
+                    entrepot_image[i, j].Enabled = false;
+                }
+            }
+
             // On rafraîchit l’affichage de l’entrepôt
             Afficher_Entrepot();
             Ajouter_Chariots();
@@ -201,6 +211,15 @@ namespace CameliaApp
 
             rafraichir_button.Enabled = false;
             dynamique_button.Enabled = false;
+            realite_button.Enabled = true;
+
+            for (int i = 0; i < 25; i++)
+            {
+                for (int j = 0; j < 25; j++)
+                {
+                    entrepot_image[i, j].Enabled = true;
+                }
+            }
         }
 
         /// <summary>
@@ -319,6 +338,9 @@ namespace CameliaApp
                         entrepot_image[i, j].Enabled = true;
                     }
                 }
+
+                realite_button.Enabled = true;
+                reinitialiser_button.Enabled = true;
             }
         }
 
@@ -343,6 +365,17 @@ namespace CameliaApp
             {
                 realite_timer.Stop();
                 temps_timer = 0;
+
+                for (int i = 0; i < 25; i++)
+                {
+                    for (int j = 0; j < 25; j++)
+                    {
+                        entrepot_image[i, j].Enabled = true;
+                    }
+                }
+
+                reinitialiser_button.Enabled = true;
+                realite_button.Enabled = true;
             }
         }
 
@@ -361,6 +394,9 @@ namespace CameliaApp
                     entrepot_image[i, j].Enabled = false;
                 }
             }
+
+            realite_button.Enabled = false;
+            reinitialiser_button.Enabled = false;
 
             // Calcul du plus court chemin
             Graphe g = new Graphe();
@@ -408,6 +444,9 @@ namespace CameliaApp
                         entrepot_image[i, j].Enabled = true;
                     }
                 }
+
+                reinitialiser_button.Enabled = true;
+                realite_button.Enabled = true;
             }
         }
 
@@ -426,6 +465,9 @@ namespace CameliaApp
                     entrepot_image[i, j].Enabled = false;
                 }
             }
+
+            realite_button.Enabled = false;
+            reinitialiser_button.Enabled = false;
 
             // Calcul du chemin pour la récupération de l’objet
             Graphe g = new Graphe();
@@ -501,6 +543,9 @@ namespace CameliaApp
                         entrepot_image[i, j].Enabled = true;
                     }
                 }
+
+                reinitialiser_button.Enabled = true;
+                realite_button.Enabled = true;
             }
         }
 
@@ -647,7 +692,17 @@ namespace CameliaApp
         /// <param name="arrivee">Point d’arrivée</param>
         private void Tracer_Chemin_Realite_2(Chariot depart, Objet objet)
         {
-            
+            for (int i = 0; i < 25; i++)
+            {
+                for (int j = 0; j < 25; j++)
+                {
+                    entrepot_image[i, j].Enabled = false;
+                }
+            }
+
+            realite_button.Enabled = false;
+            reinitialiser_button.Enabled = false;
+
             // On crée une liste de chariots, une liste d'objets et une liste de graphes
             List<List<Noeud>> chemins = new List<List<Noeud>>();
             List<bool> recuperation = new List<bool>();
@@ -715,7 +770,7 @@ namespace CameliaApp
                             chemins[i].Add(trajet[0]);
                         }
 
-                        // Si on trouve un chemin, on ajoute la prochaine position à la liste
+                        // Si on trouve un chemin, on ajoute la prochaine position
                         if (trajet.Count > 1)
                         {
                             // Cas où la prochaine position implique un demi-tour
@@ -724,14 +779,17 @@ namespace CameliaApp
                                 try
                                 {
                                     bool arret_assez_long = true;
-
+                                    int iter = 0;
+                                    
                                     // On vérifie que les 7 derniers chariots ont la même orientation
-                                    for (int iter = 0; iter < 6; iter++)
+                                    while (iter < 6 && arret_assez_long)
                                     {
-                                        if (!chemins[i][chemins[i].Count - 1 - i].nom.Egal(chemins[i][chemins[i].Count - 1 - i - 1].nom) && chemins[i][chemins[i].Count - 1 - i].nom.Orientation != chemins[i][chemins[i].Count - 1 - i - 1].nom.Orientation)
+                                        if (!chemins[i][chemins[i].Count - 1 - iter].nom.Egal(chemins[i][chemins[i].Count - 1 - iter - 1].nom) && chemins[i][chemins[i].Count - 1 - iter].nom.Orientation != chemins[i][chemins[i].Count - 1 - iter - 1].nom.Orientation)
                                         {
                                             arret_assez_long = false;
                                         }
+
+                                        iter++;
                                     }
 
                                     // Si ce n’est pas le cas, on ajoute la position actuelle à la liste des positions
@@ -760,14 +818,17 @@ namespace CameliaApp
                                 try
                                 {
                                     bool arret_assez_long = true;
+                                    int iter = 0;
 
                                     // On vérifie que les 4 derniers chariots ont la même orientation
-                                    for (int iter = 0; iter < 3; iter++)
+                                    while (iter < 3 && arret_assez_long)
                                     {
-                                        if (!chemins[i][chemins[i].Count - 1 - i].nom.Egal(chemins[i][chemins[i].Count - 1 - i - 1].nom) && chemins[i][chemins[i].Count - 1 - i].nom.Orientation != chemins[i][chemins[i].Count - 1 - i - 1].nom.Orientation)
+                                        if (!chemins[i][chemins[i].Count - 1 - iter].nom.Egal(chemins[i][chemins[i].Count - 1 - iter - 1].nom) && chemins[i][chemins[i].Count - 1 - iter].nom.Orientation != chemins[i][chemins[i].Count - 1 - iter - 1].nom.Orientation)
                                         {
                                             arret_assez_long = false;
                                         }
+
+                                        iter++;
                                     }
 
                                     // Si ce n’est pas le cas, on ajoute la position actuelle à la liste des positions
@@ -816,13 +877,16 @@ namespace CameliaApp
                         try
                         {
                             bool montee_assez_longue = true;
-                                
-                            for (int iter = 0; iter < 2 * objets[i].Hauteur - 1; iter++)
+                            int iter = 0;
+
+                            while (iter < 2 * objets[i].Hauteur - 1 && montee_assez_longue)
                             {
-                                if (!chemins[i][chemins[i].Count - 1 - i].nom.Egal(chemins[i][chemins[i].Count - 1 - i - 1].nom))
+                                if (!chemins[i][chemins[i].Count - 1 - iter].nom.Egal(chemins[i][chemins[i].Count - 1 - iter - 1].nom))
                                 {
                                     montee_assez_longue = false;
                                 }
+
+                                iter++;
                             }
 
                             if (!montee_assez_longue)
@@ -854,13 +918,16 @@ namespace CameliaApp
                             if (chemins[i][chemins[i].Count - 1].nom.Orientation != trajet[1].nom.Orientation && chemins[i][chemins[i].Count - 1].nom.Orientation % 2 == trajet[1].nom.Orientation % 2)
                             {
                                 bool arret_assez_long = true;
+                                int iter = 0;
 
-                                for (int iter = 0; iter < 6; iter++)
+                                while (iter < 6 && arret_assez_long)
                                 {
-                                    if (!chemins[i][chemins[i].Count - 1 - i].nom.Egal(chemins[i][chemins[i].Count - 1 - i - 1].nom) && chemins[i][chemins[i].Count - 1 - i].nom.Orientation != chemins[i][chemins[i].Count - 1 - i - 1].nom.Orientation)
+                                    if (!chemins[i][chemins[i].Count - 1 - iter].nom.Egal(chemins[i][chemins[i].Count - 1 - iter - 1].nom) && chemins[i][chemins[i].Count - 1 - iter].nom.Orientation != chemins[i][chemins[i].Count - 1 - iter - 1].nom.Orientation)
                                     {
                                         arret_assez_long = false;
                                     }
+
+                                    iter++;
                                 }
 
                                 if (!arret_assez_long)
@@ -877,13 +944,16 @@ namespace CameliaApp
                             else if (chemins[i][chemins[i].Count - 1].nom.Orientation != trajet[1].nom.Orientation)
                             {
                                 bool arret_assez_long = true;
+                                int iter = 0;
 
-                                for (int iter = 0; iter < 3; iter++)
+                                while (iter < 3 && arret_assez_long)
                                 {
-                                    if (!chemins[i][chemins[i].Count - 1 - i].nom.Egal(chemins[i][chemins[i].Count - 1 - i - 1].nom) && chemins[i][chemins[i].Count - 1 - i].nom.Orientation != chemins[i][chemins[i].Count - 1 - i - 1].nom.Orientation)
+                                    if (!chemins[i][chemins[i].Count - 1 - iter].nom.Egal(chemins[i][chemins[i].Count - 1 - iter - 1].nom) && chemins[i][chemins[i].Count - 1 - iter].nom.Orientation != chemins[i][chemins[i].Count - 1 - iter - 1].nom.Orientation)
                                     {
                                         arret_assez_long = false;
                                     }
+
+                                    iter++;
                                 }
 
                                 if (!arret_assez_long)
