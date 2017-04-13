@@ -40,7 +40,7 @@
             // 
             // detail_button
             // 
-            this.detail_button.Location = new System.Drawing.Point(524, 72);
+            this.detail_button.Location = new System.Drawing.Point(524, 32);
             this.detail_button.Name = "detail_button";
             this.detail_button.Size = new System.Drawing.Size(90, 40);
             this.detail_button.TabIndex = 0;
@@ -50,7 +50,7 @@
             // 
             // rafraichir_button
             // 
-            this.rafraichir_button.Location = new System.Drawing.Point(524, 143);
+            this.rafraichir_button.Location = new System.Drawing.Point(524, 136);
             this.rafraichir_button.Name = "rafraichir_button";
             this.rafraichir_button.Size = new System.Drawing.Size(90, 40);
             this.rafraichir_button.TabIndex = 1;
@@ -60,7 +60,7 @@
             // 
             // dynamique_button
             // 
-            this.dynamique_button.Location = new System.Drawing.Point(524, 223);
+            this.dynamique_button.Location = new System.Drawing.Point(524, 240);
             this.dynamique_button.Name = "dynamique_button";
             this.dynamique_button.Size = new System.Drawing.Size(90, 40);
             this.dynamique_button.TabIndex = 2;
@@ -70,7 +70,7 @@
             // 
             // realite_button
             // 
-            this.realite_button.Location = new System.Drawing.Point(524, 300);
+            this.realite_button.Location = new System.Drawing.Point(524, 344);
             this.realite_button.Name = "realite_button";
             this.realite_button.Size = new System.Drawing.Size(90, 40);
             this.realite_button.TabIndex = 3;
@@ -80,7 +80,7 @@
             // 
             // reinitialiser_button
             // 
-            this.reinitialiser_button.Location = new System.Drawing.Point(524, 374);
+            this.reinitialiser_button.Location = new System.Drawing.Point(524, 448);
             this.reinitialiser_button.Name = "reinitialiser_button";
             this.reinitialiser_button.Size = new System.Drawing.Size(90, 40);
             this.reinitialiser_button.TabIndex = 4;
@@ -114,7 +114,6 @@
             this.Name = "Entrepot_Form";
             this.Text = "Entrepôt";
             this.ResumeLayout(false);
-
         }
 
         #endregion

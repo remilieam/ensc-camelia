@@ -704,14 +704,14 @@ namespace CameliaApp
             realite_button.Enabled = false;
             reinitialiser_button.Enabled = false;
 
-            // On crée une liste de chariots, une liste d'objets et une liste de graphes
+            // Variables utiles
             List<List<Noeud>> chemins = new List<List<Noeud>>();
             List<bool> recuperation = new List<bool>();
             List<bool> livraison = new List<bool>();
             List<bool> montee = new List<bool>();
             List<Objet> objets = new List<Objet>();
             List<int> temps = new List<int>();
-            Graphe g, g2;
+            Graphe g;
 
             // Placement du chariot sur lequel on a cliqué à la fin de la liste
             int rang = Trouver_Rang(depart);
@@ -721,9 +721,13 @@ namespace CameliaApp
             // Attribution des objets à aller chercher aux chariots
             for (int i = 0; i < chariots.Count - 1; i++)
             {
+                // On génére un objet aléatoirement en supposant qu’il
+                // a déjà été attribué à un précédent chariot
                 Objet objetAjoute = Generer_Objet();
                 bool existeDeja = true;
 
+                // Tant qu’il existe déjà, on en génère un nouveau
+                // et on vérifie qu’il n’a pas déjà été attribué
                 while (existeDeja)
                 {
                     objetAjoute = Generer_Objet();
@@ -738,6 +742,7 @@ namespace CameliaApp
                     }
                 }
 
+                // On ajoute l’objet à la liste d’objets
                 objets.Add(objetAjoute);
             }
 
@@ -752,12 +757,16 @@ namespace CameliaApp
 
             int temps_ecoule = 0;
 
+            // Toutes les secondes on calcule la position de tous les chariots
+            // jusqu’à qu’ils soient tous retournés à la zone de livraison
             while (!Verifier_Fin(livraison))
             {
                 for (int i = 0; i < chariots.Count; i++)
                 {
+                    // Cas où le chariot va chercher son objet
                     if (!recuperation[i])
                     {
+                        // Calcul du chemin le plus court pour atteindre l’objet
                         g = new Graphe();
                         NoeudTemps noeudInitial = new NoeudTemps(chariots[i], Trouver_Destination(objets[i]), entrepot);
                         List<Noeud> trajet = g.RechercherSolutionAEtoile(noeudInitial);
@@ -768,7 +777,7 @@ namespace CameliaApp
                         {
                             temps.Add(0);
                             chemins.Add(new List<Noeud>());
-                            chemins[i].Add(trajet[0]);
+                            chemins[i].Add(noeudInitial);
                         }
 
                         // Si on trouve un chemin, on ajoute la prochaine position
@@ -852,27 +861,33 @@ namespace CameliaApp
                                 }
                             }
 
+                            // Cas où le chariot continue tout droit
                             else
                             {
                                 chemins[i].Add(trajet[1]);
                             }
                         }
 
+                        // Cas où il n’existe pas de chemins
                         else
                         {
                             chemins[i].Add(chemins[i][chemins[i].Count - 1]);
                         }
 
+                        // Mise à jour de la configuration de l’entrepôt
+                        // et du chariot qu’on vient de déplacer
                         entrepot[chariots[i].Ligne, chariots[i].Colonne] = 0;
                         chariots[i] = chemins[i][chemins[i].Count - 1].nom;
                         entrepot[chariots[i].Ligne, chariots[i].Colonne] = -2;
 
+                        // Si le chariot à atteint l’objet qu’il doit récupérer
                         if (chariots[i].Egal(Trouver_Destination(objets[i])))
                         {
                             recuperation[i] = true;
                         }
                     }
 
+                    // Cas où le chariot monte (puis descend) pour récupérer son objet
                     else if (recuperation[i] && !montee[i])
                     {
                         try
@@ -880,6 +895,8 @@ namespace CameliaApp
                             bool montee_assez_longue = true;
                             int iter = 0;
 
+                            // On vérifie que le chariot est bien resté immobilisé assez longtemps
+                            // pour effectuer la montée puis la descente (1 seconde par étage)
                             while (iter < 2 * objets[i].Hauteur - 1 && montee_assez_longue)
                             {
                                 if (!chemins[i][chemins[i].Count - 1 - iter].nom.Egal(chemins[i][chemins[i].Count - 1 - iter - 1].nom))
@@ -890,11 +907,13 @@ namespace CameliaApp
                                 iter++;
                             }
 
+                            // Si ce n’est pas le cas, on ajoute la position actuelle à la liste des positions
                             if (!montee_assez_longue)
                             {
                                 chemins[i].Add(chemins[i][chemins[i].Count - 1]);
                             }
 
+                            // Sinon, on dit qu’il a déterminé la montée (et la descente)
                             else
                             {
                                 montee[i] = true;
@@ -903,12 +922,15 @@ namespace CameliaApp
 
                         catch
                         {
+                            // Si on ne peut pas remonter assez en arrière, on ajoute la position actuelle à la liste des positions
                             chemins[i].Add(chemins[i][chemins[i].Count - 1]);
                         }
                     }
 
+                    // Cas où le chariot va livrer son objet
                     else if (!livraison[i] && recuperation[i] && montee[i])
                     {
+                        // Calcul du chemin le plus court pour livrer l’objet
                         g = new Graphe();
                         NoeudLivraison noeudInitial = new NoeudLivraison(chariots[i], entrepot);
                         List<Noeud> trajet = g.RechercherSolutionAEtoile(noeudInitial);
@@ -979,12 +1001,16 @@ namespace CameliaApp
                             chemins[i].Add(chemins[i][chemins[i].Count - 1]);
                         }
 
+                        // Mise à jour de la configuration de l’entrepôt
+                        // et du chariot qu’on vient de déplacer
                         entrepot[chariots[i].Ligne, chariots[i].Colonne] = 0;
                         chariots[i] = chemins[i][chemins[i].Count - 1].nom;
                         entrepot[chariots[i].Ligne, chariots[i].Colonne] = -2;
 
+                        // Si le chariot à livrer l’objet
                         if (chariots[i].Colonne == 0)
                         {
+                            // On dit qu’il a terminé et on récupère le temps de trajet
                             livraison[i] = true;
                             temps[i] = temps_ecoule;
                         }
