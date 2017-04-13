@@ -32,9 +32,9 @@
             this.detail_button = new System.Windows.Forms.Button();
             this.rafraichir_button = new System.Windows.Forms.Button();
             this.dynamique_button = new System.Windows.Forms.Button();
+            this.realite_button = new System.Windows.Forms.Button();
             this.reinitialiser_button = new System.Windows.Forms.Button();
             this.chrono_timer = new System.Windows.Forms.Timer(this.components);
-            this.realite_button = new System.Windows.Forms.Button();
             this.realite_timer = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
@@ -68,12 +68,22 @@
             this.dynamique_button.UseVisualStyleBackColor = true;
             this.dynamique_button.Click += new System.EventHandler(this.Dynamique_Button_Click);
             // 
+            // realite_button
+            // 
+            this.realite_button.Location = new System.Drawing.Point(524, 300);
+            this.realite_button.Name = "realite_button";
+            this.realite_button.Size = new System.Drawing.Size(90, 40);
+            this.realite_button.TabIndex = 3;
+            this.realite_button.Text = "Réalité";
+            this.realite_button.UseVisualStyleBackColor = true;
+            this.realite_button.Click += new System.EventHandler(this.Realite_Button_Click);
+            // 
             // reinitialiser_button
             // 
-            this.reinitialiser_button.Location = new System.Drawing.Point(524, 300);
+            this.reinitialiser_button.Location = new System.Drawing.Point(524, 374);
             this.reinitialiser_button.Name = "reinitialiser_button";
             this.reinitialiser_button.Size = new System.Drawing.Size(90, 40);
-            this.reinitialiser_button.TabIndex = 3;
+            this.reinitialiser_button.TabIndex = 4;
             this.reinitialiser_button.Text = "Réinitialiser";
             this.reinitialiser_button.UseVisualStyleBackColor = true;
             this.reinitialiser_button.Click += new System.EventHandler(this.Reinitialiser_Button_Click);
@@ -82,16 +92,6 @@
             // 
             this.chrono_timer.Interval = 1000;
             this.chrono_timer.Tick += new System.EventHandler(this.Chrono_Timer_Tick);
-            // 
-            // realite_button
-            // 
-            this.realite_button.Location = new System.Drawing.Point(524, 374);
-            this.realite_button.Name = "realite_button";
-            this.realite_button.Size = new System.Drawing.Size(90, 40);
-            this.realite_button.TabIndex = 4;
-            this.realite_button.Text = "Réalité";
-            this.realite_button.UseVisualStyleBackColor = true;
-            this.realite_button.Click += new System.EventHandler(this.Realite_Button_Click);
             // 
             // realite_timer
             // 
@@ -103,10 +103,10 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(618, 524);
-            this.Controls.Add(this.realite_button);
             this.Controls.Add(this.detail_button);
             this.Controls.Add(this.rafraichir_button);
             this.Controls.Add(this.dynamique_button);
+            this.Controls.Add(this.realite_button);
             this.Controls.Add(this.reinitialiser_button);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Margin = new System.Windows.Forms.Padding(6);
@@ -123,8 +123,8 @@
         private System.Windows.Forms.Button rafraichir_button;
         private System.Windows.Forms.Button dynamique_button;
         private System.Windows.Forms.Button reinitialiser_button;
-        private System.Windows.Forms.Timer chrono_timer;
         private System.Windows.Forms.Button realite_button;
+        private System.Windows.Forms.Timer chrono_timer;
         private System.Windows.Forms.Timer realite_timer;
     }
 }

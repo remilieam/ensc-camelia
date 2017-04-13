@@ -11,7 +11,7 @@ namespace CameliaClass
         private static int[,] entrepot = new int[25, 25];
         private static List<List<Noeud>> chemins;
         private static List<Chariot> chariots;
-        private static int temps;
+        private int temps;
         private static bool mode;
 
         /// <summary>
@@ -21,37 +21,15 @@ namespace CameliaClass
         public NoeudRealite(Chariot chariot) : base()
         {
             this.nom = chariot;
-        }
 
-        /// <summary>
-        /// Constructeur du premier nœud
-        /// </summary>
-        /// <param name="depart">Nœud de départ</param>
-        /// <param name="arrivee">Nœud d’arrivée</param>
-        /// <param name="entrepot">Configuration de l’entrepôt au départ</param>
-        /// <param name="chemins">Chemins des chariots en mouvement</param>
-        /// <param name="chariots">Chariots présent dans l’entrepôt</param>
-        /// <param name="temps">Temps écoulé depuis le départ</param>
-        /// <param name="mode">false pour la récupération, true pour la livraison</param>
-        public NoeudRealite(Chariot depart, Chariot arrivee, int[,] entrepot, List<List<Noeud>> chemins, List<Chariot> chariots, int temps, bool mode)
-            : base()
-        {
-            this.nom = depart;
-            NoeudRealite.arrivee = arrivee;
-            NoeudRealite.entrepot = entrepot;
-            NoeudRealite.chemins = chemins;
-            NoeudRealite.chariots = chariots;
-            NoeudRealite.temps = temps + 1;
-            NoeudRealite.mode = mode;
-
-            if (NoeudRealite.temps != 0)
+            if (this.temps != 0)
             {
                 for (int i = 0; i < chemins.Count; i++)
                 {
                     int j = 0; // Numéro du noeud lu
                     int t = 0; // Temps pour atteindre le noeud j+1
 
-                    while (t < NoeudRealite.temps && j < (chemins[i].Count - 1))
+                    while (t < this.temps && j < (chemins[i].Count - 1))
                     {
                         t += 1;
 
@@ -69,9 +47,38 @@ namespace CameliaClass
                     }
 
                     entrepot[chariots[i].Ligne, chariots[i].Colonne] = 0;
-                    chariots[i] = (j == (chemins[i].Count - 1) && t >= NoeudRealite.temps) ? chemins[i][j].nom : chemins[i][j - 1].nom;
+                    chariots[i] = (j == (chemins[i].Count - 1) && t < this.temps) ? chemins[i][j].nom : chemins[i][j - 1].nom;
                     entrepot[chariots[i].Ligne, chariots[i].Colonne] = -2;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Constructeur du premier nœud
+        /// </summary>
+        /// <param name="depart">Nœud de départ</param>
+        /// <param name="arrivee">Nœud d’arrivée</param>
+        /// <param name="entrepot">Configuration de l’entrepôt au départ</param>
+        /// <param name="chemins">Chemins des chariots en mouvement</param>
+        /// <param name="chariots">Chariots présent dans l’entrepôt</param>
+        /// <param name="temps">Temps écoulé depuis le départ</param>
+        /// <param name="mode">false pour la récupération, true pour la livraison</param>
+        public NoeudRealite(Chariot depart, Chariot arrivee, int[,] entrepot, List<List<Noeud>> chemins, List<Chariot> chariots, bool mode)
+            : base()
+        {
+            this.nom = depart;
+            NoeudRealite.arrivee = arrivee;
+            NoeudRealite.entrepot = entrepot;
+            NoeudRealite.chemins = chemins;
+            NoeudRealite.chariots = chariots;
+            NoeudRealite.mode = mode;
+            this.temps = 0;
+
+            for (int i = 0; i < chemins.Count; i++)
+            {
+                entrepot[chariots[i].Ligne, chariots[i].Colonne] = 0;
+                chariots[i] = chemins[i][0].nom;
+                entrepot[chariots[i].Ligne, chariots[i].Colonne] = -2;
             }
         }
 
@@ -139,22 +146,66 @@ namespace CameliaClass
             // c’est-à-dire si la position est possible (égale à 0 dans l’entrepôt)
             if (this.nom.Ligne < 24 && NoeudRealite.entrepot[this.nom.Ligne + 1, this.nom.Colonne] == 0)
             {
-                listeSuccesseurs.Add(new NoeudRealite(new Chariot(this.nom.Ligne + 1, this.nom.Colonne, 2)));
+                NoeudRealite noeudSuccesseur = new NoeudRealite(new Chariot(this.nom.Ligne + 1, this.nom.Colonne, 2));
+                noeudSuccesseur.temps = temps;
+                noeudSuccesseur.temps += 1;
+                if (this.nom.Orientation != noeudSuccesseur.nom.Orientation)
+                {
+                    noeudSuccesseur.temps += 3;
+                    if (this.nom.Orientation % 2 == noeudSuccesseur.nom.Orientation % 2)
+                    {
+                        noeudSuccesseur.temps += 3;
+                    }
+                }
+                listeSuccesseurs.Add(noeudSuccesseur);
             }
 
             if (this.nom.Colonne < 24 && NoeudRealite.entrepot[this.nom.Ligne, this.nom.Colonne + 1] == 0)
             {
-                listeSuccesseurs.Add(new NoeudRealite(new Chariot(this.nom.Ligne, this.nom.Colonne + 1, 1)));
+                NoeudRealite noeudSuccesseur = new NoeudRealite(new Chariot(this.nom.Ligne, this.nom.Colonne + 1, 1));
+                noeudSuccesseur.temps = temps;
+                noeudSuccesseur.temps += 1;
+                if (this.nom.Orientation != noeudSuccesseur.nom.Orientation)
+                {
+                    noeudSuccesseur.temps += 3;
+                    if (this.nom.Orientation % 2 == noeudSuccesseur.nom.Orientation % 2)
+                    {
+                        noeudSuccesseur.temps += 3;
+                    }
+                }
+                listeSuccesseurs.Add(noeudSuccesseur);
             }
 
             if (this.nom.Ligne > 0 && NoeudRealite.entrepot[this.nom.Ligne - 1, this.nom.Colonne] == 0)
             {
-                listeSuccesseurs.Add(new NoeudRealite(new Chariot(this.nom.Ligne - 1, this.nom.Colonne, 0)));
+                NoeudRealite noeudSuccesseur = new NoeudRealite(new Chariot(this.nom.Ligne - 1, this.nom.Colonne, 0));
+                noeudSuccesseur.temps = temps;
+                noeudSuccesseur.temps += 1;
+                if (this.nom.Orientation != noeudSuccesseur.nom.Orientation)
+                {
+                    noeudSuccesseur.temps += 3;
+                    if (this.nom.Orientation % 2 == noeudSuccesseur.nom.Orientation % 2)
+                    {
+                        noeudSuccesseur.temps += 3;
+                    }
+                }
+                listeSuccesseurs.Add(noeudSuccesseur);
             }
 
             if (this.nom.Colonne > 0 && NoeudRealite.entrepot[this.nom.Ligne, this.nom.Colonne - 1] == 0)
             {
-                listeSuccesseurs.Add(new NoeudRealite(new Chariot(this.nom.Ligne, this.nom.Colonne - 1, 3)));
+                NoeudRealite noeudSuccesseur = new NoeudRealite(new Chariot(this.nom.Ligne, this.nom.Colonne - 1, 3));
+                noeudSuccesseur.temps = temps;
+                noeudSuccesseur.temps += 1;
+                if (this.nom.Orientation != noeudSuccesseur.nom.Orientation)
+                {
+                    noeudSuccesseur.temps += 3;
+                    if (this.nom.Orientation % 2 == noeudSuccesseur.nom.Orientation % 2)
+                    {
+                        noeudSuccesseur.temps += 3;
+                    }
+                }
+                listeSuccesseurs.Add(noeudSuccesseur);
             }
 
             return listeSuccesseurs;
