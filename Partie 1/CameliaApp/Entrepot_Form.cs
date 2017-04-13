@@ -784,7 +784,7 @@ namespace CameliaApp
                                     // On vérifie que les 7 derniers chariots ont la même orientation
                                     while (iter < 6 && arret_assez_long)
                                     {
-                                        if (!chemins[i][chemins[i].Count - 1 - iter].nom.Egal(chemins[i][chemins[i].Count - 1 - iter - 1].nom) && chemins[i][chemins[i].Count - 1 - iter].nom.Orientation != chemins[i][chemins[i].Count - 1 - iter - 1].nom.Orientation)
+                                        if (!chemins[i][chemins[i].Count - 1 - iter].nom.Egal(chemins[i][chemins[i].Count - 1 - iter - 1].nom))
                                         {
                                             arret_assez_long = false;
                                         }
@@ -823,7 +823,7 @@ namespace CameliaApp
                                     // On vérifie que les 4 derniers chariots ont la même orientation
                                     while (iter < 3 && arret_assez_long)
                                     {
-                                        if (!chemins[i][chemins[i].Count - 1 - iter].nom.Egal(chemins[i][chemins[i].Count - 1 - iter - 1].nom) && chemins[i][chemins[i].Count - 1 - iter].nom.Orientation != chemins[i][chemins[i].Count - 1 - iter - 1].nom.Orientation)
+                                        if (!chemins[i][chemins[i].Count - 1 - iter].nom.Egal(chemins[i][chemins[i].Count - 1 - iter - 1].nom))
                                         {
                                             arret_assez_long = false;
                                         }
@@ -922,7 +922,7 @@ namespace CameliaApp
 
                                 while (iter < 6 && arret_assez_long)
                                 {
-                                    if (!chemins[i][chemins[i].Count - 1 - iter].nom.Egal(chemins[i][chemins[i].Count - 1 - iter - 1].nom) && chemins[i][chemins[i].Count - 1 - iter].nom.Orientation != chemins[i][chemins[i].Count - 1 - iter - 1].nom.Orientation)
+                                    if (!chemins[i][chemins[i].Count - 1 - iter].nom.Egal(chemins[i][chemins[i].Count - 1 - iter - 1].nom))
                                     {
                                         arret_assez_long = false;
                                     }
@@ -948,7 +948,7 @@ namespace CameliaApp
 
                                 while (iter < 3 && arret_assez_long)
                                 {
-                                    if (!chemins[i][chemins[i].Count - 1 - iter].nom.Egal(chemins[i][chemins[i].Count - 1 - iter - 1].nom) && chemins[i][chemins[i].Count - 1 - iter].nom.Orientation != chemins[i][chemins[i].Count - 1 - iter - 1].nom.Orientation)
+                                    if (!chemins[i][chemins[i].Count - 1 - iter].nom.Egal(chemins[i][chemins[i].Count - 1 - iter - 1].nom))
                                     {
                                         arret_assez_long = false;
                                     }
