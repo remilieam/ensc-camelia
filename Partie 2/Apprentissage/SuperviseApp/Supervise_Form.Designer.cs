@@ -140,7 +140,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(820, 860);
+            this.ClientSize = new System.Drawing.Size(820, 880);
             this.Controls.Add(this.NbCouches_Label);
             this.Controls.Add(this.NbCouches_TextBox);
             this.Controls.Add(this.NbNeurones_Label);

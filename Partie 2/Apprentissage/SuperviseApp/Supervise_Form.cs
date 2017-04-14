@@ -125,8 +125,7 @@ namespace SuperviseApp
                 Resultat_PictureBox.Refresh();
                 string Message = "Pourcentage de bonne classification : " + Math.Round(BonneClassification / 3000.0, 4) * 100 +
                     "\nPourcentage de mauvaise classification : " + Math.Round(MauvaiseClassification / 3000.0, 4) * 100 +
-                    "\nErreur résiduelle : " + Math.Round(ErreurResiduelle / 3000.0, 2) +
-                    "\nTemps d’apprentissage : " + Secondes;
+                    "\nErreur résiduelle : " + Math.Round(ErreurResiduelle / 3000.0, 2);
                 MessageBox.Show(Message, "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
