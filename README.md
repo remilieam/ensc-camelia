@@ -53,8 +53,9 @@ l’entrepôt avec les 15 chariots par défaut.
 
 **Percetron une couche**
 
-Il s’agit ici de déterminer la droite qui sépare l’espèce A de l’espace B
-après apprentissage avec un perceptron une couche.
+Il s’agit ici de déterminer la droite exacte (celle où le taux d’erreur est de 0)
+qui permet de séparer l’espèce A de l’espace B après apprentissage
+avec un perceptron une couche.
 
 **Perceptron multi-couches**
 
