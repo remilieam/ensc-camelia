@@ -33,17 +33,17 @@ qu’il doit ensuite rapporter en zone de livraison.
 
 En appuyant sur le bouton « Rafraîchir », le programme met à jour la position
 du chariot dans l’entrepôt, c’est-à-dire qu’il l’enlève de sa position de départ pour
-le mettre à sa position d’arrivée. Ce bouton est accessible après avoir sélectionner
+le mettre à sa position d’arrivée. Ce bouton est accessible après avoir sélectionné
 « Distance » ou « Temps ».
 
 En appuyant sur le bouton « Dynamique », le programme met à jour la position
 du dernier chariot dans l’entrepôt en le déplacement dynamiquement : il met 1 seconde
 pour aller tout droit, 4 secondes pour prendre un virage et 7 secondes s’il doit faire
 demi-tour. En réalité, on divise chaque temps par 2 pour accélérer la visualisation.
-Ce bouton est accessible après avoir sélectionner « Temps ».
+Ce bouton est accessible après avoir sélectionné « Temps ».
 
 En appuyant sur le bouton « Livraison », le programme déplace tous les chariots dans
-la zone de livraison, orientés de telle façon à être prêt à aller chercher un nouvel objet.
+la zone de livraison, orientés de telle façon à être prêts à aller chercher un nouvel objet.
 Si on a plus de 25 chariots dans l’entrepôt, on supprime les chariots surnuméraires.
 
 En appuyant sur le bouton « Livraison », le programme réaffiche la configuration de 
@@ -53,14 +53,15 @@ l’entrepôt avec les 15 chariots par défaut.
 
 **Percetron une couche**
 
-
+Il s’agit ici de déterminer la droite qui sépare l’espèce A de l’espace B
+après apprentissage avec un perceptron une couche.
 
 **Perceptron multi-couches**
 
-Il s'agit ici d'effectuer l'apprentissage d'un jeu de données, et d'afficher l'erreur 
-entre l'apprentissage et les données réelles.
+Il s’agit ici d’effectuer l’apprentissage d’un jeu de données, et d’afficher l’erreur 
+entre l’apprentissage et les données réelles.
 
 **Apprentissage**
 
-Il s’agit ici de classer une liste de données en 2 catégories. Dans un premier temps,
+Il s’agit ici de classer une liste de données en différentes catégories. Dans un premier temps,
 l’apprentissage est supervisé, alors qu’il ne l’est pas dans le second temps.
