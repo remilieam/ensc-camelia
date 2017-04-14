@@ -18,9 +18,10 @@ namespace NonSuperviseApp
         private static Random Alea = new Random();
         private int NbIterations;
 
-        private int NbLignes;
-        private int NbColonnes;
-        private double CoefApprentissage;
+        private int NbLignes = 0;
+        private int NbColonnes = 0;
+        private double CoefApprentissage = 0;
+        private int DistanceNeurones = 0;
 
         private Graphics Graphe; // Objet graphique placé en global
         private Bitmap Image;    // Image figurant la carte
@@ -29,6 +30,9 @@ namespace NonSuperviseApp
         private Carte Carte;
         private static List<Classe> Classes = new List<Classe>();
 
+        /// <summary>
+        /// Constructeur
+        /// </summary>
         public NonSupervise_Form()
         {
             InitializeComponent();
@@ -36,28 +40,33 @@ namespace NonSuperviseApp
             Image = (Bitmap)Resultat_PictureBox.Image;
             Graphe = Graphics.FromImage(Resultat_PictureBox.Image);
             Crayon = new Pen(Color.White, 1);
-            RecupererDonnees("../../../ApprentissageData/datasetclassif.txt");
+            RecupererDonnees();
         }
 
+        /// <summary>
+        /// Création de la carte à la première itération, puis algorithme de Kohonen aux suivantes
+        /// </summary>
         private void Carte_Button_Click(object sender, EventArgs e)
         {
             if (NbLignes_TextBox.Enabled)
             {
                 try
                 {
+                    // Récupération du nombre de lignes et de colonnes de la carte
                     NbLignes = Convert.ToInt32(NbLignes_TextBox.Text);
                     NbColonnes = Convert.ToInt32(NbColonnes_TextBox.Text);
                     NbLignes_TextBox.Enabled = false;
                     NbColonnes_TextBox.Enabled = false;
 
-                    CoefApprentissage = Convert.ToDouble(CoefApprentissage_TextBox.Text);
-
+                    // Création de la carte
                     Carte = new Carte(NbLignes, NbColonnes, 2, Image.Width);
 
+                    // Affichage des observations (données du fichier « dataetclassif.txt »)
+                    // et des neurones de la carte que l’on vient de construire
                     Crayon.Color = Color.White;
                     Graphe.FillRectangle(Crayon.Brush, 0, 0, Image.Width, Image.Height);
                     AfficherDonnees();
-                    AfficherPoints();
+                    AfficherNeurones();
                 }
 
                 catch (Exception Ex)
@@ -74,14 +83,18 @@ namespace NonSuperviseApp
                     Classes_Button.Enabled = true;
                     Nouveau_Button.Enabled = true;
 
+                    // Récupération du coefficient d’apprentissage et de la distance de voisinage entre 2 neurones
                     CoefApprentissage = Convert.ToDouble(CoefApprentissage_TextBox.Text);
+                    DistanceNeurones = Convert.ToInt32(DistanceNeurones_TextBox.Text);
 
-                    Carte.AlgoKohonen(Observations, CoefApprentissage, 2);
+                    // Effectuation d’un apprentissage
+                    Carte.AlgoKohonen(Observations, CoefApprentissage, DistanceNeurones);
 
+                    // Affichage du résultat
                     Crayon.Color = Color.White;
                     Graphe.FillRectangle(Crayon.Brush, 0, 0, Image.Width, Image.Height);
                     AfficherDonnees();
-                    AfficherPoints();
+                    AfficherNeurones();
                 }
 
                 catch (Exception Ex)
@@ -91,11 +104,16 @@ namespace NonSuperviseApp
             }
         }
 
+        /// <summary>
+        /// Regroupement des neurones les plus forts dans 6 classes distinctes
+        /// </summary>
         private void Classes_Button_Click(object sender, EventArgs e)
         {
+            // Affectation des neurones les plus forts dans 6 classes
             Classes.Clear();
             Classes = Carte.Regroupement(Observations, 6);
 
+            // Affichage du résultat
             Crayon.Color = Color.White;
             Graphe.FillRectangle(Crayon.Brush, 0, 0, Image.Width, Image.Height);
             AfficherDonnees();
@@ -106,6 +124,9 @@ namespace NonSuperviseApp
             MessageBox.Show("Résultat pour " + NbIterations + " itérations.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
+        /// <summary>
+        /// Coloriage de l’image suivant les appartenances des pixels aux 6 classes
+        /// </summary>
         private void Coloriage_Button_Click(object sender, EventArgs e)
         {
             List<Color> Couleurs = new List<Color> { Color.Red, Color.Blue, Color.Green, Color.Brown, Color.Orange, Color.Purple };
@@ -114,7 +135,7 @@ namespace NonSuperviseApp
             {
                 for (int j = 0; j < 800; j++)
                 {
-                    // Définition du point (= neurone = pixel)
+                    // Définition du neurone (= pixel)
                     Neurone Pixel = new Neurone(2, 800);
                     Pixel.ModifierPoids(i, j);
 
@@ -145,6 +166,7 @@ namespace NonSuperviseApp
                 }
             }
 
+            // Affichage du résultat
             AfficherDonnees();
             Resultat_PictureBox.Refresh();
 
@@ -153,6 +175,9 @@ namespace NonSuperviseApp
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
+        /// <summary>
+        /// Possibilité de créer une nouvelle carte
+        /// </summary>
         private void Nouveau_Button_Click(object sender, EventArgs e)
         {
             NbIterations = 0;
@@ -163,27 +188,37 @@ namespace NonSuperviseApp
             Coloriage_Button.Enabled = false;
         }
 
-        private void RecupererDonnees(string fichier_source)
+        /// <summary>
+        /// Récupération des données du fichiers « dataetclassif.txt »
+        /// </summary>
+        private void RecupererDonnees()
         {
             try
             {
+                // Ouverture du fichier
                 System.Text.Encoding encoding = System.Text.Encoding.GetEncoding("iso-8859-1");
-                StreamReader Lecteur = new StreamReader(fichier_source, encoding);
+                StreamReader Lecteur = new StreamReader("../../../ApprentissageData/datasetclassif.txt", encoding);
 
+                // Initialisation des variables
                 Observations = new List<Observation>();
                 string Donnee = Lecteur.ReadLine();
                 int Item = 2;
                 List<double> Coordonnees = new List<double> { 0, 0 };
 
+                // Parcours de chaque ligne du fichier
                 while (Donnee != null)
                 {
+                    // Conversion du texte de la ligne lue en double
                     double DonneeChiffree = Convert.ToDouble(Donnee);
 
+                    // Cas où la donnée est intéressante
                     if (Item != 2)
                     {
                         Coordonnees[Item] = DonneeChiffree;
                         Item++;
                     }
+
+                    // Cas où la donnée est inintéressante
                     else
                     {
                         Observations.Add(new Observation(Coordonnees[0], Coordonnees[1]));
@@ -192,11 +227,14 @@ namespace NonSuperviseApp
                         Item = 0;
                     }
 
+                    // Passage à la ligne suivante
                     Donnee = Lecteur.ReadLine();
                 }
 
+                // Fermeture du fichier
                 Lecteur.Close();
                 
+                // Ajout de la dernière observation et retrait de la première
                 Observations.Add(new Observation(Coordonnees[0], Coordonnees[1]));
                 Observations.RemoveAt(0);
 
@@ -204,7 +242,6 @@ namespace NonSuperviseApp
                 int NbObservations = Observations.Count;
                 ObservationsTriees.AddRange(Observations);
                 List<Observation> ObservationsMelangees = new List<Observation>();
-
                 for (int i = 0; i < NbObservations; i++)
                 {
                     int Numero = Alea.Next(Observations.Count);
@@ -222,6 +259,9 @@ namespace NonSuperviseApp
             }
         }
 
+        /// <summary>
+        /// Affichage des données du fichier « dataetclassif.txt »
+        /// </summary>
         private void AfficherDonnees()
         {
             for (int i = 0; i < Observations.Count; i++)
@@ -230,7 +270,10 @@ namespace NonSuperviseApp
             }
         }
 
-        private void AfficherPoints()
+        /// <summary>
+        /// Affichage des neurones sur la carte
+        /// </summary>
+        private void AfficherNeurones()
         {
             Crayon.Color = Color.Blue;
 
@@ -247,6 +290,9 @@ namespace NonSuperviseApp
             Resultat_PictureBox.Refresh();
         }
 
+        /// <summary>
+        /// Coloration des neurones suivant la classe à laquelle ils appartiennent
+        /// </summary>
         private void AfficherClasses()
         {
             List<Color> Couleurs = new List<Color> { Color.Red, Color.Blue, Color.Green, Color.Brown, Color.Orange, Color.Purple };
@@ -254,10 +300,10 @@ namespace NonSuperviseApp
             {
                 Crayon.Color = Couleurs[i];
 
-                foreach (Neurone point in Classes[i].ListeNeurones)
+                foreach (Neurone neurone in Classes[i].ListeNeurones)
                 {
-                    int x = Convert.ToInt32(point.RecupererPoids(0));
-                    int y = Convert.ToInt32(point.RecupererPoids(1));
+                    int x = Convert.ToInt32(neurone.RecupererPoids(0));
+                    int y = Convert.ToInt32(neurone.RecupererPoids(1));
                     Graphe.DrawEllipse(Crayon, x - 2, y - 2, 4, 4);
                 }
             }
@@ -265,6 +311,11 @@ namespace NonSuperviseApp
             Resultat_PictureBox.Refresh();
         }
 
+        /// <summary>
+        /// Recherche à quelle classe appartient un neurone donné
+        /// </summary>
+        /// <param name="Neurone">Neurone dont on cherche la classe</param>
+        /// <returns>Numéro de la classe à laquelle appartient le neurone</returns>
         private int RechercherClasse(Neurone Neurone)
         {
             // Recherche de la classe gagnante
@@ -286,9 +337,13 @@ namespace NonSuperviseApp
                 }
             }
 
+            // Renvoi du numéro de la classe gagnante
             return NumeroClasseGagnante;
         }
 
+        /// <summary>
+        /// Fermeture du formulaire
+        /// </summary>
         private void Non_Supervise_Form_FormClosed(object sender, FormClosedEventArgs e)
         {
             this.DialogResult = DialogResult.OK;
