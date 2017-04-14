@@ -214,7 +214,7 @@
             this.textBoxnbiter.Name = "textBoxnbiter";
             this.textBoxnbiter.Size = new System.Drawing.Size(60, 20);
             this.textBoxnbiter.TabIndex = 15;
-            this.textBoxnbiter.Text = "100";
+            this.textBoxnbiter.Text = "10";
             // 
             // label6
             // 

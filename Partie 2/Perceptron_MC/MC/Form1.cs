@@ -16,13 +16,6 @@ namespace MC
             InitializeComponent();
         }
 
-        // QUESTIONS
-        /*
-         * - Pourquoi les valeurs obtenues après apprentissage sont toutes égales ? du coup image toute grise !!
-         * - Pour la question 2, dans le fichier ce n'est pas des coordonnées normales, du coup
-         *   comment comparer les deux images ? (le point (300,300) n'existe pas !!!
-         */
-
         static Graphics g;
         static Bitmap bmp;
         static Bitmap bmp2;
@@ -192,59 +185,7 @@ namespace MC
                                        listBox1);
 
         }
-        /*****************************************************************/
-        // Attention, la fonction à apprendre doit fournir des valeurs entre 0 et 1 !!!
-        double fonctionmodele(double x)
-        {
-            // return Math.Sin(x * 20) / 2.5 + 0.5;
-            if (x < 0.2 || x > 0.8) return 0.8;
-            else return 0.2;
-        }
 
-        /**********************************************************************/
-        public void Tests(Graphics g, Bitmap bmp)
-        {
-            int x, z, zdesire;
-            double x2, z2;
-            for (x = 0; x < bmp.Width; x++)
-                for (z = 0; z < bmp.Height; z++)
-                    bmp.SetPixel(x, z, Color.Black);
-
-            List<List<double>> lvecteursentrees = new List<List<double>>();
-            List<double> lsortiesdesirees = new List<double>();
-            List<double> lsortiesobtenues;
-
-            // EN général, on reprend ici les données récupérées du fichier base de données
-            // mais pour illustrer le fonctionnement, on se propose ici de tester 200 valeurs
-            // de x (dimension 1 pour les entrées ici) entre 0 et 1, ramenées entre 0 et 200
-            // idem pour la sortie, pour permettre l'affichage dans une image.
-            for (x = 0; x < lvecteursentrees.Count; x++)
-            {
-                x2 = x / lvecteursentrees.Count;
-                // Initialisation des activations  ai correspondant aux entrées xi
-                // Le premier neurone est une constante égale à 1
-                List<double> vect = new List<double>();
-                vect.Add(x2); // Une seule valeur ici pour ce vecteur 
-                lvecteursentrees.Add(vect);
-                lsortiesdesirees.Add(fonctionmodele(x2));
-            }
-
-            lsortiesobtenues = reseau.ResultatsEnSortie(lvecteursentrees);
-
-            // Affichage
-            for (x = 0; x < 200; x++)
-            {
-                z2 = lsortiesobtenues[x];
-
-                // z2 valeur attendu entre 0 et 1 ; conversion pour z qui est retenu pour l'affichage
-                z = (int)(z2 * 200);
-                zdesire = (int)(lsortiesdesirees[x] * 200);
-                bmp.SetPixel(x, bmp.Height - z - 1, Color.Yellow);
-
-                bmp.SetPixel(x, bmp.Height - zdesire - 1, Color.White);
-            }
-
-        }
 
     }
 }

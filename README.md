@@ -53,7 +53,12 @@ l’entrepôt avec les 15 chariots par défaut.
 
 **Percetron une couche**
 
+
+
 **Perceptron multi-couches**
+
+Il s'agit ici d'effectuer l'apprentissage d'un jeu de données, et d'afficher l'erreur 
+entre l'apprentissage et les données réelles.
 
 **Apprentissage**
 
