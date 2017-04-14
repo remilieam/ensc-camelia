@@ -86,11 +86,9 @@ namespace NonSuperviseApp
                     // Récupération du coefficient d’apprentissage et de la distance de voisinage entre 2 neurones
                     CoefApprentissage = Convert.ToDouble(CoefApprentissage_TextBox.Text);
                     DistanceNeurones = Convert.ToInt32(DistanceNeurones_TextBox.Text);
-                    for (int i = 0; i < 500; i++)
-                    {
-                        // Effectuation d’un apprentissage
-                        Carte.AlgoKohonen(Observations, CoefApprentissage, DistanceNeurones);
-                    }
+
+                    // Effectuation d’un apprentissage
+                    Carte.AlgoKohonen(Observations, CoefApprentissage, DistanceNeurones);
 
                     // Affichage du résultat
                     Crayon.Color = Color.White;
